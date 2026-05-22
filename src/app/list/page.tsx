@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useSession, signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
@@ -262,9 +262,9 @@ export default function WatchListPage() {
           <p className="text-muted-foreground">
             Sign in to view your watch list.
           </p>
-          <Button onClick={() => signIn("discord")}>
-            Sign in with Discord
-          </Button>
+          <Link href="/auth/signin">
+            <Button>Sign in</Button>
+          </Link>
         </div>
       </main>
     );

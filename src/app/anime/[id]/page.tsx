@@ -216,7 +216,7 @@ export default async function AnimePage({ params }: AnimePageProps) {
                 ) => (
                   <div
                     key={i}
-                    className="relative aspect-16/9 rounded-lg overflow-hidden"
+                    className="relative aspect-video rounded-lg overflow-hidden"
                   >
                     <Image
                       src={pic.webp.image_url || pic.jpg.image_url}

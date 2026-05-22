@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { useSession, signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -43,9 +43,9 @@ export default function RecommendationsPage() {
           <p className="text-muted-foreground">
             Sign in to get recommendations.
           </p>
-          <Button onClick={() => signIn("discord")}>
-            Sign in with Discord
-          </Button>
+          <Link href="/auth/signin">
+            <Button>Sign in</Button>
+          </Link>
         </div>
       </main>
     );

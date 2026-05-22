@@ -9,16 +9,18 @@ datasource db {
 // ─── NextAuth.js required models ───
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  accounts      Account[]
-  sessions      Session[]
-  entries       AnimeEntry[]
+  id             String       @id @default(cuid())
+  name           String?
+  email          String?      @unique
+  emailVerified  DateTime?
+  image          String?
+  username       String?      @unique
+  hashedPassword String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  accounts       Account[]
+  sessions       Session[]
+  entries        AnimeEntry[]
 }
 
 model Account {

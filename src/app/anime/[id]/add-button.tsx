@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { signIn } from "next-auth/react";
+import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { Plus, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -26,8 +26,8 @@ export function AddButton({ animeId }: { animeId: number }) {
 
   if (!session) {
     return (
-      <Button variant="outline" onClick={() => signIn("discord")}>
-        Sign in to track
+      <Button variant="outline" asChild>
+        <Link href="/auth/signin">Sign in to track</Link>
       </Button>
     );
   }

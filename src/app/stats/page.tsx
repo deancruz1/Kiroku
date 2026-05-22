@@ -1,7 +1,8 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { useSession, signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -73,9 +74,9 @@ export default function StatsPage() {
       <main className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center space-y-4">
           <p className="text-muted-foreground">Sign in to view your stats.</p>
-          <Button onClick={() => signIn("discord")}>
-            Sign in with Discord
-          </Button>
+          <Link href="/auth/signin">
+            <Button>Sign in</Button>
+          </Link>
         </div>
       </main>
     );
