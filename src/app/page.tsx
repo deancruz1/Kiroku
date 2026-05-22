@@ -1,4 +1,5 @@
 import { SearchBar } from "@/components/search-bar";
+import Link from "next/link";
 
 export default function HomePage() {
   return (
@@ -13,6 +14,14 @@ export default function HomePage() {
 
         <div className="max-w-xl mx-auto">
           <SearchBar />
+        </div>
+        <div className="text-center mt-6">
+          <Link
+            href="/list"
+            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            View your watch list →
+          </Link>
         </div>
       </div>
     </main>
