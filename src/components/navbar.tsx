@@ -12,15 +12,18 @@ import {
   LogOut,
   TrendingUp,
   Sparkles,
+  FolderHeart,
+  Tv,
 } from "lucide-react";
 
 const links = [
   { href: "/", label: "Search", icon: Search },
-  { href: "/top", label: "Top", icon: TrendingUp },
-  { href: "/season", label: "Season", icon: Calendar },
-  { href: "/list", label: "My List", icon: List },
+  { href: "/top", label: "Top Shows", icon: TrendingUp },
+  { href: "/season", label: "Season", icon: Tv },
+  { href: "/list", label: "Watch List", icon: List },
   { href: "/recommendations", label: "For You", icon: Sparkles },
-  { href: "/stats", label: "Stats", icon: BarChart3 },
+  { href: "/stats", label: "My Stats", icon: BarChart3 },
+  { href: "/lists", label: "Collections", icon: FolderHeart },
 ];
 
 export function Navbar() {

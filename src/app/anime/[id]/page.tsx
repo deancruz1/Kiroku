@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent } from "@/components/ui/card";
 import { AddButton } from "./add-button";
+import { CollectionButton } from "./collection-button";
 import type {
   JikanRecommendation,
   JikanReview,
@@ -103,7 +104,10 @@ export default async function AnimePage({ params }: AnimePageProps) {
               )}
             </div>
 
-            <AddButton animeId={malId} />
+            <div className="flex gap-2">
+              <AddButton animeId={malId} />
+              <CollectionButton animeId={malId} />
+            </div>
 
             <div className="flex flex-wrap gap-2">
               {anime.genres?.map((genre: { mal_id: number; name: string }) => (
