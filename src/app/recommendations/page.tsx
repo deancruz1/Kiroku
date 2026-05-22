@@ -14,6 +14,7 @@ interface Recommendation {
   image: string;
   score: number | null;
   genres: string[];
+  becauseOf: string;
 }
 
 interface RecommendationsResponse {
@@ -106,13 +107,19 @@ export default function RecommendationsPage() {
                 status: "",
                 aired: { from: null, to: null },
                 score: rec.score,
-                genres: rec.genres.map((g) => ({ mal_id: 0, name: g })),
+                genres: rec.genres.map((g, i) => ({ mal_id: i, name: g })),
                 studios: [],
                 season: null,
                 year: null,
                 broadcast: { day: null, time: null },
               };
-              return <AnimeCard key={rec.mal_id} anime={anime} />;
+              return (
+                <AnimeCard
+                  key={rec.mal_id}
+                  anime={anime}
+                  reason={`Because you like ${rec.becauseOf}`}
+                />
+              );
             })}
           </div>
         )}

@@ -88,19 +88,15 @@ export default function ListsPage() {
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-6">My Collections</h1>
 
-        <div className="flex gap-2 mb-8">
+        <div className="flex items-stretch gap-2 mb-8">
           <Input
             placeholder="New collection name..."
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleCreate()}
-            className="max-w-xs h-9 text-sm"
+            className="max-w-xs text-sm"
           />
-          <Button
-            size="sm"
-            onClick={handleCreate}
-            disabled={creating || !newName.trim()}
-          >
+          <Button onClick={handleCreate} disabled={creating || !newName.trim()}>
             <Plus className="h-4 w-4 mr-1" />
             Create
           </Button>
@@ -111,7 +107,7 @@ export default function ListsPage() {
             {[...Array(4)].map((_, i) => (
               <div
                 key={i}
-                className="aspect-[3/4] bg-muted animate-pulse rounded-lg"
+                className="aspect-3/4 bg-muted animate-pulse rounded-lg"
               />
             ))}
           </div>
@@ -134,7 +130,7 @@ export default function ListsPage() {
                 className="rounded-lg overflow-hidden bg-card border transition-all hover:ring-2 hover:ring-primary h-full"
               >
                 <Link href={`/lists/${list.id}`}>
-                  <div className="relative w-full aspect-[3/4] bg-muted">
+                  <div className="relative w-full aspect-3/4 bg-muted">
                     {list.animes.length === 1 ? (
                       <AnimeCover animeId={list.animes[0].animeId} single />
                     ) : list.animes.length > 0 ? (

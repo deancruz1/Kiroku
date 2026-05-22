@@ -18,17 +18,18 @@ export function SearchBar() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2">
-      <Input
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search for an anime..."
-        className="flex-1"
-      />
-      <Button type="submit" disabled={!query.trim()}>
-        <Search className="h-4 w-4 mr-2" />
-        Search
-      </Button>
+    <form
+      onSubmit={handleSubmit}
+      className="flex items-stretch gap-2 w-full h-14"
+    >
+      <div className="flex-1">
+        <Input
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search for an anime..."
+          className="h-full text-lg px-5"
+        />
+      </div>
     </form>
   );
 }

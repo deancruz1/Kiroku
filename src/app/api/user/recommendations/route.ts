@@ -3,7 +3,6 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { jikanApi } from "@/lib/axios";
 
-// Common genre name to ID mapping
 const GENRE_IDS: Record<string, number> = {
   Action: 1,
   Adventure: 2,
@@ -37,7 +36,10 @@ export async function GET() {
   }
 
   const entries = await prisma.animeEntry.findMany({
-    where: { userId: session.user.id },
+    where: {
+      userId: session.user.id,
+      rating: { not: null },
+    },
     select: { animeId: true },
   });
 
@@ -51,28 +53,35 @@ export async function GET() {
     });
   }
 
-  // Get genre counts from entries using Jikan
-  const genreCounts: Record<string, number> = {};
+  const entryGenres: { animeId: number; title: string; genres: string[] }[] =
+    [];
 
   for (const entry of entries) {
     try {
       const { data } = await jikanApi.get(`/anime/${entry.animeId}`);
       if (data.data?.genres) {
-        for (const genre of data.data.genres) {
-          genreCounts[genre.name] = (genreCounts[genre.name] || 0) + 1;
-        }
+        entryGenres.push({
+          animeId: entry.animeId,
+          title: data.data.title_english || data.data.title,
+          genres: data.data.genres.map((g: { name: string }) => g.name),
+        });
       }
     } catch {
       // Skip
     }
   }
 
-  // Get top 3 genres that have IDs
+  const genreCounts: Record<string, number> = {};
+  for (const entry of entryGenres) {
+    for (const genre of entry.genres) {
+      genreCounts[genre] = (genreCounts[genre] || 0) + 1;
+    }
+  }
+
   const topGenres = Object.entries(genreCounts)
     .filter(([name]) => GENRE_IDS[name])
     .sort(([, a], [, b]) => b - a)
-    .slice(0, 3)
-    .map(([name]) => name);
+    .slice(0, 3);
 
   if (topGenres.length === 0) {
     return NextResponse.json({
@@ -82,16 +91,16 @@ export async function GET() {
     });
   }
 
-  const recommendedAnime: {
+  const recommendations: {
     mal_id: number;
     title: string;
     image: string;
     score: number | null;
     genres: string[];
+    becauseOf: string;
   }[] = [];
 
-  // Search using genre IDs (more reliable)
-  for (const genreName of topGenres) {
+  for (const [genreName] of topGenres) {
     const genreId = GENRE_IDS[genreName];
     if (!genreId) continue;
 
@@ -110,14 +119,22 @@ export async function GET() {
         for (const anime of data.data) {
           if (
             !watchedIds.has(anime.mal_id) &&
-            !recommendedAnime.find((r) => r.mal_id === anime.mal_id)
+            !recommendations.find((r) => r.mal_id === anime.mal_id) &&
+            anime.score &&
+            anime.score >= 7
           ) {
-            recommendedAnime.push({
+            const matchingEntry = entryGenres.find((e) =>
+              e.genres.includes(genreName),
+            );
+            const becauseOf = matchingEntry ? matchingEntry.title : genreName;
+
+            recommendations.push({
               mal_id: anime.mal_id,
               title: anime.title_english || anime.title,
               image: anime.images.webp.large_image_url,
               score: anime.score,
               genres: anime.genres?.map((g: { name: string }) => g.name) || [],
+              becauseOf,
             });
           }
         }
@@ -126,11 +143,11 @@ export async function GET() {
       // Skip
     }
 
-    if (recommendedAnime.length >= 10) break;
+    if (recommendations.length >= 10) break;
   }
 
   return NextResponse.json({
-    recommendations: recommendedAnime.slice(0, 10),
-    basedOn: topGenres,
+    recommendations: recommendations.slice(0, 10),
+    basedOn: topGenres.map(([name]) => name),
   });
 }

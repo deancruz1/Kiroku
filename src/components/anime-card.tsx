@@ -15,9 +15,15 @@ interface AnimeCardProps {
   anime: JikanAnime;
   isTracked?: boolean;
   trackedStatus?: string;
+  reason?: string;
 }
 
-export function AnimeCard({ anime, isTracked, trackedStatus }: AnimeCardProps) {
+export function AnimeCard({
+  anime,
+  isTracked,
+  trackedStatus,
+  reason,
+}: AnimeCardProps) {
   return (
     <Link href={`/anime/${anime.mal_id}`} className="block h-full">
       <div
@@ -42,7 +48,7 @@ export function AnimeCard({ anime, isTracked, trackedStatus }: AnimeCardProps) {
           )}
         </div>
         <div className="p-3 border-t">
-          <h3 className="font-medium text-sm truncate h-8">
+          <h3 className="font-medium text-sm truncate">
             {anime.title_english || anime.title}
           </h3>
           <div className="flex items-center justify-between mt-1.5">
@@ -66,6 +72,11 @@ export function AnimeCard({ anime, isTracked, trackedStatus }: AnimeCardProps) {
               ))}
             </div>
           </div>
+          {reason && (
+            <p className="text-[10px] text-muted-foreground mt-4 line-clamp-1">
+              {reason}
+            </p>
+          )}
         </div>
       </div>
     </Link>

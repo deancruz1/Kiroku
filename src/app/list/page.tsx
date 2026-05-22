@@ -7,8 +7,8 @@ import Image from "next/image";
 import { useState } from "react";
 import { Check, X, Edit3, Trash2, Plus, Minus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card } from "@/components/ui/card";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import {
   Select,
@@ -17,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { motion, AnimatePresence } from "framer-motion";
 import type { JikanAnime } from "@/types/anime";
 import { Star } from "lucide-react";
 
@@ -63,14 +64,24 @@ function AnimeEntryCard({ entry }: { entry: Entry }) {
     staleTime: 30 * 60 * 1000,
   });
 
+  const totalEpisodes = anime?.episodes || 0;
+
   async function handleSave() {
     setSaving(true);
-    await fetch(`/api/user/entries/${entry.id}`, {
+    const res = await fetch(`/api/user/entries/${entry.id}`, {
       method: "PATCH",
       body: JSON.stringify({ status, episodes, rating: rating || null }),
       headers: { "Content-Type": "application/json" },
     });
-    queryClient.invalidateQueries({ queryKey: ["user-entries"] });
+    if (res.ok) {
+      queryClient.setQueryData(["user-entries"], (old: Entry[] | undefined) =>
+        old?.map((e) =>
+          e.id === entry.id
+            ? { ...e, status, episodes, rating: rating || null }
+            : e,
+        ),
+      );
+    }
     setSaving(false);
     setEditing(false);
   }
@@ -82,30 +93,33 @@ function AnimeEntryCard({ entry }: { entry: Entry }) {
 
   return (
     <Card className="overflow-hidden hover:ring-2 hover:ring-primary/50 transition-all">
-      <div className="flex">
-        <Link href={`/anime/${entry.animeId}`} className="shrink-0">
+      <div className="flex p-3 gap-4">
+        <Link
+          href={`/anime/${entry.animeId}`}
+          className="shrink-0 cursor-pointer"
+        >
           {isLoading ? (
-            <div className="w-20 h-28 bg-muted animate-pulse" />
+            <div className="w-24 h-24 bg-muted animate-pulse rounded-lg" />
           ) : anime ? (
-            <div className="relative w-20 h-28">
+            <div className="relative w-24 h-24 rounded-lg overflow-hidden">
               <Image
-                src={anime.images.webp.small_image_url}
+                src={anime.images.webp.large_image_url}
                 alt={anime.title}
                 fill
-                sizes="80px"
+                sizes="96px"
                 className="object-cover"
               />
             </div>
           ) : (
-            <div className="w-20 h-28 bg-muted flex items-center justify-center">
+            <div className="w-24 h-24 bg-muted flex items-center justify-center rounded-lg">
               <span className="text-xs text-muted-foreground">N/A</span>
             </div>
           )}
         </Link>
 
-        <CardContent className="p-3 flex-1 min-w-0">
-          <Link href={`/anime/${entry.animeId}`}>
-            <h3 className="font-medium text-sm truncate hover:underline">
+        <div className="flex-1 min-w-0">
+          <Link href={`/anime/${entry.animeId}`} className="cursor-pointer">
+            <h3 className="font-semibold text-base truncate hover:underline">
               {anime?.title_english ||
                 anime?.title ||
                 `Anime #${entry.animeId}`}
@@ -140,11 +154,18 @@ function AnimeEntryCard({ entry }: { entry: Entry }) {
                   size="icon"
                   variant="outline"
                   className="h-7 w-7"
-                  onClick={() => setEpisodes(episodes + 1)}
+                  onClick={() => {
+                    if (totalEpisodes === 0 || episodes < totalEpisodes) {
+                      setEpisodes(episodes + 1);
+                    }
+                  }}
+                  disabled={totalEpisodes > 0 && episodes >= totalEpisodes}
                 >
                   <Plus className="h-3 w-3" />
                 </Button>
-                <span className="text-xs text-muted-foreground ml-1">ep</span>
+                <span className="text-sm text-muted-foreground ml-1">
+                  / {totalEpisodes > 0 ? totalEpisodes : "?"} ep
+                </span>
               </div>
               <div className="flex items-center gap-0.5">
                 {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
@@ -152,7 +173,7 @@ function AnimeEntryCard({ entry }: { entry: Entry }) {
                     key={n}
                     type="button"
                     onClick={() => setRating(n === rating ? 0 : n)}
-                    className={`text-sm ${
+                    className={`text-sm cursor-pointer ${
                       n <= rating
                         ? "text-yellow-500"
                         : "text-muted-foreground/30"
@@ -165,7 +186,7 @@ function AnimeEntryCard({ entry }: { entry: Entry }) {
                   </button>
                 ))}
                 {rating > 0 && (
-                  <span className="text-xs text-yellow-500 ml-1">
+                  <span className="text-sm text-yellow-500 ml-1">
                     {rating}/10
                   </span>
                 )}
@@ -192,17 +213,17 @@ function AnimeEntryCard({ entry }: { entry: Entry }) {
               </div>
             </div>
           ) : (
-            <div className="flex items-center gap-2 mt-1">
+            <div className="flex items-center gap-2 mt-1.5">
               <Badge variant="secondary" className="text-xs">
                 {STATUS_LABELS[entry.status]}
               </Badge>
-              {entry.episodes > 0 && (
-                <span className="text-xs text-muted-foreground">
-                  {entry.episodes} ep
-                </span>
-              )}
+              <span className="text-sm text-muted-foreground">
+                {entry.episodes > 0 || totalEpisodes > 0
+                  ? `${entry.episodes} / ${totalEpisodes > 0 ? totalEpisodes : "?"} ep`
+                  : ""}
+              </span>
               {entry.rating && (
-                <span className="text-xs text-yellow-500">
+                <span className="text-sm text-yellow-500">
                   ★ {entry.rating}
                 </span>
               )}
@@ -210,29 +231,29 @@ function AnimeEntryCard({ entry }: { entry: Entry }) {
                 <Button
                   size="icon"
                   variant="ghost"
-                  className="h-7 w-7"
+                  className="h-8 w-8 cursor-pointer"
                   onClick={(e) => {
                     e.preventDefault();
                     setEditing(true);
                   }}
                 >
-                  <Edit3 className="h-3 w-3" />
+                  <Edit3 className="h-4 w-4" />
                 </Button>
                 <Button
                   size="icon"
                   variant="ghost"
-                  className="h-7 w-7 text-destructive"
+                  className="h-8 w-8 text-destructive cursor-pointer"
                   onClick={(e) => {
                     e.preventDefault();
                     handleDelete();
                   }}
                 >
-                  <Trash2 className="h-3 w-3" />
+                  <Trash2 className="h-4 w-4" />
                 </Button>
               </div>
             </div>
           )}
-        </CardContent>
+        </div>
       </div>
     </Card>
   );
@@ -240,6 +261,7 @@ function AnimeEntryCard({ entry }: { entry: Entry }) {
 
 export default function WatchListPage() {
   const { data: session } = useSession();
+  const [activeTab, setActiveTab] = useState("all");
 
   const {
     data: entries,
@@ -270,6 +292,11 @@ export default function WatchListPage() {
     );
   }
 
+  const filteredEntries =
+    activeTab === "all"
+      ? entries || []
+      : (entries || []).filter((e) => e.status === activeTab);
+
   return (
     <main className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8 max-w-3xl">
@@ -295,36 +322,57 @@ export default function WatchListPage() {
         )}
 
         {entries && entries.length > 0 && (
-          <Tabs defaultValue="all">
-            <TabsList className="mb-4">
-              <TabsTrigger value="all">All</TabsTrigger>
+          <Tabs value={activeTab} onValueChange={setActiveTab}>
+            <TabsList className="mb-4 w-full h-10">
+              <TabsTrigger
+                value="all"
+                className="flex-1 text-sm cursor-pointer"
+              >
+                All
+              </TabsTrigger>
               {STATUS_ORDER.map((status) => (
-                <TabsTrigger key={status} value={status}>
+                <TabsTrigger
+                  key={status}
+                  value={status}
+                  className="flex-1 text-sm cursor-pointer"
+                >
                   {STATUS_LABELS[status]}
                 </TabsTrigger>
               ))}
             </TabsList>
 
-            <TabsContent value="all" className="space-y-3">
-              {entries.map((entry) => (
-                <AnimeEntryCard key={entry.id} entry={entry} />
-              ))}
-            </TabsContent>
-
-            {STATUS_ORDER.map((status) => (
-              <TabsContent key={status} value={status} className="space-y-3">
-                {entries
-                  .filter((e) => e.status === status)
-                  .map((entry) => (
-                    <AnimeEntryCard key={entry.id} entry={entry} />
-                  ))}
-                {entries.filter((e) => e.status === status).length === 0 && (
-                  <p className="text-center text-muted-foreground py-8">
+            <div className="space-y-3">
+              <AnimatePresence mode="wait">
+                {filteredEntries.length > 0 ? (
+                  filteredEntries.map((entry, index) => (
+                    <motion.div
+                      key={entry.id}
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -12 }}
+                      transition={{
+                        duration: 0.25,
+                        delay: index * 0.04,
+                        ease: "easeOut",
+                      }}
+                    >
+                      <AnimeEntryCard entry={entry} />
+                    </motion.div>
+                  ))
+                ) : (
+                  <motion.p
+                    key="empty"
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -12 }}
+                    transition={{ duration: 0.25, ease: "easeOut" }}
+                    className="text-center text-muted-foreground py-8"
+                  >
                     No anime in this category.
-                  </p>
+                  </motion.p>
                 )}
-              </TabsContent>
-            ))}
+              </AnimatePresence>
+            </div>
           </Tabs>
         )}
       </div>

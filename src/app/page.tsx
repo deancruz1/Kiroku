@@ -1,27 +1,25 @@
 import { SearchBar } from "@/components/search-bar";
-import Link from "next/link";
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-16">
-        <div className="flex flex-col items-center gap-2 mb-8">
-          <h1 className="text-4xl font-bold tracking-tight">Kiroku</h1>
-          <p className="text-muted-foreground text-lg">
-            Track your anime, discover seasonal shows
-          </p>
-        </div>
+    <main className="bg-background flex items-center justify-center min-h-[calc(100vh-3.5rem)]">
+      <div className="w-full max-w-4xl px-8 py-16 text-center">
+        <h1 className="text-6xl font-bold tracking-tight mb-3">Kiroku.</h1>
+        <p className="text-2xl text-muted-foreground mb-10">
+          Track your anime, discover seasonal shows
+        </p>
 
-        <div className="max-w-xl mx-auto">
+        <div className="w-full">
           <SearchBar />
         </div>
-        <div className="text-center mt-6">
-          <Link
-            href="/list"
+
+        <div className="mt-8">
+          <a
+            href="/season"
             className="text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
-            View your watch list →
-          </Link>
+            Browse current season →
+          </a>
         </div>
       </div>
     </main>
