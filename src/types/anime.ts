@@ -103,6 +103,25 @@ export interface JikanReview {
   date: string;
   tags: string[];
 }
+export interface JikanCharacter {
+  character: {
+    mal_id: number;
+    name: string;
+    images: {
+      jpg: { image_url: string };
+      webp: { image_url: string };
+    };
+  };
+  role: string;
+  voice_actors: {
+    person: {
+      mal_id: number;
+      name: string;
+      images: { jpg: { image_url: string } };
+    };
+    language: string;
+  }[];
+}
 
 export interface JikanTopResponse {
   data: JikanAnime[];

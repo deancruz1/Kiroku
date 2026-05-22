@@ -1,10 +1,11 @@
 "use client";
 
-import Link from "next/link";
-import Image from "next/image";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { useEntries } from "@/hooks/use-entries";
+import { SeasonAnimeCard } from "@/components/season-anime-card";
+import { Button } from "@/components/ui/button";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import type { JikanAnime } from "@/types/anime";
 
 const DAYS = [
@@ -26,16 +27,19 @@ const DAY_LABELS: Record<string, string> = {
   sunday: "Sunday",
 };
 
+const INITIAL_SHOW = 3;
+const EXPAND_BY = 3;
+
 function getDayKey(anime: JikanAnime): string | null {
   const day = anime.broadcast?.day;
   if (!day) return null;
   const lower = day.toLowerCase();
-  // Handle both "Friday" and "Fridays" formats from Jikan
   for (const d of DAYS) {
     if (lower.startsWith(d)) return d;
   }
   return null;
 }
+
 function getCountdown(anime: JikanAnime): string | null {
   const day = anime.broadcast?.day;
   const time = anime.broadcast?.time;
@@ -77,65 +81,17 @@ function getCountdown(anime: JikanAnime): string | null {
   return `${diffDays}d ${diffHours}h`;
 }
 
-function AnimeCard({
-  anime,
-  isTracked,
-  status,
-}: {
-  anime: JikanAnime;
-  isTracked: boolean;
-  status?: string;
-}) {
-  const countdown = getCountdown(anime);
-
-  return (
-    <Link href={`/anime/${anime.mal_id}`}>
-      <Card
-        className={`overflow-hidden hover:ring-2 transition-all h-full ${
-          isTracked ? "ring-2 ring-primary" : "hover:ring-primary"
-        }`}
-      >
-        <div className="relative w-full aspect-3/4">
-          <Image
-            src={anime.images.webp.large_image_url}
-            alt={anime.title}
-            fill
-            sizes="(max-width: 640px) 50vw, 150px"
-            className="object-cover"
-          />
-          {isTracked && status && (
-            <div className="absolute top-1 left-1">
-              <Badge className="text-[10px] px-1 py-0 h-4">
-                {status === "watching"
-                  ? "Watching"
-                  : status === "completed"
-                    ? "Done"
-                    : status === "plan_to_watch"
-                      ? "PTW"
-                      : "Dropped"}
-              </Badge>
-            </div>
-          )}
-          {countdown && (
-            <div className="absolute bottom-1 right-1">
-              <Badge variant="secondary" className="text-[10px] px-1 py-0 h-4">
-                {countdown}
-              </Badge>
-            </div>
-          )}
-        </div>
-        <CardContent className="p-2">
-          <p className="text-xs font-medium line-clamp-2">
-            {anime.title_english || anime.title}
-          </p>
-        </CardContent>
-      </Card>
-    </Link>
-  );
+interface SeasonCalendarProps {
+  allAnime: JikanAnime[];
+  showTrackedOnly?: boolean;
 }
 
-export function SeasonCalendar({ allAnime }: { allAnime: JikanAnime[] }) {
+export function SeasonCalendar({
+  allAnime,
+  showTrackedOnly,
+}: SeasonCalendarProps) {
   const { data: entries } = useEntries();
+  const [expandedDays, setExpandedDays] = useState<Record<string, number>>({});
 
   const trackedMap = new Map<number, { status: string }>();
   if (entries) {
@@ -144,10 +100,14 @@ export function SeasonCalendar({ allAnime }: { allAnime: JikanAnime[] }) {
     }
   }
 
+  const filteredAnime = showTrackedOnly
+    ? allAnime.filter((a) => trackedMap.has(a.mal_id))
+    : allAnime;
+
   const byDay: Record<string, JikanAnime[]> = {};
   const unknown: JikanAnime[] = [];
 
-  for (const anime of allAnime) {
+  for (const anime of filteredAnime) {
     const day = getDayKey(anime);
     if (day) {
       if (!byDay[day]) byDay[day] = [];
@@ -157,55 +117,143 @@ export function SeasonCalendar({ allAnime }: { allAnime: JikanAnime[] }) {
     }
   }
 
-  console.log(
-    "Days with data:",
-    Object.keys(byDay).map((d) => `${d}: ${byDay[d].length}`),
-  );
-  console.log("Unknown count:", unknown.length);
-  console.log(
-    "Unknown shows:",
-    unknown.map((a) => ({
-      title: a.title_english || a.title,
-      broadcast: a.broadcast,
-      status: a.status,
-    })),
-  );
-  console.log(
-    "Sample broadcast:",
-    allAnime.slice(0, 5).map((a) => ({
-      title: a.title_english || a.title,
-      broadcast: a.broadcast,
-    })),
-  );
+  for (const day of DAYS) {
+    if (byDay[day]) {
+      byDay[day].sort((a, b) => {
+        const timeA = a.broadcast?.time || "99:99";
+        const timeB = b.broadcast?.time || "99:99";
+        return timeA.localeCompare(timeB);
+      });
+    }
+  }
+
+  function getVisibleCount(day: string, total: number) {
+    return expandedDays[day] || Math.min(INITIAL_SHOW, total);
+  }
+
+  function canExpand(day: string, total: number) {
+    return (expandedDays[day] || INITIAL_SHOW) < total;
+  }
+
+  function handleExpand(day: string, total: number) {
+    setExpandedDays((prev) => {
+      const current = prev[day] || INITIAL_SHOW;
+      return { ...prev, [day]: Math.min(current + EXPAND_BY, total) };
+    });
+  }
 
   return (
     <div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4">
-        {DAYS.map((day) => (
-          <div key={day}>
-            <h2 className="font-semibold text-sm mb-3 text-center">
-              {DAY_LABELS[day]}
-            </h2>
-            <div className="space-y-3">
-              {(byDay[day] || []).map((anime) => {
-                const tracked = trackedMap.get(anime.mal_id);
-                return (
-                  <AnimeCard
-                    key={anime.mal_id}
-                    anime={anime}
-                    isTracked={!!tracked}
-                    status={tracked?.status}
-                  />
-                );
-              })}
-              {(!byDay[day] || byDay[day].length === 0) && (
-                <p className="text-xs text-muted-foreground text-center py-4">
-                  Nothing scheduled
-                </p>
-              )}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-5">
+        {DAYS.map((day) => {
+          const dayAnime = byDay[day] || [];
+          const visibleCount = getVisibleCount(day, dayAnime.length);
+
+          return (
+            <div key={day}>
+              <h2 className="font-semibold text-sm mb-3 text-center">
+                {DAY_LABELS[day]}
+              </h2>
+              <div className="space-y-4">
+                {dayAnime.slice(0, INITIAL_SHOW).map((anime, index) => {
+                  const tracked = trackedMap.get(anime.mal_id);
+                  return (
+                    <motion.div
+                      key={anime.mal_id}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, delay: index * 0.05 }}
+                    >
+                      <SeasonAnimeCard
+                        anime={anime}
+                        isTracked={!!tracked}
+                        trackedStatus={tracked?.status}
+                        countdown={getCountdown(anime)}
+                      />
+                    </motion.div>
+                  );
+                })}
+
+                <AnimatePresence initial={false}>
+                  {visibleCount > INITIAL_SHOW && (
+                    <motion.div
+                      key={`${day}-expanded`}
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.4, ease: "easeInOut" }}
+                      className="overflow-hidden"
+                    >
+                      <div className="space-y-4 pt-4 px-0.5">
+                        {dayAnime
+                          .slice(INITIAL_SHOW, visibleCount)
+                          .map((anime, index) => {
+                            const tracked = trackedMap.get(anime.mal_id);
+                            return (
+                              <motion.div
+                                key={anime.mal_id}
+                                initial={{ opacity: 0, y: -8 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{
+                                  duration: 0.3,
+                                  delay: index * 0.05,
+                                }}
+                              >
+                                <SeasonAnimeCard
+                                  anime={anime}
+                                  isTracked={!!tracked}
+                                  trackedStatus={tracked?.status}
+                                  countdown={getCountdown(anime)}
+                                />
+                              </motion.div>
+                            );
+                          })}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {dayAnime.length === 0 && (
+                  <p className="text-xs text-muted-foreground text-center py-4">
+                    Nothing scheduled
+                  </p>
+                )}
+
+                {dayAnime.length > INITIAL_SHOW && (
+                  <div className="hidden lg:block">
+                    {canExpand(day, dayAnime.length) && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="w-full text-xs"
+                        onClick={() => handleExpand(day, dayAnime.length)}
+                      >
+                        <ChevronDown className="h-3 w-3 mr-1" />
+                        Show more ({dayAnime.length - visibleCount} left)
+                      </Button>
+                    )}
+                    {visibleCount > INITIAL_SHOW && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="w-full text-xs"
+                        onClick={() =>
+                          setExpandedDays((prev) => ({
+                            ...prev,
+                            [day]: INITIAL_SHOW,
+                          }))
+                        }
+                      >
+                        <ChevronUp className="h-3 w-3 mr-1" />
+                        Show less
+                      </Button>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {unknown.length > 0 && (
@@ -217,11 +265,12 @@ export function SeasonCalendar({ allAnime }: { allAnime: JikanAnime[] }) {
             {unknown.map((anime) => {
               const tracked = trackedMap.get(anime.mal_id);
               return (
-                <AnimeCard
+                <SeasonAnimeCard
                   key={anime.mal_id}
                   anime={anime}
                   isTracked={!!tracked}
-                  status={tracked?.status}
+                  trackedStatus={tracked?.status}
+                  countdown={getCountdown(anime)}
                 />
               );
             })}

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Plus, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,6 +22,7 @@ const STATUS_LABELS: Record<string, string> = {
 
 export function AddButton({ animeId }: { animeId: number }) {
   const { data: session } = useSession();
+  const queryClient = useQueryClient();
   const [loading, setLoading] = useState<string | null>(null);
   const [added, setAdded] = useState(false);
   const [existingStatus, setExistingStatus] = useState<string | null>(null);
@@ -36,13 +37,11 @@ export function AddButton({ animeId }: { animeId: number }) {
     enabled: !!session,
   });
 
-  // Check if this anime is already in the list
   if (entries && !added) {
     const existing = entries.find(
       (e: { animeId: number; status: string }) => e.animeId === animeId,
     );
     if (existing && !added) {
-      // Use setTimeout to avoid setState during render
       setTimeout(() => {
         setAdded(true);
         setExistingStatus(existing.status);
@@ -80,6 +79,7 @@ export function AddButton({ animeId }: { animeId: number }) {
       if (res.ok) {
         setAdded(true);
         setExistingStatus(status);
+        queryClient.invalidateQueries({ queryKey: ["user-entries"] });
       }
     } catch (error) {
       console.error(error);

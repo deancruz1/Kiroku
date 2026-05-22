@@ -21,6 +21,7 @@ model User {
   accounts       Account[]
   sessions       Session[]
   entries        AnimeEntry[]
+  lists          CustomList[]
 }
 
 model Account {
@@ -62,9 +63,9 @@ model VerificationToken {
 model AnimeEntry {
   id         String    @id @default(cuid())
   animeId    Int
-  status     String    @default("plan_to_watch") // plan_to_watch, watching, completed, dropped
+  status     String    @default("plan_to_watch")
   episodes   Int       @default(0)
-  rating     Int?      // 1-10
+  rating     Int?
   notes      String?
   startedAt  DateTime?
   finishedAt DateTime?
@@ -85,4 +86,21 @@ model Review {
   updatedAt DateTime   @updatedAt
   entryId   String     @unique
   entry     AnimeEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+}
+
+model CustomList {
+  id        String      @id @default(cuid())
+  name      String
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  userId    String
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  animes    ListAnime[]
+}
+
+model ListAnime {
+  id           String     @id @default(cuid())
+  customListId String
+  customList   CustomList @relation(fields: [customListId], references: [id], onDelete: Cascade)
+  animeId      Int
 }

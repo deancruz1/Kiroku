@@ -69,6 +69,23 @@ export async function getAnimeRelations(id: number) {
   return data;
 }
 
+export async function getAnimeCharacters(id: number) {
+  const { data } = await jikanApi.get(`/anime/${id}/characters`);
+  return data;
+}
+
+export async function getSeasonList() {
+  const { data } = await jikanApi.get("/seasons");
+  return data;
+}
+
+export async function getSeasonAnime(year: number, season: string, page = 1) {
+  const { data } = await jikanApi.get(`/seasons/${year}/${season}`, {
+    params: { page, limit: 25 },
+  });
+  return data;
+}
+
 export async function getAnimeReviews(id: number, page = 1) {
   const { data } = await jikanApi.get(`/anime/${id}/reviews`, {
     params: { page, limit: 3 },

@@ -8,12 +8,17 @@ import {
   getAnimeVideos,
   getAnimePictures,
   getAnimeRelations,
+  getAnimeCharacters,
 } from "@/lib/jikan";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent } from "@/components/ui/card";
 import { AddButton } from "./add-button";
-import type { JikanRecommendation, JikanReview } from "@/types/anime";
+import type {
+  JikanRecommendation,
+  JikanReview,
+  JikanCharacter,
+} from "@/types/anime";
 
 interface AnimePageProps {
   params: Promise<{ id: string }>;
@@ -31,7 +36,7 @@ export default async function AnimePage({ params }: AnimePageProps) {
     );
   }
 
-  let anime, recommendations, reviews, videos, pictures, relations;
+  let anime, recommendations, reviews, videos, pictures, relations, characters;
   try {
     const [
       animeRes,
@@ -40,6 +45,7 @@ export default async function AnimePage({ params }: AnimePageProps) {
       videosRes,
       picturesRes,
       relationsRes,
+      charactersRes,
     ] = await Promise.all([
       getAnimeById(malId),
       getAnimeRecommendations(malId),
@@ -47,6 +53,7 @@ export default async function AnimePage({ params }: AnimePageProps) {
       getAnimeVideos(malId),
       getAnimePictures(malId),
       getAnimeRelations(malId),
+      getAnimeCharacters(malId),
     ]);
     anime = animeRes.data;
     recommendations = recsRes.data?.slice(0, 6) || [];
@@ -54,6 +61,7 @@ export default async function AnimePage({ params }: AnimePageProps) {
     videos = videosRes.data?.promo || [];
     pictures = picturesRes.data?.slice(0, 8) || [];
     relations = relationsRes.data || [];
+    characters = charactersRes.data?.slice(0, 12) || [];
   } catch {
     return (
       <main className="min-h-screen bg-background flex items-center justify-center">
@@ -196,6 +204,46 @@ export default async function AnimePage({ params }: AnimePageProps) {
                     </CardContent>
                   </Card>
                 </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Characters */}
+        {characters.length > 0 && (
+          <div className="mt-12">
+            <h2 className="text-xl font-bold mb-4">
+              Characters & Voice Actors
+            </h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+              {characters.map((char: JikanCharacter) => (
+                <Card key={char.character.mal_id} className="overflow-hidden">
+                  <div className="relative w-full aspect-3/4">
+                    <Image
+                      src={
+                        char.character.images.webp.image_url ||
+                        char.character.images.jpg.image_url
+                      }
+                      alt={char.character.name}
+                      fill
+                      sizes="(max-width: 640px) 50vw, 16vw"
+                      className="object-cover"
+                    />
+                  </div>
+                  <CardContent className="p-2">
+                    <p className="text-xs font-medium line-clamp-1">
+                      {char.character.name}
+                    </p>
+                    <p className="text-[10px] text-muted-foreground">
+                      {char.role}
+                    </p>
+                    {char.voice_actors?.length > 0 && (
+                      <p className="text-[10px] text-muted-foreground mt-0.5 line-clamp-1">
+                        VA: {char.voice_actors[0].person.name}
+                      </p>
+                    )}
+                  </CardContent>
+                </Card>
               ))}
             </div>
           </div>

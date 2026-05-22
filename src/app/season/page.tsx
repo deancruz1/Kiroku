@@ -1,24 +1,48 @@
-import { getCurrentSeason } from "@/lib/jikan";
-import { SeasonCalendar } from "@/components/season-calendar";
+import { getCurrentSeason, getSeasonList, getSeasonAnime } from "@/lib/jikan";
+import { SeasonContent } from "@/components/season-content";
 import type { JikanAnime } from "@/types/anime";
 
-export default async function SeasonPage() {
+interface SeasonPageProps {
+  searchParams: Promise<{ year?: string; season?: string; page?: string }>;
+}
+
+export default async function SeasonPage({ searchParams }: SeasonPageProps) {
+  const { year, season, page } = await searchParams;
+  const activeYear = year ? parseInt(year, 10) : null;
+  const activeSeason = season || null;
+  const currentPage = parseInt(page || "1", 10);
+
   let allAnime: JikanAnime[] = [];
+  let availableSeasons: { year: number; seasons: string[] }[] = [];
+  let pagination = null;
   let error = null;
 
   try {
-    const page1 = await getCurrentSeason(1);
-    allAnime = [...page1.data];
+    const seasonListData = await getSeasonList();
+    availableSeasons = seasonListData.data || [];
 
-    if (page1.pagination.has_next_page) {
-      const page2 = await getCurrentSeason(2);
-      allAnime = [...allAnime, ...page2.data];
+    if (activeYear && activeSeason) {
+      const response = await getSeasonAnime(
+        activeYear,
+        activeSeason,
+        currentPage,
+      );
+      allAnime = response.data || [];
+      pagination = response.pagination;
+    } else {
+      const page1 = await getCurrentSeason(1);
+      allAnime = [...page1.data];
+
+      if (page1.pagination.has_next_page) {
+        const page2 = await getCurrentSeason(2);
+        allAnime = [...allAnime, ...page2.data];
+      }
+
+      allAnime = allAnime.filter(
+        (anime, index, self) =>
+          self.findIndex((a) => a.mal_id === anime.mal_id) === index,
+      );
     }
-
-    allAnime = allAnime.filter(
-      (anime, index, self) =>
-        self.findIndex((a) => a.mal_id === anime.mal_id) === index,
-    );
   } catch {
     error = "Failed to load seasonal anime. Please try again.";
   }
@@ -31,15 +55,18 @@ export default async function SeasonPage() {
     );
   }
 
+  const years = [...new Set(availableSeasons.map((s) => s.year))].sort(
+    (a, b) => b - a,
+  );
+
   return (
-    <main className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-2">Seasonal Anime</h1>
-        <p className="text-muted-foreground mb-8">
-          Current season anime schedule. Tracked shows are highlighted.
-        </p>
-        <SeasonCalendar allAnime={allAnime} />
-      </div>
-    </main>
+    <SeasonContent
+      allAnime={allAnime}
+      years={years}
+      activeYear={activeYear}
+      activeSeason={activeSeason}
+      currentPage={currentPage}
+      pagination={pagination}
+    />
   );
 }

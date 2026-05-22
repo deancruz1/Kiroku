@@ -3,11 +3,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { AnimeCard } from "@/components/anime-card";
 import { Sparkles } from "lucide-react";
+import type { JikanAnime } from "@/types/anime";
 
 interface Recommendation {
   mal_id: number;
@@ -53,7 +52,7 @@ export default function RecommendationsPage() {
 
   return (
     <main className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8 max-w-5xl">
+      <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-2">For You</h1>
         <p className="text-muted-foreground mb-6">
           {data?.basedOn && data.basedOn.length > 0
@@ -62,7 +61,7 @@ export default function RecommendationsPage() {
         </p>
 
         {isLoading && (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {[...Array(10)].map((_, i) => (
               <div
                 key={i}
@@ -83,45 +82,38 @@ export default function RecommendationsPage() {
         )}
 
         {data?.recommendations && data.recommendations.length > 0 && (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-            {data.recommendations.map((rec) => (
-              <Link key={rec.mal_id} href={`/anime/${rec.mal_id}`}>
-                <Card className="overflow-hidden hover:ring-2 hover:ring-primary transition-all h-full">
-                  <div className="relative w-full aspect-3/4">
-                    <Image
-                      src={rec.image}
-                      alt={rec.title}
-                      fill
-                      sizes="(max-width: 640px) 50vw, 20vw"
-                      className="object-cover"
-                    />
-                  </div>
-                  <CardContent className="p-3">
-                    <h3 className="font-medium text-sm line-clamp-2">
-                      {rec.title}
-                    </h3>
-                    <div className="flex items-center gap-2 mt-1">
-                      {rec.score && (
-                        <span className="text-xs text-yellow-500">
-                          ★ {rec.score.toFixed(1)}
-                        </span>
-                      )}
-                    </div>
-                    <div className="flex flex-wrap gap-1 mt-1">
-                      {rec.genres.slice(0, 2).map((g) => (
-                        <Badge
-                          key={g}
-                          variant="secondary"
-                          className="text-[10px] px-1 py-0"
-                        >
-                          {g}
-                        </Badge>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            {data.recommendations.map((rec) => {
+              const anime: JikanAnime = {
+                mal_id: rec.mal_id,
+                title: rec.title,
+                title_english: rec.title,
+                title_japanese: null,
+                images: {
+                  jpg: {
+                    image_url: rec.image,
+                    small_image_url: rec.image,
+                    large_image_url: rec.image,
+                  },
+                  webp: {
+                    image_url: rec.image,
+                    small_image_url: rec.image,
+                    large_image_url: rec.image,
+                  },
+                },
+                synopsis: null,
+                episodes: null,
+                status: "",
+                aired: { from: null, to: null },
+                score: rec.score,
+                genres: rec.genres.map((g) => ({ mal_id: 0, name: g })),
+                studios: [],
+                season: null,
+                year: null,
+                broadcast: { day: null, time: null },
+              };
+              return <AnimeCard key={rec.mal_id} anime={anime} />;
+            })}
           </div>
         )}
       </div>
