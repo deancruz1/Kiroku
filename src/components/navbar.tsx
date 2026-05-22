@@ -4,12 +4,22 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
-import { List, Calendar, BarChart3, Search, LogOut } from "lucide-react";
+import {
+  List,
+  Calendar,
+  BarChart3,
+  Search,
+  LogOut,
+  TrendingUp,
+  Sparkles,
+} from "lucide-react";
 
 const links = [
   { href: "/", label: "Search", icon: Search },
+  { href: "/top", label: "Top", icon: TrendingUp },
   { href: "/season", label: "Season", icon: Calendar },
   { href: "/list", label: "My List", icon: List },
+  { href: "/recommendations", label: "For You", icon: Sparkles },
   { href: "/stats", label: "Stats", icon: BarChart3 },
 ];
 

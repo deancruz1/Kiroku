@@ -71,3 +71,43 @@ export interface JikanScheduleResponse {
     };
   };
 }
+
+export interface JikanRecommendation {
+  entry: {
+    mal_id: number;
+    title: string;
+    images: {
+      jpg: {
+        image_url: string;
+        small_image_url: string;
+        large_image_url: string;
+      };
+      webp: {
+        image_url: string;
+        small_image_url: string;
+        large_image_url: string;
+      };
+    };
+  };
+  votes: number;
+}
+
+export interface JikanReview {
+  mal_id: number;
+  user: {
+    username: string;
+    images: { jpg: { image_url: string } };
+  };
+  score: number;
+  review: string;
+  date: string;
+  tags: string[];
+}
+
+export interface JikanTopResponse {
+  data: JikanAnime[];
+  pagination: {
+    last_visible_page: number;
+    has_next_page: boolean;
+  };
+}

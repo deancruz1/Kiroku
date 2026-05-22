@@ -38,3 +38,40 @@ export async function getSchedule(day: string, page = 1) {
   });
   return data;
 }
+
+export async function getTopAnime(
+  page = 1,
+  filter: "airing" | "upcoming" | "bypopularity" | "favorite" = "bypopularity",
+) {
+  const { data } = await jikanApi.get("/top/anime", {
+    params: { page, limit: 20, filter },
+  });
+  return data;
+}
+
+export async function getAnimeRecommendations(id: number) {
+  const { data } = await jikanApi.get(`/anime/${id}/recommendations`);
+  return data;
+}
+
+export async function getAnimeVideos(id: number) {
+  const { data } = await jikanApi.get(`/anime/${id}/videos`);
+  return data;
+}
+
+export async function getAnimePictures(id: number) {
+  const { data } = await jikanApi.get(`/anime/${id}/pictures`);
+  return data;
+}
+
+export async function getAnimeRelations(id: number) {
+  const { data } = await jikanApi.get(`/anime/${id}/relations`);
+  return data;
+}
+
+export async function getAnimeReviews(id: number, page = 1) {
+  const { data } = await jikanApi.get(`/anime/${id}/reviews`, {
+    params: { page, limit: 3 },
+  });
+  return data;
+}

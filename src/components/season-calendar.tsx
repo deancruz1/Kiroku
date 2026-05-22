@@ -95,7 +95,7 @@ function AnimeCard({
           isTracked ? "ring-2 ring-primary" : "hover:ring-primary"
         }`}
       >
-        <div className="relative w-full aspect-[3/4]">
+        <div className="relative w-full aspect-3/4">
           <Image
             src={anime.images.webp.large_image_url}
             alt={anime.title}
