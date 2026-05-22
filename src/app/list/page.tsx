@@ -18,6 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { JikanAnime } from "@/types/anime";
+import { Star } from "lucide-react";
 
 interface Entry {
   id: string;
@@ -54,6 +55,7 @@ function AnimeEntryCard({ entry }: { entry: Entry }) {
   const [status, setStatus] = useState(entry.status);
   const [episodes, setEpisodes] = useState(entry.episodes);
   const [saving, setSaving] = useState(false);
+  const [rating, setRating] = useState(entry.rating || 0);
 
   const { data: anime, isLoading } = useQuery({
     queryKey: ["anime", entry.animeId],
@@ -65,7 +67,7 @@ function AnimeEntryCard({ entry }: { entry: Entry }) {
     setSaving(true);
     await fetch(`/api/user/entries/${entry.id}`, {
       method: "PATCH",
-      body: JSON.stringify({ status, episodes }),
+      body: JSON.stringify({ status, episodes, rating: rating || null }),
       headers: { "Content-Type": "application/json" },
     });
     queryClient.invalidateQueries({ queryKey: ["user-entries"] });
@@ -81,7 +83,7 @@ function AnimeEntryCard({ entry }: { entry: Entry }) {
   return (
     <Card className="overflow-hidden hover:ring-2 hover:ring-primary/50 transition-all">
       <div className="flex">
-        <Link href={`/anime/${entry.animeId}`} className="flex-shrink-0">
+        <Link href={`/anime/${entry.animeId}`} className="shrink-0">
           {isLoading ? (
             <div className="w-20 h-28 bg-muted animate-pulse" />
           ) : anime ? (
@@ -143,6 +145,30 @@ function AnimeEntryCard({ entry }: { entry: Entry }) {
                   <Plus className="h-3 w-3" />
                 </Button>
                 <span className="text-xs text-muted-foreground ml-1">ep</span>
+              </div>
+              <div className="flex items-center gap-0.5">
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
+                  <button
+                    key={n}
+                    type="button"
+                    onClick={() => setRating(n === rating ? 0 : n)}
+                    className={`text-sm ${
+                      n <= rating
+                        ? "text-yellow-500"
+                        : "text-muted-foreground/30"
+                    } hover:text-yellow-500 transition-colors`}
+                  >
+                    <Star
+                      className="h-3.5 w-3.5"
+                      fill={n <= rating ? "currentColor" : "none"}
+                    />
+                  </button>
+                ))}
+                {rating > 0 && (
+                  <span className="text-xs text-yellow-500 ml-1">
+                    {rating}/10
+                  </span>
+                )}
               </div>
               <div className="flex gap-1">
                 <Button
