@@ -18,12 +18,13 @@ import {
   Cell,
   Legend,
 } from "recharts";
-import { Tv, Star, CheckCircle2, Hash } from "lucide-react";
+import { Tv, Star, CheckCircle2, Hash, Clock } from "lucide-react";
 
 interface Stats {
   totalEntries: number;
   statusCounts: Record<string, number>;
   totalEpisodesWatched: number;
+  totalWatchTimeHours: number;
   averageRating: number;
   ratedCount: number;
   completionRate: number;
@@ -116,7 +117,7 @@ export default function StatsPage() {
       <div className="container mx-auto px-4 py-8 max-w-5xl">
         <h1 className="text-3xl font-bold mb-8">Your Stats</h1>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">
@@ -138,6 +139,18 @@ export default function StatsPage() {
             </CardHeader>
             <CardContent>
               <p className="text-2xl font-bold">{stats.totalEpisodesWatched}</p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">
+                Watch Time
+              </CardTitle>
+              <Clock className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <p className="text-2xl font-bold">{stats.totalWatchTimeHours}h</p>
             </CardContent>
           </Card>
 

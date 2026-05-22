@@ -1,21 +1,23 @@
 import { searchAnime } from "@/lib/jikan";
 import { AnimeCard } from "@/components/anime-card";
 import { SearchBar } from "@/components/search-bar";
+import { Pagination } from "@/components/pagination";
 
 interface SearchPageProps {
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<{ q?: string; page?: string }>;
 }
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
-  const { q } = await searchParams;
+  const { q, page } = await searchParams;
   const query = q || "";
+  const currentPage = parseInt(page || "1", 10);
 
   let results = null;
   let error = null;
 
   if (query) {
     try {
-      results = await searchAnime(query);
+      results = await searchAnime(query, currentPage);
     } catch {
       error = "Failed to fetch results. Please try again.";
     }
@@ -43,16 +45,25 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         )}
 
         {results && results.data.length > 0 && (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-            {results.data
-              .filter(
-                (anime, index, self) =>
-                  self.findIndex((a) => a.mal_id === anime.mal_id) === index,
-              )
-              .map((anime) => (
-                <AnimeCard key={anime.mal_id} anime={anime} />
-              ))}
-          </div>
+          <>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+              {results.data
+                .filter(
+                  (anime, index, self) =>
+                    self.findIndex((a) => a.mal_id === anime.mal_id) === index,
+                )
+                .map((anime) => (
+                  <AnimeCard key={anime.mal_id} anime={anime} />
+                ))}
+            </div>
+
+            <Pagination
+              currentPage={currentPage}
+              lastPage={results.pagination.last_visible_page}
+              baseUrl={`/search?q=${encodeURIComponent(query)}`}
+              paramName="page"
+            />
+          </>
         )}
       </div>
     </main>

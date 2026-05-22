@@ -83,10 +83,13 @@ export async function GET() {
       ? Math.round((statusCounts.completed / totalEntries) * 100)
       : 0;
 
+  const totalWatchTimeHours = Math.round((totalEpisodesWatched * 24) / 60);
+
   return NextResponse.json({
     totalEntries,
     statusCounts,
     totalEpisodesWatched,
+    totalWatchTimeHours,
     averageRating: Math.round(averageRating * 10) / 10,
     ratedCount,
     completionRate,

@@ -3,6 +3,7 @@ import Image from "next/image";
 import { getTopAnime } from "@/lib/jikan";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Pagination } from "@/components/pagination";
 import type { JikanAnime } from "@/types/anime";
 
 const FILTERS = [
@@ -15,20 +16,23 @@ const FILTERS = [
 export default async function TopPage({
   searchParams,
 }: {
-  searchParams: Promise<{ filter?: string }>;
+  searchParams: Promise<{ filter?: string; page?: string }>;
 }) {
-  const { filter } = await searchParams;
+  const { filter, page } = await searchParams;
   const activeFilter = filter || "bypopularity";
+  const currentPage = parseInt(page || "1", 10);
 
   let anime: JikanAnime[] = [];
+  let pagination = null;
   let error = null;
 
   try {
     const response = await getTopAnime(
-      1,
+      currentPage,
       activeFilter as "airing" | "upcoming" | "bypopularity" | "favorite",
     );
     anime = response.data || [];
+    pagination = response.pagination;
   } catch {
     error = "Failed to load top anime.";
     anime = [];
@@ -91,6 +95,15 @@ export default async function TopPage({
             </Link>
           ))}
         </div>
+
+        {pagination && (
+          <Pagination
+            currentPage={currentPage}
+            lastPage={pagination.last_visible_page}
+            baseUrl={`/top?filter=${activeFilter}`}
+            paramName="page"
+          />
+        )}
       </div>
     </main>
   );
