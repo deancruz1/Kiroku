@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -18,34 +19,50 @@ const ERROR_MESSAGES: Record<string, { title: string; message: string }> = {
   },
 };
 
-export default function AuthErrorPage() {
+function ErrorContent() {
   const searchParams = useSearchParams();
   const error = searchParams.get("error") || "default";
   const { title, message } = ERROR_MESSAGES[error] || ERROR_MESSAGES.default;
 
   return (
-    <main className="min-h-screen bg-background flex items-center justify-center">
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <div className="flex items-center justify-center gap-2 mb-2">
-            <AlertTriangle className="h-8 w-8 text-yellow-500" />
-          </div>
-          <CardTitle className="text-center text-xl">{title}</CardTitle>
-        </CardHeader>
-        <CardContent className="text-center space-y-4">
-          <p className="text-sm text-muted-foreground">{message}</p>
-          <div className="flex gap-2 justify-center">
-            <Link href="/profile">
-              <Button variant="outline" size="sm">
-                Back to Profile
-              </Button>
-            </Link>
-            <Link href="/">
-              <Button size="sm">Go Home</Button>
-            </Link>
-          </div>
-        </CardContent>
-      </Card>
+    <Card className="w-full max-w-md">
+      <CardHeader>
+        <div className="flex items-center justify-center gap-2 mb-2">
+          <AlertTriangle className="h-8 w-8 text-yellow-500" />
+        </div>
+        <CardTitle className="text-center text-xl">{title}</CardTitle>
+      </CardHeader>
+      <CardContent className="text-center space-y-4">
+        <p className="text-sm text-muted-foreground">{message}</p>
+        <div className="flex gap-2 justify-center">
+          <Link href="/profile">
+            <Button variant="outline" size="sm">
+              Back to Profile
+            </Button>
+          </Link>
+          <Link href="/">
+            <Button size="sm">Go Home</Button>
+          </Link>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+export default function AuthErrorPage() {
+  return (
+    <main className="min-h-screen bg-background flex items-center justify-center px-4">
+      <Suspense
+        fallback={
+          <Card className="w-full max-w-md">
+            <CardContent className="p-6 text-center">
+              <p className="text-muted-foreground text-sm">Loading...</p>
+            </CardContent>
+          </Card>
+        }
+      >
+        <ErrorContent />
+      </Suspense>
     </main>
   );
 }
