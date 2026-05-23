@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
@@ -20,7 +21,7 @@ interface Profile {
   hasDiscord: boolean;
 }
 
-export default function ProfilePage() {
+function ProfileContent() {
   const { data: session } = useSession();
   const queryClient = useQueryClient();
   const searchParams = useSearchParams();
@@ -101,7 +102,6 @@ export default function ProfilePage() {
         )}
 
         <div className="space-y-4 sm:space-y-6">
-          {/* Username */}
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="text-sm sm:text-base flex items-center gap-2">
@@ -128,7 +128,6 @@ export default function ProfilePage() {
             </CardContent>
           </Card>
 
-          {/* Email */}
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="text-sm sm:text-base flex items-center gap-2">
@@ -145,7 +144,6 @@ export default function ProfilePage() {
             </CardContent>
           </Card>
 
-          {/* Password */}
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="text-sm sm:text-base flex items-center gap-2">
@@ -192,7 +190,6 @@ export default function ProfilePage() {
             </CardContent>
           </Card>
 
-          {/* Discord */}
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="text-sm sm:text-base flex items-center gap-2">
@@ -262,7 +259,6 @@ export default function ProfilePage() {
             </CardContent>
           </Card>
 
-          {/* Danger Zone */}
           <Card className="border-destructive/20">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm sm:text-base flex items-center gap-2 text-destructive">
@@ -285,6 +281,22 @@ export default function ProfilePage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function ProfilePage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="min-h-screen bg-background flex items-center justify-center px-4">
+          <p className="text-muted-foreground text-sm sm:text-base">
+            Loading...
+          </p>
+        </main>
+      }
+    >
+      <ProfileContent />
+    </Suspense>
   );
 }
 
