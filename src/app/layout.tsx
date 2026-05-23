@@ -34,7 +34,7 @@ export const metadata: Metadata = {
       "Track your anime, discover seasonal shows, and get personalized recommendations.",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "/og-image.webp",
         width: 1200,
         height: 630,
         alt: "Kiroku - Anime Watch Tracker",
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     title: "Kiroku | Anime Watch Tracker",
     description:
       "Track your anime, discover seasonal shows, and get personalized recommendations.",
-    images: ["/og-image.jpg"],
+    images: ["/og-image.webp"],
   },
   robots: {
     index: true,
