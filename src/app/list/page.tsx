@@ -93,15 +93,15 @@ function AnimeEntryCard({ entry }: { entry: Entry }) {
 
   return (
     <Card className="overflow-hidden hover:ring-2 hover:ring-primary/50 transition-all">
-      <div className="flex p-3 gap-4">
+      <div className="flex p-2.5 sm:p-3 gap-3 sm:gap-4">
         <Link
           href={`/anime/${entry.animeId}`}
           className="shrink-0 cursor-pointer"
         >
           {isLoading ? (
-            <div className="w-24 h-24 bg-muted animate-pulse rounded-lg" />
+            <div className="w-20 sm:w-24 h-20 sm:h-24 bg-muted animate-pulse rounded-lg" />
           ) : anime ? (
-            <div className="relative w-24 h-24 rounded-lg overflow-hidden">
+            <div className="relative w-20 sm:w-24 h-20 sm:h-24 rounded-lg overflow-hidden">
               <Image
                 src={anime.images.webp.large_image_url}
                 alt={anime.title}
@@ -111,7 +111,7 @@ function AnimeEntryCard({ entry }: { entry: Entry }) {
               />
             </div>
           ) : (
-            <div className="w-24 h-24 bg-muted flex items-center justify-center rounded-lg">
+            <div className="w-20 sm:w-24 h-20 sm:h-24 bg-muted flex items-center justify-center rounded-lg">
               <span className="text-xs text-muted-foreground">N/A</span>
             </div>
           )}
@@ -119,7 +119,7 @@ function AnimeEntryCard({ entry }: { entry: Entry }) {
 
         <div className="flex-1 min-w-0">
           <Link href={`/anime/${entry.animeId}`} className="cursor-pointer">
-            <h3 className="font-semibold text-base truncate hover:underline">
+            <h3 className="font-semibold text-sm sm:text-base truncate hover:underline">
               {anime?.title_english ||
                 anime?.title ||
                 `Anime #${entry.animeId}`}
@@ -129,7 +129,7 @@ function AnimeEntryCard({ entry }: { entry: Entry }) {
           {editing ? (
             <div className="mt-2 space-y-2">
               <Select value={status} onValueChange={setStatus}>
-                <SelectTrigger className="h-8 text-xs">
+                <SelectTrigger className="h-7 sm:h-8 text-xs">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -144,16 +144,18 @@ function AnimeEntryCard({ entry }: { entry: Entry }) {
                 <Button
                   size="icon"
                   variant="outline"
-                  className="h-7 w-7"
+                  className="h-6 sm:h-7 w-6 sm:w-7"
                   onClick={() => setEpisodes(Math.max(0, episodes - 1))}
                 >
                   <Minus className="h-3 w-3" />
                 </Button>
-                <span className="text-sm w-8 text-center">{episodes}</span>
+                <span className="text-xs sm:text-sm w-8 text-center">
+                  {episodes}
+                </span>
                 <Button
                   size="icon"
                   variant="outline"
-                  className="h-7 w-7"
+                  className="h-6 sm:h-7 w-6 sm:w-7"
                   onClick={() => {
                     if (totalEpisodes === 0 || episodes < totalEpisodes) {
                       setEpisodes(episodes + 1);
@@ -163,30 +165,30 @@ function AnimeEntryCard({ entry }: { entry: Entry }) {
                 >
                   <Plus className="h-3 w-3" />
                 </Button>
-                <span className="text-sm text-muted-foreground ml-1">
+                <span className="text-xs sm:text-sm text-muted-foreground ml-1">
                   / {totalEpisodes > 0 ? totalEpisodes : "?"} ep
                 </span>
               </div>
-              <div className="flex items-center gap-0.5">
+              <div className="flex items-center gap-0.5 flex-wrap">
                 {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
                   <button
                     key={n}
                     type="button"
                     onClick={() => setRating(n === rating ? 0 : n)}
-                    className={`text-sm cursor-pointer ${
+                    className={`text-xs sm:text-sm cursor-pointer ${
                       n <= rating
                         ? "text-yellow-500"
                         : "text-muted-foreground/30"
                     } hover:text-yellow-500 transition-colors`}
                   >
                     <Star
-                      className="h-3.5 w-3.5"
+                      className="h-3 sm:h-3.5 w-3 sm:w-3.5"
                       fill={n <= rating ? "currentColor" : "none"}
                     />
                   </button>
                 ))}
                 {rating > 0 && (
-                  <span className="text-sm text-yellow-500 ml-1">
+                  <span className="text-xs sm:text-sm text-yellow-500 ml-1">
                     {rating}/10
                   </span>
                 )}
@@ -194,7 +196,7 @@ function AnimeEntryCard({ entry }: { entry: Entry }) {
               <div className="flex gap-1">
                 <Button
                   size="sm"
-                  className="h-7 text-xs"
+                  className="h-6 sm:h-7 text-xs"
                   onClick={handleSave}
                   disabled={saving}
                 >
@@ -204,7 +206,7 @@ function AnimeEntryCard({ entry }: { entry: Entry }) {
                 <Button
                   size="sm"
                   variant="ghost"
-                  className="h-7 text-xs"
+                  className="h-6 sm:h-7 text-xs"
                   onClick={() => setEditing(false)}
                 >
                   <X className="h-3 w-3 mr-1" />
@@ -213,17 +215,17 @@ function AnimeEntryCard({ entry }: { entry: Entry }) {
               </div>
             </div>
           ) : (
-            <div className="flex items-center gap-2 mt-1.5">
-              <Badge variant="secondary" className="text-xs">
+            <div className="flex items-center gap-1.5 sm:gap-2 mt-1 sm:mt-1.5 flex-wrap">
+              <Badge variant="secondary" className="text-[10px] sm:text-xs">
                 {STATUS_LABELS[entry.status]}
               </Badge>
-              <span className="text-sm text-muted-foreground">
+              <span className="text-xs sm:text-sm text-muted-foreground">
                 {entry.episodes > 0 || totalEpisodes > 0
                   ? `${entry.episodes} / ${totalEpisodes > 0 ? totalEpisodes : "?"} ep`
                   : ""}
               </span>
               {entry.rating && (
-                <span className="text-sm text-yellow-500">
+                <span className="text-xs sm:text-sm text-yellow-500">
                   ★ {entry.rating}
                 </span>
               )}
@@ -231,24 +233,24 @@ function AnimeEntryCard({ entry }: { entry: Entry }) {
                 <Button
                   size="icon"
                   variant="ghost"
-                  className="h-8 w-8 cursor-pointer"
+                  className="h-7 sm:h-8 w-7 sm:w-8 cursor-pointer"
                   onClick={(e) => {
                     e.preventDefault();
                     setEditing(true);
                   }}
                 >
-                  <Edit3 className="h-4 w-4" />
+                  <Edit3 className="h-3.5 sm:h-4 w-3.5 sm:w-4" />
                 </Button>
                 <Button
                   size="icon"
                   variant="ghost"
-                  className="h-8 w-8 text-destructive cursor-pointer"
+                  className="h-7 sm:h-8 w-7 sm:w-8 text-destructive cursor-pointer"
                   onClick={(e) => {
                     e.preventDefault();
                     handleDelete();
                   }}
                 >
-                  <Trash2 className="h-4 w-4" />
+                  <Trash2 className="h-3.5 sm:h-4 w-3.5 sm:w-4" />
                 </Button>
               </div>
             </div>
@@ -279,9 +281,9 @@ export default function WatchListPage() {
 
   if (!session) {
     return (
-      <main className="min-h-screen bg-background flex items-center justify-center">
+      <main className="min-h-screen bg-background flex items-center justify-center px-4">
         <div className="text-center space-y-4">
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground text-sm sm:text-base">
             Sign in to view your watch list.
           </p>
           <Link href="/auth/signin">
@@ -299,22 +301,33 @@ export default function WatchListPage() {
 
   return (
     <main className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8 max-w-3xl">
-        <h1 className="text-3xl font-bold mb-6">My Watch List</h1>
+      <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-8 max-w-3xl">
+        <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-center sm:text-left">
+          My Watch List
+        </h1>
 
         {isLoading && (
           <div className="space-y-3">
             {[...Array(4)].map((_, i) => (
-              <div key={i} className="h-28 bg-muted animate-pulse rounded-lg" />
+              <div
+                key={i}
+                className="h-24 sm:h-28 bg-muted animate-pulse rounded-lg"
+              />
             ))}
           </div>
         )}
 
-        {error && <p className="text-destructive">Failed to load entries.</p>}
+        {error && (
+          <p className="text-destructive text-sm sm:text-base">
+            Failed to load entries.
+          </p>
+        )}
 
         {entries && entries.length === 0 && (
-          <div className="text-center py-16">
-            <p className="text-muted-foreground mb-4">Your list is empty.</p>
+          <div className="text-center py-12 sm:py-16">
+            <p className="text-muted-foreground text-sm sm:text-base mb-4">
+              Your list is empty.
+            </p>
             <Link href="/search">
               <Button>Search Anime</Button>
             </Link>
@@ -323,10 +336,10 @@ export default function WatchListPage() {
 
         {entries && entries.length > 0 && (
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="mb-4 w-full h-10">
+            <TabsList className="mb-4 w-full h-9 sm:h-10">
               <TabsTrigger
                 value="all"
-                className="flex-1 text-sm cursor-pointer"
+                className="flex-1 text-xs sm:text-sm cursor-pointer"
               >
                 All
               </TabsTrigger>
@@ -334,14 +347,14 @@ export default function WatchListPage() {
                 <TabsTrigger
                   key={status}
                   value={status}
-                  className="flex-1 text-sm cursor-pointer"
+                  className="flex-1 text-xs sm:text-sm cursor-pointer"
                 >
                   {STATUS_LABELS[status]}
                 </TabsTrigger>
               ))}
             </TabsList>
 
-            <div className="space-y-3">
+            <div className="space-y-2.5 sm:space-y-3">
               <AnimatePresence mode="wait">
                 {filteredEntries.length > 0 ? (
                   filteredEntries.map((entry, index) => (
@@ -366,7 +379,7 @@ export default function WatchListPage() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -12 }}
                     transition={{ duration: 0.25, ease: "easeOut" }}
-                    className="text-center text-muted-foreground py-8"
+                    className="text-center text-muted-foreground py-8 text-sm sm:text-base"
                   >
                     No anime in this category.
                   </motion.p>

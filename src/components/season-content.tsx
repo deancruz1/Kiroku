@@ -137,19 +137,21 @@ export function SeasonContent({
 
   return (
     <main className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-2">Seasonal Anime</h1>
-        <p className="text-muted-foreground mb-6">
+      <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-8">
+        <h1 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2 text-center sm:text-left">
+          Seasonal Anime
+        </h1>
+        <p className="text-muted-foreground text-sm sm:text-base mb-4 sm:mb-6 text-center sm:text-left">
           {showCalendar
             ? "Current season anime schedule. Tracked shows are highlighted."
             : `${SEASON_LABELS[defaultSeason]} ${defaultYear}`}
         </p>
 
-        <div className="flex items-center gap-3 mb-4 flex-wrap">
+        <div className="flex items-center gap-2 sm:gap-3 mb-4 flex-wrap">
           <select
             value={defaultYear}
             onChange={(e) => handleChange(e.target.value, defaultSeason)}
-            className="px-3 py-2 rounded-md bg-secondary text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+            className="px-2 sm:px-3 py-2 rounded-md bg-secondary text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary"
           >
             {years.map((y) => (
               <option key={y} value={y}>
@@ -163,7 +165,7 @@ export function SeasonContent({
             onChange={(e) =>
               handleChange(defaultYear.toString(), e.target.value)
             }
-            className="px-3 py-2 rounded-md bg-secondary text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+            className="px-2 sm:px-3 py-2 rounded-md bg-secondary text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary"
           >
             {SEASONS.map((s) => (
               <option key={s} value={s}>
@@ -172,27 +174,27 @@ export function SeasonContent({
             ))}
           </select>
 
-          <div className="relative flex-1 min-w-50 max-w-xs">
+          <div className="relative flex-1 min-w-[150px] max-w-xs">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search anime..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-8 h-9 text-sm"
+              className="pl-8 h-9 text-xs sm:text-sm"
             />
           </div>
         </div>
 
         <div className="space-y-3 mb-6">
-          <div className="flex items-start justify-between gap-4">
-            <div className="flex flex-wrap gap-1.5 flex-1">
+          <div className="flex items-start justify-between gap-3 sm:gap-4">
+            <div className="flex flex-wrap gap-1 sm:gap-1.5 flex-1">
               {allGenres.map((genre) => (
                 <Badge
                   key={genre}
                   variant={
                     selectedGenres.includes(genre) ? "default" : "outline"
                   }
-                  className="cursor-pointer text-xs"
+                  className="cursor-pointer text-[10px] sm:text-xs"
                   onClick={() => toggleGenre(genre)}
                 >
                   {genre}
@@ -202,7 +204,7 @@ export function SeasonContent({
 
             <button
               onClick={() => setShowTrackedOnly(!showTrackedOnly)}
-              className={`shrink-0 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+              className={`shrink-0 px-2 sm:px-3 py-1.5 rounded-md text-[10px] sm:text-xs font-medium transition-colors ${
                 showTrackedOnly
                   ? "bg-primary text-primary-foreground"
                   : "bg-secondary hover:bg-secondary/80"
@@ -240,7 +242,7 @@ export function SeasonContent({
               showTrackedOnly={showTrackedOnly}
             />
             {pagination && !hasFilters && (
-              <div className="mt-8">
+              <div className="mt-6 sm:mt-8">
                 <Pagination
                   currentPage={currentPage}
                   lastPage={pagination.last_visible_page}

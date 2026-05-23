@@ -38,9 +38,9 @@ export default function RecommendationsPage() {
 
   if (!session) {
     return (
-      <main className="min-h-screen bg-background flex items-center justify-center">
+      <main className="min-h-screen bg-background flex items-center justify-center px-4">
         <div className="text-center space-y-4">
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground text-sm sm:text-base">
             Sign in to get recommendations.
           </p>
           <Link href="/auth/signin">
@@ -53,16 +53,18 @@ export default function RecommendationsPage() {
 
   return (
     <main className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-2">For You</h1>
-        <p className="text-muted-foreground mb-6">
+      <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-8">
+        <h1 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2 text-center sm:text-left">
+          For You
+        </h1>
+        <p className="text-muted-foreground text-sm sm:text-base mb-4 sm:mb-6 text-center sm:text-left">
           {data?.basedOn && data.basedOn.length > 0
             ? `Based on your interest in: ${data.basedOn.join(", ")}`
             : "Recommendations based on your watch history"}
         </p>
 
         {isLoading && (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
             {[...Array(10)].map((_, i) => (
               <div
                 key={i}
@@ -73,17 +75,21 @@ export default function RecommendationsPage() {
         )}
 
         {data?.message && !data.recommendations.length && (
-          <div className="text-center py-16">
-            <Sparkles className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <p className="text-muted-foreground">{data.message}</p>
+          <div className="text-center py-12 sm:py-16">
+            <Sparkles className="h-10 sm:h-12 w-10 sm:w-12 text-muted-foreground mx-auto mb-4" />
+            <p className="text-muted-foreground text-sm sm:text-base">
+              {data.message}
+            </p>
             <Link href="/search" className="mt-4 inline-block">
-              <Button variant="outline">Discover Anime</Button>
+              <Button variant="outline" size="sm">
+                Discover Anime
+              </Button>
             </Link>
           </div>
         )}
 
         {data?.recommendations && data.recommendations.length > 0 && (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
             {data.recommendations.map((rec) => {
               const anime: JikanAnime = {
                 mal_id: rec.mal_id,

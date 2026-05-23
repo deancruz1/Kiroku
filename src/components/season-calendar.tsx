@@ -144,7 +144,8 @@ export function SeasonCalendar({
 
   return (
     <div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-5">
+      {/* Desktop: 7-column grid */}
+      <div className="hidden lg:grid grid-cols-7 gap-5">
         {DAYS.map((day) => {
           const dayAnime = byDay[day] || [];
           const visibleCount = getVisibleCount(day, dayAnime.length);
@@ -220,7 +221,7 @@ export function SeasonCalendar({
                 )}
 
                 {dayAnime.length > INITIAL_SHOW && (
-                  <div className="hidden lg:block">
+                  <div>
                     {canExpand(day, dayAnime.length) && (
                       <Button
                         variant="ghost"
@@ -256,12 +257,44 @@ export function SeasonCalendar({
         })}
       </div>
 
+      {/* Mobile/Tablet: Horizontal scroll rows per day */}
+      <div className="lg:hidden space-y-6">
+        {DAYS.map((day) => {
+          const dayAnime = byDay[day] || [];
+          if (dayAnime.length === 0) return null;
+
+          return (
+            <div key={day}>
+              <h2 className="font-semibold text-sm mb-2">{DAY_LABELS[day]}</h2>
+              <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none snap-x">
+                {dayAnime.map((anime) => {
+                  const tracked = trackedMap.get(anime.mal_id);
+                  return (
+                    <div
+                      key={anime.mal_id}
+                      className="w-36 shrink-0 snap-start"
+                    >
+                      <SeasonAnimeCard
+                        anime={anime}
+                        isTracked={!!tracked}
+                        trackedStatus={tracked?.status}
+                        countdown={getCountdown(anime)}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
       {unknown.length > 0 && (
         <div className="mt-8">
           <h2 className="font-semibold text-sm mb-3">
             Unknown Schedule ({unknown.length})
           </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-7 gap-3 sm:gap-4">
             {unknown.map((anime) => {
               const tracked = trackedMap.get(anime.mal_id);
               return (

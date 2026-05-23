@@ -57,11 +57,11 @@ export function Pagination({
   }
 
   return (
-    <div className="flex justify-center items-center gap-2 mt-8">
+    <div className="flex justify-center items-center gap-1 sm:gap-2 mt-6 sm:mt-8 flex-wrap">
       {currentPage > 2 && (
         <a
           href={buildUrl(1)}
-          className="px-3 py-2 rounded-md bg-secondary text-sm hover:bg-secondary/80 transition-colors"
+          className="px-2 sm:px-3 py-1.5 sm:py-2 rounded-md bg-secondary text-xs sm:text-sm hover:bg-secondary/80 transition-colors"
         >
           First
         </a>
@@ -69,7 +69,7 @@ export function Pagination({
       {currentPage > 1 && (
         <a
           href={buildUrl(currentPage - 1)}
-          className="px-3 py-2 rounded-md bg-secondary text-sm hover:bg-secondary/80 transition-colors"
+          className="px-2 sm:px-3 py-1.5 sm:py-2 rounded-md bg-secondary text-xs sm:text-sm hover:bg-secondary/80 transition-colors"
         >
           Prev
         </a>
@@ -81,17 +81,23 @@ export function Pagination({
           value={jumpPage}
           onChange={handleChange}
           placeholder={String(currentPage)}
-          className="w-16 px-2 py-2 rounded-md bg-secondary text-sm text-center focus:outline-none focus:ring-2 focus:ring-primary"
+          className="w-12 sm:w-16 px-1.5 sm:px-2 py-1.5 sm:py-2 rounded-md bg-secondary text-xs sm:text-sm text-center focus:outline-none focus:ring-2 focus:ring-primary"
         />
-        <span className="text-sm text-muted-foreground">/ {lastPage}</span>
+        <span className="text-xs sm:text-sm text-muted-foreground">
+          / {lastPage}
+        </span>
       </form>
 
-      {error && <span className="text-xs text-destructive">{error}</span>}
+      {error && (
+        <span className="text-[10px] sm:text-xs text-destructive w-full text-center">
+          {error}
+        </span>
+      )}
 
       {currentPage < lastPage && (
         <a
           href={buildUrl(currentPage + 1)}
-          className="px-3 py-2 rounded-md bg-secondary text-sm hover:bg-secondary/80 transition-colors"
+          className="px-2 sm:px-3 py-1.5 sm:py-2 rounded-md bg-secondary text-xs sm:text-sm hover:bg-secondary/80 transition-colors"
         >
           Next
         </a>
@@ -99,7 +105,7 @@ export function Pagination({
       {currentPage < lastPage - 1 && (
         <a
           href={buildUrl(lastPage)}
-          className="px-3 py-2 rounded-md bg-secondary text-sm hover:bg-secondary/80 transition-colors"
+          className="px-2 sm:px-3 py-1.5 sm:py-2 rounded-md bg-secondary text-xs sm:text-sm hover:bg-secondary/80 transition-colors"
         >
           Last
         </a>

@@ -15,7 +15,6 @@ export default function SignInPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Register state
   const [regUsername, setRegUsername] = useState("");
   const [regEmail, setRegEmail] = useState("");
   const [regPassword, setRegPassword] = useState("");
@@ -38,7 +37,7 @@ export default function SignInPage() {
       setError("Invalid email or password.");
       setLoading(false);
     } else {
-      router.push("/list");
+      router.push("/");
       router.refresh();
     }
   }
@@ -129,7 +128,7 @@ export default function SignInPage() {
               <Button
                 variant="outline"
                 className="w-full"
-                onClick={() => signIn("discord")}
+                onClick={() => signIn("discord", { callbackUrl: "/" })}
               >
                 Sign in with Discord
               </Button>

@@ -72,9 +72,11 @@ export default function ListsPage() {
 
   if (!session) {
     return (
-      <main className="min-h-screen bg-background flex items-center justify-center">
+      <main className="min-h-screen bg-background flex items-center justify-center px-4">
         <div className="text-center space-y-4">
-          <p className="text-muted-foreground">Sign in to view your lists.</p>
+          <p className="text-muted-foreground text-sm sm:text-base">
+            Sign in to view your lists.
+          </p>
           <Link href="/auth/signin">
             <Button>Sign in</Button>
           </Link>
@@ -85,25 +87,32 @@ export default function ListsPage() {
 
   return (
     <main className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-6">My Collections</h1>
+      <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-8">
+        <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-center sm:text-left">
+          My Collections
+        </h1>
 
-        <div className="flex items-stretch gap-2 mb-8">
+        <div className="flex items-stretch gap-2 mb-6 sm:mb-8 justify-center sm:justify-start">
           <Input
             placeholder="New collection name..."
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleCreate()}
-            className="max-w-xs text-sm"
+            className="max-w-xs text-xs sm:text-sm"
           />
-          <Button onClick={handleCreate} disabled={creating || !newName.trim()}>
+          <Button
+            onClick={handleCreate}
+            disabled={creating || !newName.trim()}
+            size="sm"
+            className="text-xs sm:text-sm"
+          >
             <Plus className="h-4 w-4 mr-1" />
             Create
           </Button>
         </div>
 
         {isLoading && (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
             {[...Array(4)].map((_, i) => (
               <div
                 key={i}
@@ -114,23 +123,23 @@ export default function ListsPage() {
         )}
 
         {lists && lists.length === 0 && (
-          <div className="text-center py-16">
-            <FolderOpen className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <p className="text-muted-foreground">
+          <div className="text-center py-12 sm:py-16">
+            <FolderOpen className="h-10 sm:h-12 w-10 sm:w-12 text-muted-foreground mx-auto mb-4" />
+            <p className="text-muted-foreground text-sm sm:text-base">
               No collections yet. Create one to get started.
             </p>
           </div>
         )}
 
         {lists && lists.length > 0 && (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
             {lists.map((list) => (
               <div
                 key={list.id}
                 className="rounded-lg overflow-hidden bg-card border transition-all hover:ring-2 hover:ring-primary h-full"
               >
                 <Link href={`/lists/${list.id}`}>
-                  <div className="relative w-full aspect-3/4 bg-muted">
+                  <div className="relative w-full aspect-3/4 bg-gradient-to-br from-muted/80 to-muted overflow-hidden">
                     {list.animes.length === 1 ? (
                       <AnimeCover animeId={list.animes[0].animeId} single />
                     ) : list.animes.length > 0 ? (
@@ -146,7 +155,7 @@ export default function ListsPage() {
                     )}
                   </div>
                 </Link>
-                <div className="p-3 border-t">
+                <div className="p-2 sm:p-3 border-t">
                   {editingId === list.id ? (
                     <div className="flex gap-1">
                       <Input
@@ -178,7 +187,7 @@ export default function ListsPage() {
                     <div className="flex items-center justify-between">
                       <Link
                         href={`/lists/${list.id}`}
-                        className="font-medium text-sm truncate flex-1 hover:underline"
+                        className="font-medium text-xs sm:text-sm truncate flex-1 hover:underline"
                       >
                         {list.name}
                       </Link>
@@ -205,7 +214,7 @@ export default function ListsPage() {
                       </div>
                     </div>
                   )}
-                  <p className="text-xs text-muted-foreground mt-1">
+                  <p className="text-[10px] sm:text-xs text-muted-foreground mt-1">
                     {list.animes.length} anime
                   </p>
                 </div>
@@ -234,7 +243,7 @@ function AnimeCover({
     staleTime: Infinity,
   });
 
-  if (!data) return <div className="bg-muted w-full h-full" />;
+  if (!data) return <div className="bg-muted/50 w-full h-full" />;
 
   return (
     <Image

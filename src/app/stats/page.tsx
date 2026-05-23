@@ -174,17 +174,19 @@ export default function StatsPage() {
 
   if (sessionStatus === "loading" || isLoading) {
     return (
-      <main className="min-h-screen bg-background flex items-center justify-center">
-        <p className="text-muted-foreground">Crunching your numbers...</p>
+      <main className="min-h-screen bg-background flex items-center justify-center px-4">
+        <p className="text-muted-foreground text-sm sm:text-base">
+          Crunching your numbers...
+        </p>
       </main>
     );
   }
 
   if (!session) {
     return (
-      <main className="min-h-screen bg-background flex items-center justify-center">
+      <main className="min-h-screen bg-background flex items-center justify-center px-4">
         <div className="text-center space-y-4">
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground text-sm sm:text-base">
             Sign in to see your stats. We promise it is worth it.
           </p>
           <Link href="/auth/signin">
@@ -197,10 +199,10 @@ export default function StatsPage() {
 
   if (!stats || stats.totalEntries === 0) {
     return (
-      <main className="min-h-screen bg-background flex items-center justify-center">
+      <main className="min-h-screen bg-background flex items-center justify-center px-4">
         <div className="text-center space-y-4">
-          <Tv className="h-16 w-16 text-muted-foreground mx-auto" />
-          <p className="text-lg text-muted-foreground">
+          <Tv className="h-12 sm:h-16 w-12 sm:w-16 text-muted-foreground mx-auto" />
+          <p className="text-base sm:text-lg text-muted-foreground">
             Your stats page is empty. Like a fresh notebook. Or an unwatched
             Crunchyroll queue.
           </p>
@@ -222,15 +224,17 @@ export default function StatsPage() {
 
   return (
     <main className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <h1 className="text-3xl font-bold mb-2">By the Numbers</h1>
-        <p className="text-muted-foreground mb-8">
+      <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-8 max-w-4xl">
+        <h1 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2 text-center sm:text-left">
+          By the Numbers
+        </h1>
+        <p className="text-muted-foreground text-sm sm:text-base mb-6 sm:mb-8 text-center sm:text-left">
           The numbers do not lie. But we will make them fun anyway.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-3 sm:gap-4">
           {/* Hero */}
-          <Card className="col-span-4 relative overflow-hidden">
+          <Card className="col-span-1 md:col-span-4 relative overflow-hidden">
             {stats.heroImage && (
               <Image
                 src={stats.heroImage}
@@ -240,15 +244,17 @@ export default function StatsPage() {
               />
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/30" />
-            <CardContent className="p-6 relative z-10">
+            <CardContent className="p-4 sm:p-6 relative z-10">
               <div className="flex items-center gap-2 mb-2">
-                <Hash className="h-5 w-5 text-amber-400" />
-                <p className="text-sm font-medium text-white/80">Total Anime</p>
+                <Hash className="h-4 sm:h-5 w-4 sm:w-5 text-amber-400" />
+                <p className="text-xs sm:text-sm font-medium text-white/80">
+                  Total Anime
+                </p>
               </div>
-              <p className="text-5xl font-bold mb-2 text-white">
+              <p className="text-3xl sm:text-5xl font-bold mb-2 text-white">
                 {stats.totalEntries} shows
               </p>
-              <p className="text-lg text-white/70 mb-1">
+              <p className="text-sm sm:text-lg text-white/70 mb-1">
                 {stats.totalEpisodesWatched} episodes
                 {" • "}
                 {stats.watchTimeDays > 0 && `${stats.watchTimeDays}d `}
@@ -256,14 +262,14 @@ export default function StatsPage() {
                   `${stats.watchTimeRemainingHours}h`}
                 {" of watch time"}
               </p>
-              <p className="text-sm text-white/60 italic">
+              <p className="text-xs sm:text-sm text-white/60 italic">
                 {getWatchTimeFlavor(stats.watchTimeDays)}
               </p>
             </CardContent>
           </Card>
 
           {/* Favorite Show */}
-          <Card className="col-span-2 relative overflow-hidden">
+          <Card className="col-span-1 md:col-span-2 relative overflow-hidden min-h-40">
             {stats.favoriteShow?.image && (
               <Image
                 src={stats.favoriteShow.image}
@@ -273,10 +279,10 @@ export default function StatsPage() {
               />
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/30" />
-            <CardContent className="p-6 relative z-10">
+            <CardContent className="p-4 sm:p-6 relative z-10">
               <div className="flex items-center gap-2 mb-3">
-                <Trophy className="h-5 w-5 text-rose-400" />
-                <p className="text-sm font-medium text-white/80">
+                <Trophy className="h-4 sm:h-5 w-4 sm:w-5 text-rose-400" />
+                <p className="text-xs sm:text-sm font-medium text-white/80">
                   Favorite Show
                 </p>
               </div>
@@ -285,7 +291,7 @@ export default function StatsPage() {
                   href={`/anime/${stats.favoriteShow.mal_id}`}
                   className="block"
                 >
-                  <p className="font-semibold text-base line-clamp-2 hover:underline text-white">
+                  <p className="font-semibold text-sm sm:text-base line-clamp-2 hover:underline text-white">
                     {stats.favoriteShow.title}
                   </p>
                   <div className="flex items-center gap-1 mt-1">
@@ -300,7 +306,7 @@ export default function StatsPage() {
                   </p>
                 </Link>
               ) : (
-                <p className="text-white/70 text-sm">
+                <p className="text-white/70 text-xs sm:text-sm">
                   Rate some shows. Find your goat.
                 </p>
               )}
@@ -309,19 +315,19 @@ export default function StatsPage() {
 
           {/* Top Genre */}
           <Card className={`bg-gradient-to-br ${cardPalette.topGenre}`}>
-            <CardContent className="p-6">
+            <CardContent className="p-4 sm:p-6">
               <div className="flex items-center gap-2 mb-3">
-                <Tv className="h-5 w-5 text-blue-400" />
-                <p className="text-sm font-medium text-muted-foreground">
+                <Tv className="h-4 sm:h-5 w-4 sm:w-5 text-blue-400" />
+                <p className="text-xs sm:text-sm font-medium text-muted-foreground">
                   Top Genre
                 </p>
               </div>
               {stats.topGenre ? (
                 <>
-                  <p className="text-2xl font-bold mb-1">
+                  <p className="text-xl sm:text-2xl font-bold mb-1">
                     {stats.topGenre.name}
                   </p>
-                  <p className="text-sm text-muted-foreground mb-2">
+                  <p className="text-xs sm:text-sm text-muted-foreground mb-2">
                     {stats.topGenre.count} show
                     {stats.topGenre.count !== 1 ? "s" : ""}
                   </p>
@@ -330,7 +336,7 @@ export default function StatsPage() {
                   </p>
                 </>
               ) : (
-                <p className="text-muted-foreground text-sm">
+                <p className="text-muted-foreground text-xs sm:text-sm">
                   Watch more to find out.
                 </p>
               )}
@@ -339,28 +345,32 @@ export default function StatsPage() {
 
           {/* Your Taste */}
           <Card className={`bg-gradient-to-br ${cardPalette.yourTaste}`}>
-            <CardContent className="p-6">
+            <CardContent className="p-4 sm:p-6">
               <div className="flex items-center gap-2 mb-3">
-                <Heart className="h-5 w-5 text-purple-400" />
-                <p className="text-sm font-medium text-muted-foreground">
+                <Heart className="h-4 sm:h-5 w-4 sm:w-5 text-purple-400" />
+                <p className="text-xs sm:text-sm font-medium text-muted-foreground">
                   Your Taste
                 </p>
               </div>
               {stats.topGenre ? (
                 <>
-                  <p className="text-lg font-bold mb-2">
+                  <p className="text-base sm:text-lg font-bold mb-2">
                     {stats.topGenre.name}-heavy
                   </p>
-                  <div className="flex flex-wrap gap-1.5">
+                  <div className="flex flex-wrap gap-1 sm:gap-1.5">
                     {stats.topGenres.map((genre) => (
-                      <Badge key={genre.name} variant="secondary">
+                      <Badge
+                        key={genre.name}
+                        variant="secondary"
+                        className="text-[10px] sm:text-xs"
+                      >
                         {genre.name}
                       </Badge>
                     ))}
                   </div>
                 </>
               ) : (
-                <p className="text-muted-foreground text-sm">
+                <p className="text-muted-foreground text-xs sm:text-sm">
                   Watch more to discover your taste.
                 </p>
               )}
@@ -368,7 +378,7 @@ export default function StatsPage() {
           </Card>
 
           {/* Most Watched */}
-          <Card className="col-span-2 relative overflow-hidden">
+          <Card className="col-span-1 md:col-span-2 relative overflow-hidden min-h-40">
             {stats.mostWatched?.image && (
               <Image
                 src={stats.mostWatched.image}
@@ -378,10 +388,10 @@ export default function StatsPage() {
               />
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/30" />
-            <CardContent className="p-6 relative z-10">
+            <CardContent className="p-4 sm:p-6 relative z-10">
               <div className="flex items-center gap-2 mb-3">
-                <Clock className="h-5 w-5 text-orange-400" />
-                <p className="text-sm font-medium text-white/80">
+                <Clock className="h-4 sm:h-5 w-4 sm:w-5 text-orange-400" />
+                <p className="text-xs sm:text-sm font-medium text-white/80">
                   Most Watched
                 </p>
               </div>
@@ -390,10 +400,10 @@ export default function StatsPage() {
                   href={`/anime/${stats.mostWatched.mal_id}`}
                   className="block"
                 >
-                  <p className="font-semibold text-base line-clamp-2 hover:underline text-white">
+                  <p className="font-semibold text-sm sm:text-base line-clamp-2 hover:underline text-white">
                     {stats.mostWatched.title}
                   </p>
-                  <p className="text-sm text-white/70 mt-1">
+                  <p className="text-xs sm:text-sm text-white/70 mt-1">
                     {stats.mostWatched.episodes} /{" "}
                     {stats.mostWatched.totalEpisodes || "?"} episodes
                   </p>
@@ -406,7 +416,7 @@ export default function StatsPage() {
                   </p>
                 </Link>
               ) : (
-                <p className="text-white/70 text-sm">
+                <p className="text-white/70 text-xs sm:text-sm">
                   Watch more to see your most watched.
                 </p>
               )}
@@ -415,24 +425,24 @@ export default function StatsPage() {
 
           {/* Status Breakdown */}
           <Card
-            className={`col-span-2 row-span-2 bg-gradient-to-br ${cardPalette.statusBreakdown}`}
+            className={`col-span-1 md:col-span-2 md:row-span-2 bg-gradient-to-br ${cardPalette.statusBreakdown}`}
           >
-            <CardContent className="p-6 h-full">
+            <CardContent className="p-4 sm:p-6 h-full">
               <div className="flex items-center gap-2 mb-4">
-                <Tv className="h-5 w-5 text-green-400" />
-                <p className="text-sm font-medium text-muted-foreground">
+                <Tv className="h-4 sm:h-5 w-4 sm:w-5 text-green-400" />
+                <p className="text-xs sm:text-sm font-medium text-muted-foreground">
                   Status Breakdown
                 </p>
               </div>
               {statusData.length > 0 ? (
-                <ResponsiveContainer width="100%" height={280}>
+                <ResponsiveContainer width="100%" height={220}>
                   <PieChart>
                     <Pie
                       data={statusData}
                       cx="50%"
                       cy="50%"
-                      innerRadius={60}
-                      outerRadius={90}
+                      innerRadius={50}
+                      outerRadius={80}
                       paddingAngle={3}
                       dataKey="value"
                     >
@@ -450,7 +460,7 @@ export default function StatsPage() {
                     />
                     <Legend
                       formatter={(value: string) => (
-                        <span style={{ color: "#e0e0e0", fontSize: "12px" }}>
+                        <span style={{ color: "#e0e0e0", fontSize: "11px" }}>
                           {value}
                         </span>
                       )}
@@ -458,7 +468,9 @@ export default function StatsPage() {
                   </PieChart>
                 </ResponsiveContainer>
               ) : (
-                <p className="text-muted-foreground text-sm">No data yet.</p>
+                <p className="text-muted-foreground text-xs sm:text-sm">
+                  No data yet.
+                </p>
               )}
             </CardContent>
           </Card>
@@ -467,15 +479,17 @@ export default function StatsPage() {
           <Card
             className={`bg-gradient-to-br ${getCompletionColor(stats.completionRate)}`}
           >
-            <CardContent className="p-6 text-center">
+            <CardContent className="p-4 sm:p-6 text-center">
               <div className="flex items-center justify-center gap-2 mb-2">
-                <TrendingUp className="h-5 w-5" />
-                <p className="text-sm font-medium text-muted-foreground">
+                <TrendingUp className="h-4 sm:h-5 w-4 sm:w-5" />
+                <p className="text-xs sm:text-sm font-medium text-muted-foreground">
                   Completion Rate
                 </p>
               </div>
-              <p className="text-4xl font-bold mb-1">{stats.completionRate}%</p>
-              <p className="text-xs text-muted-foreground italic">
+              <p className="text-3xl sm:text-4xl font-bold mb-1">
+                {stats.completionRate}%
+              </p>
+              <p className="text-[10px] sm:text-xs text-muted-foreground italic">
                 {getCompletionFlavor(stats.completionRate)}
               </p>
             </CardContent>
@@ -485,17 +499,17 @@ export default function StatsPage() {
           <Card
             className={`bg-gradient-to-br ${getRatingColor(stats.averageRating)}`}
           >
-            <CardContent className="p-6 text-center">
+            <CardContent className="p-4 sm:p-6 text-center">
               <div className="flex items-center justify-center gap-2 mb-2">
-                <Star className="h-5 w-5" />
-                <p className="text-sm font-medium text-muted-foreground">
+                <Star className="h-4 sm:h-5 w-4 sm:w-5" />
+                <p className="text-xs sm:text-sm font-medium text-muted-foreground">
                   Average Rating
                 </p>
               </div>
-              <p className="text-4xl font-bold mb-1">
+              <p className="text-3xl sm:text-4xl font-bold mb-1">
                 {stats.averageRating > 0 ? stats.averageRating.toFixed(1) : "—"}
               </p>
-              <p className="text-xs text-muted-foreground italic">
+              <p className="text-[10px] sm:text-xs text-muted-foreground italic">
                 {getRatingFlavor(stats.averageRating)}
               </p>
             </CardContent>

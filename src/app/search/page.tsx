@@ -25,28 +25,32 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
   return (
     <main className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-xl mx-auto mb-8">
+      <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-8">
+        <div className="max-w-xl mx-auto mb-6 sm:mb-8">
           <SearchBar />
         </div>
 
         {!query && (
-          <p className="text-center text-muted-foreground">
+          <p className="text-center text-muted-foreground text-sm sm:text-base">
             Enter a search term to find anime.
           </p>
         )}
 
-        {error && <p className="text-center text-destructive">{error}</p>}
+        {error && (
+          <p className="text-center text-destructive text-sm sm:text-base">
+            {error}
+          </p>
+        )}
 
         {results && results.data.length === 0 && (
-          <p className="text-center text-muted-foreground">
+          <p className="text-center text-muted-foreground text-sm sm:text-base">
             No results found for &ldquo;{query}&rdquo;
           </p>
         )}
 
         {results && results.data.length > 0 && (
           <>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
               {results.data
                 .filter(
                   (anime, index, self) =>
@@ -57,12 +61,14 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                 ))}
             </div>
 
-            <Pagination
-              currentPage={currentPage}
-              lastPage={results.pagination.last_visible_page}
-              baseUrl={`/search?q=${encodeURIComponent(query)}`}
-              paramName="page"
-            />
+            <div className="mt-6 sm:mt-8">
+              <Pagination
+                currentPage={currentPage}
+                lastPage={results.pagination.last_visible_page}
+                baseUrl={`/search?q=${encodeURIComponent(query)}`}
+                paramName="page"
+              />
+            </div>
           </>
         )}
       </div>

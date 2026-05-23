@@ -41,16 +41,20 @@ export default async function TopPage({
 
   return (
     <main className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-2">Top Anime</h1>
-        <p className="text-muted-foreground mb-6">{activeLabel}</p>
+      <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-8">
+        <h1 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2 text-center sm:text-left">
+          Top Anime
+        </h1>
+        <p className="text-muted-foreground text-sm sm:text-base mb-4 sm:mb-6 text-center sm:text-left">
+          {activeLabel}
+        </p>
 
-        <div className="flex gap-2 mb-8 flex-wrap">
+        <div className="flex gap-1.5 sm:gap-2 mb-6 sm:mb-8 flex-wrap justify-center sm:justify-start">
           {FILTERS.map((f) => (
             <Link key={f.value} href={`/top?filter=${f.value}`}>
               <Badge
                 variant={activeFilter === f.value ? "default" : "secondary"}
-                className="cursor-pointer"
+                className="cursor-pointer text-xs sm:text-sm"
               >
                 {f.label}
               </Badge>
@@ -58,21 +62,25 @@ export default async function TopPage({
           ))}
         </div>
 
-        {error && <p className="text-destructive">{error}</p>}
+        {error && (
+          <p className="text-destructive text-sm sm:text-base">{error}</p>
+        )}
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
           {anime.map((show) => (
             <AnimeCard key={show.mal_id} anime={show} />
           ))}
         </div>
 
         {pagination && (
-          <Pagination
-            currentPage={currentPage}
-            lastPage={pagination.last_visible_page}
-            baseUrl={`/top?filter=${activeFilter}`}
-            paramName="page"
-          />
+          <div className="mt-6 sm:mt-8">
+            <Pagination
+              currentPage={currentPage}
+              lastPage={pagination.last_visible_page}
+              baseUrl={`/top?filter=${activeFilter}`}
+              paramName="page"
+            />
+          </div>
         )}
       </div>
     </main>
