@@ -1,36 +1,13 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Built to consolidate anime tracking into a single responsive web app. Integrates external API data with a persistent PostgreSQL database on Supabase.
 
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+• Implemented dual authentication with Discord OAuth for quick sign-in and email/password registration using bcrypt hashing and JWT session tokens.
+• Built full CRUD operations for watch list management: add anime with status tracking, update episode progress and star ratings inline, and delete entries with cascade cleanup.
+• Developed a 7-day seasonal broadcast calendar with episode countdown timers, expand/collapse animations via Framer Motion, broadcast time sorting, and genre-aware filtering with a tracked-only toggle that cross-references the user's watch list.
+• Created a personalized recommendation engine that analyzes watch history against genre data, queries the Jikan API, filters out already-watched shows and anything rated below 7, and surfaces results with "Because you liked" attribution.
+• Visualized user stats with a Spotify Wrapped-inspired bento-grid layout featuring summary cards for total anime, episodes watched, watch time, average rating, and completion rate, plus a Recharts donut chart for status distribution, all with dynamic genre-based color palettes and personality-driven copy.
+• Built custom collections with create, rename, delete, and add/remove functionality including per-list "already in list" indicators and animated card removal.
+• Designed each anime detail page to pull extensive data via parallel API requests: trailers, character rosters with voice actors, related anime, and community reviews with expand/collapse animations.
+• Built a profile settings page with username editing, email display, password management with current-password verification, Discord link/unlink with password-guarded unlinking to prevent lockout, and irreversible account deletion with confirmation input.
+• Handled all edge cases including Jikan API rate limiting with exponential backoff retry logic, duplicate entry prevention with database constraints, broadcast data parsing for both "Friday" and "Fridays" formats, and passwordless Discord accounts with guarded unlinking.
+• Made the entire app fully responsive across mobile, tablet, and desktop with a hamburger navigation menu, horizontal scroll rows for seasonal shows and characters, a collapsible bento grid, and scaled typography and spacing throughout.
+• Deployed on Vercel with a serverless-friendly architecture using the pg driver adapter, Prisma 7, and environment-based configuration for all third-party services including Discord OAuth, Supabase, and the Jikan API.
