@@ -1,5 +1,5 @@
-Built to consolidate anime tracking into a single responsive web app. Integrates external API data with a persistent PostgreSQL database on Supabase.
-
+**Built to consolidate anime tracking into a single responsive web app. Integrates external API data with a persistent PostgreSQL database on Supabase.
+**
 • Implemented dual authentication with Discord OAuth for quick sign-in and email/password registration using bcrypt hashing and JWT session tokens.
 
 • Built full CRUD operations for watch list management: add anime with status tracking, update episode progress and star ratings inline, and delete entries with cascade cleanup.
@@ -21,3 +21,110 @@ Built to consolidate anime tracking into a single responsive web app. Integrates
 • Made the entire app fully responsive across mobile, tablet, and desktop with a hamburger navigation menu, horizontal scroll rows for seasonal shows and characters, a collapsible bento grid, and scaled typography and spacing throughout.
 
 • Deployed on Vercel with a serverless-friendly architecture using the pg driver adapter, Prisma 7, and environment-based configuration for all third-party services including Discord OAuth, Supabase, and the Jikan API.
+
+**Folder structure:**
+kiroku/
+├── prisma/
+│   ├── migrations/
+│   ├── dev.db
+│   └── schema.prisma
+├── public/
+│   ├── favicon.ico
+│   └── og-image.webp
+├── src/
+│   ├── app/
+│   │   ├── anime/
+│   │   │   └── [id]/
+│   │   │       ├── add-button.tsx
+│   │   │       ├── back-button.tsx
+│   │   │       ├── collection-button.tsx
+│   │   │       ├── page.tsx
+│   │   │       └── reviews-section.tsx
+│   │   ├── api/
+│   │   │   ├── anime/
+│   │   │   │   └── entry/
+│   │   │   │       └── route.ts
+│   │   │   ├── auth/
+│   │   │   │   ├── [...nextauth]/
+│   │   │   │   │   └── route.ts
+│   │   │   │   └── register/
+│   │   │   │       └── route.ts
+│   │   │   └── user/
+│   │   │       ├── delete/
+│   │   │       │   └── route.ts
+│   │   │       ├── discord/
+│   │   │       │   └── route.ts
+│   │   │       ├── entries/
+│   │   │       │   └── [id]/
+│   │   │       │       └── route.ts
+│   │   │       ├── lists/
+│   │   │       │   ├── [id]/
+│   │   │       │   │   ├── anime/
+│   │   │       │   │   │   └── route.ts
+│   │   │       │   │   └── route.ts
+│   │   │       │   └── route.ts
+│   │   │       ├── password/
+│   │   │       │   └── route.ts
+│   │   │       ├── profile/
+│   │   │       │   └── route.ts
+│   │   │       ├── recommendations/
+│   │   │       │   └── route.ts
+│   │   │       └── stats/
+│   │   │           └── route.ts
+│   │   ├── auth/
+│   │   │   ├── error/
+│   │   │   │   └── page.tsx
+│   │   │   └── signin/
+│   │   │       └── page.tsx
+│   │   ├── list/
+│   │   │   └── page.tsx
+│   │   ├── lists/
+│   │   │   ├── [id]/
+│   │   │   │   └── page.tsx
+│   │   │   └── page.tsx
+│   │   ├── profile/
+│   │   │   └── page.tsx
+│   │   ├── recommendations/
+│   │   │   └── page.tsx
+│   │   ├── search/
+│   │   │   └── page.tsx
+│   │   ├── season/
+│   │   │   └── page.tsx
+│   │   ├── stats/
+│   │   │   └── page.tsx
+│   │   ├── top/
+│   │   │   └── page.tsx
+│   │   ├── providers/
+│   │   │   ├── query-provider.tsx
+│   │   │   ├── session-provider.tsx
+│   │   │   └── theme-provider.tsx
+│   │   ├── globals.css
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   ├── components/
+│   │   ├── ui/
+│   │   │   └── (shadcn components)
+│   │   ├── anime-card.tsx
+│   │   ├── navbar.tsx
+│   │   ├── pagination.tsx
+│   │   ├── search-bar.tsx
+│   │   ├── season-anime-card.tsx
+│   │   ├── season-calendar.tsx
+│   │   ├── season-content.tsx
+│   │   └── season-grid.tsx
+│   ├── hooks/
+│   │   └── use-entries.ts
+│   ├── lib/
+│   │   ├── auth.ts
+│   │   ├── axios.ts
+│   │   ├── jikan.ts
+│   │   └── prisma.ts
+│   └── types/
+│       └── anime.ts
+├── .env
+├── .env.local
+├── next.config.ts
+├── package.json
+├── prisma.config.ts
+├── tailwind.config.ts
+└── tsconfig.json
