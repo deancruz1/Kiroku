@@ -1,0 +1,105 @@
+kiroku/
+├── prisma/
+│   ├── migrations/
+│   ├── dev.db
+│   └── schema.prisma
+├── public/
+│   ├── favicon.ico
+│   └── og-image.webp
+├── src/
+│   ├── app/
+│   │   ├── anime/
+│   │   │   └── [id]/
+│   │   │       ├── add-button.tsx
+│   │   │       ├── back-button.tsx
+│   │   │       ├── collection-button.tsx
+│   │   │       ├── page.tsx
+│   │   │       └── reviews-section.tsx
+│   │   ├── api/
+│   │   │   ├── anime/
+│   │   │   │   └── entry/
+│   │   │   │       └── route.ts
+│   │   │   ├── auth/
+│   │   │   │   ├── [...nextauth]/
+│   │   │   │   │   └── route.ts
+│   │   │   │   └── register/
+│   │   │   │       └── route.ts
+│   │   │   └── user/
+│   │   │       ├── delete/
+│   │   │       │   └── route.ts
+│   │   │       ├── discord/
+│   │   │       │   └── route.ts
+│   │   │       ├── entries/
+│   │   │       │   └── [id]/
+│   │   │       │       └── route.ts
+│   │   │       ├── lists/
+│   │   │       │   ├── [id]/
+│   │   │       │   │   ├── anime/
+│   │   │       │   │   │   └── route.ts
+│   │   │       │   │   └── route.ts
+│   │   │       │   └── route.ts
+│   │   │       ├── password/
+│   │   │       │   └── route.ts
+│   │   │       ├── profile/
+│   │   │       │   └── route.ts
+│   │   │       ├── recommendations/
+│   │   │       │   └── route.ts
+│   │   │       └── stats/
+│   │   │           └── route.ts
+│   │   ├── auth/
+│   │   │   ├── error/
+│   │   │   │   └── page.tsx
+│   │   │   └── signin/
+│   │   │       └── page.tsx
+│   │   ├── list/
+│   │   │   └── page.tsx
+│   │   ├── lists/
+│   │   │   ├── [id]/
+│   │   │   │   └── page.tsx
+│   │   │   └── page.tsx
+│   │   ├── profile/
+│   │   │   └── page.tsx
+│   │   ├── recommendations/
+│   │   │   └── page.tsx
+│   │   ├── search/
+│   │   │   └── page.tsx
+│   │   ├── season/
+│   │   │   └── page.tsx
+│   │   ├── stats/
+│   │   │   └── page.tsx
+│   │   ├── top/
+│   │   │   └── page.tsx
+│   │   ├── providers/
+│   │   │   ├── query-provider.tsx
+│   │   │   ├── session-provider.tsx
+│   │   │   └── theme-provider.tsx
+│   │   ├── globals.css
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   ├── components/
+│   │   ├── ui/
+│   │   │   └── (shadcn components)
+│   │   ├── anime-card.tsx
+│   │   ├── navbar.tsx
+│   │   ├── pagination.tsx
+│   │   ├── search-bar.tsx
+│   │   ├── season-anime-card.tsx
+│   │   ├── season-calendar.tsx
+│   │   ├── season-content.tsx
+│   │   └── season-grid.tsx
+│   ├── hooks/
+│   │   └── use-entries.ts
+│   ├── lib/
+│   │   ├── auth.ts
+│   │   ├── axios.ts
+│   │   ├── jikan.ts
+│   │   └── prisma.ts
+│   └── types/
+│       └── anime.ts
+├── .env
+├── .env.local
+├── next.config.ts
+├── package.json
+├── prisma.config.ts
+├── tailwind.config.ts
+└── tsconfig.json
