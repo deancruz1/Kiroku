@@ -4,7 +4,7 @@ import "./globals.css";
 import { QueryProvider } from "@/app/providers/query-provider";
 import { SessionProvider } from "@/app/providers/session-provider";
 import { Navbar } from "@/components/navbar";
-import { Analytics } from "@vercel/analytics/next";
+// import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -62,6 +62,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
+      <head>
+        <script
+          defer
+          src="https://cloud.umami.is/script.js"
+          data-website-id="ad1e6c9c-6a21-4f1b-a3c7-ec5b3ff46320"
+        ></script>
+      </head>
       <body className={inter.className}>
         <SessionProvider>
           <QueryProvider>
