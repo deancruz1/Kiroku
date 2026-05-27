@@ -4,6 +4,7 @@ import "./globals.css";
 import { QueryProvider } from "@/app/providers/query-provider";
 import { SessionProvider } from "@/app/providers/session-provider";
 import { Navbar } from "@/components/navbar";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({ subsets: ["latin"] });
 
