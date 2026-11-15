@@ -25,7 +25,7 @@ export async function DELETE() {
 
   const hasPassword = await prisma.user.findUnique({
     where: { id: session.user.id },
-    select: { hashedPassword: true },
+    select: { hashedPassword: true, username: true, email: true },
   });
 
   if (!hasPassword?.hashedPassword) {
@@ -33,6 +33,16 @@ export async function DELETE() {
       {
         error:
           "You must set a password before unlinking Discord. Otherwise you will lose access to your account.",
+      },
+      { status: 400 },
+    );
+  }
+
+  if (!hasPassword.username && !hasPassword.email) {
+    return NextResponse.json(
+      {
+        error:
+          "You must set a username before unlinking Discord. Otherwise you will have nothing to sign in with.",
       },
       { status: 400 },
     );

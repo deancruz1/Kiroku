@@ -1,46 +1,74 @@
 import { NextResponse } from "next/server";
+import bcrypt from "bcryptjs";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { validatePassword } from "@/lib/account-validation";
+import { readJsonBody } from "@/lib/request-body";
 
-export async function DELETE() {
+export async function PATCH(request: Request) {
   const session = await auth();
 
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const discordAccount = await prisma.account.findFirst({
-    where: {
-      userId: session.user.id,
-      provider: "discord",
-    },
-  });
+  const body = await readJsonBody(request);
 
-  if (!discordAccount) {
-    return NextResponse.json(
-      { error: "No Discord account linked" },
-      { status: 404 },
-    );
+  if (!body) {
+    return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
-  const hasPassword = await prisma.user.findUnique({
+  const newPassword = validatePassword(body.newPassword);
+
+  if (!newPassword.ok) {
+    return NextResponse.json({ error: newPassword.error }, { status: 400 });
+  }
+
+  const user = await prisma.user.findUnique({
     where: { id: session.user.id },
     select: { hashedPassword: true },
   });
 
-  if (!hasPassword?.hashedPassword) {
+  if (!user) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
+
+  if (user.hashedPassword) {
+    const currentPassword = body.currentPassword;
+
+    if (typeof currentPassword !== "string" || !currentPassword) {
+      return NextResponse.json(
+        { error: "Current password is required." },
+        { status: 400 },
+      );
+    }
+
+    const isValid = await bcrypt.compare(currentPassword, user.hashedPassword);
+
+    if (!isValid) {
+      return NextResponse.json(
+        { error: "Current password is incorrect." },
+        { status: 403 },
+      );
+    }
+  }
+
+  const hashedPassword = await bcrypt.hash(newPassword.value, 10);
+
+  // Only write if the stored hash is still the one we checked against.
+  const result = await prisma.user.updateMany({
+    where: { id: session.user.id, hashedPassword: user.hashedPassword },
+    data: { hashedPassword },
+  });
+
+  if (result.count === 0) {
     return NextResponse.json(
-      {
-        error:
-          "You must set a password before unlinking Discord. Otherwise you will lose access to your account.",
-      },
-      { status: 400 },
+      { error: "Your password was changed elsewhere. Reload and try again." },
+      { status: 409 },
     );
   }
 
-  await prisma.account.delete({
-    where: { id: discordAccount.id },
+  return NextResponse.json({
+    message: user.hashedPassword ? "Password updated." : "Password set.",
   });
-
-  return NextResponse.json({ message: "Discord unlinked" });
 }

@@ -35,14 +35,12 @@ function ErrorContent() {
       <CardContent className="text-center space-y-4">
         <p className="text-sm text-muted-foreground">{message}</p>
         <div className="flex gap-2 justify-center">
-          <Link href="/profile">
-            <Button variant="outline" size="sm">
-              Back to Profile
-            </Button>
-          </Link>
-          <Link href="/">
-            <Button size="sm">Go Home</Button>
-          </Link>
+          <Button variant="outline" size="sm" asChild>
+            <Link href="/profile">Back to Profile</Link>
+          </Button>
+          <Button size="sm" asChild>
+            <Link href="/">Go Home</Link>
+          </Button>
         </div>
       </CardContent>
     </Card>

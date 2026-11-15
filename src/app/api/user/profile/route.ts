@@ -1,6 +1,13 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { isUniqueViolation } from "@/lib/db-errors";
+import { readJsonBody } from "@/lib/request-body";
+import {
+  canUnlinkDiscord,
+  sameIdentifier,
+  validateUsername,
+} from "@/lib/account-validation";
 
 export async function GET() {
   const session = await auth();
@@ -47,6 +54,12 @@ export async function GET() {
     createdAt: user.createdAt,
     hasPassword,
     hasDiscord,
+    hasUsername: !!user.username,
+    canUnlinkDiscord: canUnlinkDiscord({
+      hasPassword,
+      username: user.username,
+      email: user.email,
+    }),
   });
 }
 
@@ -57,33 +70,52 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { username } = await request.json();
+  const body = await readJsonBody(request);
 
-  if (!username || !username.trim()) {
-    return NextResponse.json(
-      { error: "Username is required" },
-      { status: 400 },
-    );
+  if (!body) {
+    return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
-  const existing = await prisma.user.findUnique({
-    where: { username: username.trim() },
+  const result = validateUsername(body.username);
+
+  if (!result.ok) {
+    return NextResponse.json({ error: result.error }, { status: 400 });
+  }
+
+  const username = result.value;
+
+  const matches = await prisma.user.findMany({
+    where: {
+      username: { equals: username, mode: "insensitive" },
+      NOT: { id: session.user.id },
+    },
+    select: { username: true },
   });
 
-  if (existing && existing.id !== session.user.id) {
+  if (matches.some((m) => sameIdentifier(m.username, username))) {
     return NextResponse.json(
-      { error: "Username already taken" },
+      { error: "Username already taken." },
       { status: 409 },
     );
   }
 
-  const user = await prisma.user.update({
-    where: { id: session.user.id },
-    data: {
-      username: username.trim(),
-      name: username.trim(),
-    },
-  });
+  try {
+    const user = await prisma.user.update({
+      where: { id: session.user.id },
+      data: {
+        username,
+        name: username,
+      },
+    });
 
-  return NextResponse.json({ username: user.username });
+    return NextResponse.json({ username: user.username });
+  } catch (error) {
+    if (isUniqueViolation(error)) {
+      return NextResponse.json(
+        { error: "Username already taken." },
+        { status: 409 },
+      );
+    }
+    throw error;
+  }
 }

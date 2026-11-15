@@ -4,6 +4,7 @@ import Credentials from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
+import { normalizeLogin, pickLoginMatch } from "@/lib/account-validation";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -25,17 +26,26 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
+        const login = normalizeLogin(credentials?.email);
+
+        if (
+          !login ||
+          typeof credentials?.password !== "string" ||
+          !credentials.password
+        ) {
           return null;
         }
 
-        const login = credentials.email as string;
-
-        const user = await prisma.user.findFirst({
+        const candidates = await prisma.user.findMany({
           where: {
-            OR: [{ email: login }, { username: login }],
+            OR: [
+              { email: { equals: login, mode: "insensitive" } },
+              { username: { equals: login, mode: "insensitive" } },
+            ],
           },
         });
+
+        const user = pickLoginMatch(candidates, login);
 
         if (!user || !user.hashedPassword) {
           return null;
