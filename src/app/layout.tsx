@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     template: "%s | Kiroku",
   },
   description:
-    "Track your anime, discover seasonal shows, get personalized recommendations, and visualize your watching habits. A full-stack anime tracker powered by the Jikan API.",
+    "Track your anime, discover seasonal shows, get personalized recommendations, and visualize your watching habits. A full-stack anime tracker.",
   keywords: [
     "anime tracker",
     "watch list",
