@@ -4,18 +4,14 @@ import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { AnimeCard } from "@/components/anime-card";
-import { Sparkles } from "lucide-react";
-import type { JikanAnime } from "@/types/anime";
-
-interface Recommendation {
-  mal_id: number;
-  title: string;
-  image: string;
-  score: number | null;
-  genres: string[];
-  becauseOf: string;
-}
+import { PageHeading } from "@/components/page-heading";
+import { Poster } from "@/components/poster";
+import { ShowTitle } from "@/components/show-title";
+import { Skeleton } from "@/components/skeleton";
+import { EmptyState } from "@/components/empty-state";
+import { SignInPrompt } from "@/components/sign-in-prompt";
+import { ErrorPanel } from "@/components/error-panel";
+import { MIN_SCORE, type Recommendation } from "@/lib/recommend";
 
 interface RecommendationsResponse {
   recommendations: Recommendation[];
@@ -23,10 +19,77 @@ interface RecommendationsResponse {
   message?: string;
 }
 
+const ROW =
+  "grid grid-cols-[66px_minmax(0,1fr)_auto] gap-x-4 border-b border-rule py-3.5 md:gap-x-6";
+
+function listWords(words: string[]) {
+  if (words.length <= 1) return words.join("");
+  return `${words.slice(0, -1).join(", ")} and ${words[words.length - 1]}`;
+}
+
+function RecommendationRow({
+  rec,
+  basedOn,
+}: {
+  rec: Recommendation;
+  basedOn: string[];
+}) {
+  const reason = basedOn.includes(rec.becauseOf)
+    ? `From your interest in ${rec.becauseOf}`
+    : `Shares a genre with ${rec.becauseOf}`;
+
+  return (
+    <li className={ROW}>
+      <Poster
+        src={rec.image}
+        title={rec.title}
+        size="sm"
+        sizes="66px"
+        className="h-[88px] w-[66px]"
+      />
+      <div className="min-w-0">
+        <ShowTitle title={rec.title} href={`/anime/${rec.mal_id}`} />
+        {rec.genres.length > 0 && (
+          <p className="mt-1 text-[15px] text-muted-foreground">
+            {rec.genres.join(", ")}
+          </p>
+        )}
+        <p className="mt-1 text-[15px]">{reason}</p>
+      </div>
+      {rec.score !== null && (
+        <p className="text-right text-lg leading-[1.25]">
+          {rec.score.toFixed(2)}
+          <span className="block text-[15px] text-muted-foreground">Score</span>
+        </p>
+      )}
+    </li>
+  );
+}
+
+function RecommendationsSkeleton() {
+  return (
+    <div role="status" aria-label="Loading recommendations">
+      <Skeleton className="mt-2.5 h-5 w-[min(520px,100%)]" />
+      <ul className="mt-9 max-w-3xl border-t border-foreground">
+        {Array.from({ length: 6 }, (_, i) => (
+          <li key={i} className={ROW}>
+            <Skeleton className="h-[88px] w-[66px]" />
+            <div className="space-y-2 pt-0.5">
+              <Skeleton className="h-5 w-3/4" />
+              <Skeleton className="h-4 w-1/2" />
+              <Skeleton className="h-4 w-2/3" />
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 export default function RecommendationsPage() {
   const { data: session, status: sessionStatus } = useSession();
 
-  const { data, isLoading, error, refetch, isFetching } = useQuery({
+  const { data, isError, isFetching, refetch } = useQuery({
     queryKey: ["user-recommendations"],
     queryFn: async () => {
       const res = await fetch("/api/user/recommendations");
@@ -34,116 +97,73 @@ export default function RecommendationsPage() {
       return res.json() as Promise<RecommendationsResponse>;
     },
     enabled: !!session,
+    retry: 1,
   });
 
-  if (sessionStatus !== "loading" && !session) {
+  if (sessionStatus === "unauthenticated") {
+    return <SignInPrompt title="For you" subject="recommendations" />;
+  }
+
+  if (!data && isError && !isFetching) {
     return (
-      <main className="min-h-screen bg-background flex items-center justify-center px-4">
-        <div className="text-center space-y-4">
-          <p className="text-muted-foreground text-sm sm:text-base">
-            Sign in to get recommendations.
-          </p>
-          <Button asChild>
-            <Link href="/auth/signin">Sign in</Link>
-          </Button>
-        </div>
+      <ErrorPanel
+        title="For you"
+        message="Your recommendations could not be loaded."
+        onRetry={() => refetch()}
+      />
+    );
+  }
+
+  if (!data) {
+    return (
+      <main className="page">
+        <h1 className="type-display-sm md:type-display">For you</h1>
+        <RecommendationsSkeleton />
+      </main>
+    );
+  }
+
+  const { recommendations, basedOn } = data;
+
+  if (recommendations.length === 0) {
+    return (
+      <main className="page">
+        <PageHeading title="For you" />
+        <EmptyState
+          className="mt-9 max-w-3xl"
+          action={
+            basedOn.length > 0 ? (
+              <Button type="button" onClick={() => refetch()} disabled={isFetching}>
+                Try again
+              </Button>
+            ) : (
+              <Button asChild>
+                <Link href="/top">Browse top shows</Link>
+              </Button>
+            )
+          }
+        >
+          {data.message ?? "Not enough data for recommendations."}
+        </EmptyState>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-background">
-      <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-8">
-        <h1 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2 text-center sm:text-left">
-          For You
-        </h1>
-        <p className="text-muted-foreground text-sm sm:text-base mb-4 sm:mb-6 text-center sm:text-left">
-          {data?.basedOn && data.basedOn.length > 0
-            ? `Based on your interest in: ${data.basedOn.join(", ")}`
-            : "Recommendations based on your watch history"}
-        </p>
-
-        {(sessionStatus === "loading" || isLoading) && (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
-            {[...Array(10)].map((_, i) => (
-              <div
-                key={i}
-                className="aspect-3/4 bg-muted animate-pulse rounded-lg"
-              />
-            ))}
-          </div>
-        )}
-
-        {error && !data && (
-          <div className="text-center py-12 sm:py-16 space-y-4">
-            <p className="text-destructive text-sm sm:text-base">
-              Failed to load recommendations.
-            </p>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => refetch()}
-              disabled={isFetching}
-            >
-              {isFetching ? "Retrying..." : "Try again"}
-            </Button>
-          </div>
-        )}
-
-        {data?.message && !data.recommendations.length && (
-          <div className="text-center py-12 sm:py-16">
-            <Sparkles className="h-10 sm:h-12 w-10 sm:w-12 text-muted-foreground mx-auto mb-4" />
-            <p className="text-muted-foreground text-sm sm:text-base">
-              {data.message}
-            </p>
-            <Button variant="outline" size="sm" className="mt-4" asChild>
-              <Link href="/search">Discover Anime</Link>
-            </Button>
-          </div>
-        )}
-
-        {data?.recommendations && data.recommendations.length > 0 && (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
-            {data.recommendations.map((rec) => {
-              const anime: JikanAnime = {
-                mal_id: rec.mal_id,
-                title: rec.title,
-                title_english: rec.title,
-                title_japanese: null,
-                images: {
-                  jpg: {
-                    image_url: rec.image,
-                    small_image_url: rec.image,
-                    large_image_url: rec.image,
-                  },
-                  webp: {
-                    image_url: rec.image,
-                    small_image_url: rec.image,
-                    large_image_url: rec.image,
-                  },
-                },
-                synopsis: null,
-                episodes: null,
-                status: "",
-                aired: { from: null, to: null },
-                score: rec.score,
-                genres: rec.genres.map((g, i) => ({ mal_id: i, name: g })),
-                studios: [],
-                season: null,
-                year: null,
-                broadcast: { day: null, time: null },
-              };
-              return (
-                <AnimeCard
-                  key={rec.mal_id}
-                  anime={anime}
-                  reason={`Because you like ${rec.becauseOf}`}
-                />
-              );
-            })}
-          </div>
-        )}
-      </div>
+    <main className="page">
+      <PageHeading
+        title="For you"
+        description={
+          basedOn.length > 0
+            ? `Shows scored ${MIN_SCORE} or higher from your top genres: ${listWords(basedOn)}. Shows already on your list are left out.`
+            : undefined
+        }
+      />
+      <ul className="mt-9 max-w-3xl border-t border-foreground">
+        {recommendations.map((rec) => (
+          <RecommendationRow key={rec.mal_id} rec={rec} basedOn={basedOn} />
+        ))}
+      </ul>
     </main>
   );
 }
