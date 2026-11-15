@@ -4,13 +4,29 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { useState } from "react";
 import { ArrowLeft, Trash2 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { AnimeCard } from "@/components/anime-card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { PageHeading } from "@/components/page-heading";
+import { SignInPrompt } from "@/components/sign-in-prompt";
+import { ErrorPanel } from "@/components/error-panel";
+import { EmptyState } from "@/components/empty-state";
+import { InlineMessage } from "@/components/inline-message";
+import { Skeleton } from "@/components/skeleton";
+import { Poster } from "@/components/poster";
+import { ShowTitle } from "@/components/show-title";
+import { TITLE } from "@/components/list-entry-row";
 import { LISTS_KEY, type CollectionDetail } from "@/hooks/use-lists";
 import { responseError } from "@/lib/fetch-json";
-import { showTitle, toJikanAnime, type StoredShow } from "@/lib/anime-shape";
+import { showTitle, type StoredShow } from "@/lib/anime-shape";
 
 class HttpError extends Error {
   status: number;
@@ -21,19 +37,71 @@ class HttpError extends Error {
   }
 }
 
+const ROW =
+  "grid grid-cols-[36px_minmax(0,1fr)_auto] items-center gap-x-3 border-b border-rule py-2.5 md:grid-cols-[36px_minmax(0,1fr)_240px_auto] md:gap-x-5";
+
+const showCount = (n: number) => `${n} ${n === 1 ? "show" : "shows"}`;
+
+function details(anime: StoredShow | null) {
+  if (!anime) return "";
+  const season =
+    anime.season && anime.year
+      ? `${anime.season[0].toUpperCase()}${anime.season.slice(1)} ${anime.year}`
+      : anime.year
+        ? String(anime.year)
+        : null;
+  const episodes = anime.episodes
+    ? `${anime.episodes} ${anime.episodes === 1 ? "episode" : "episodes"}`
+    : null;
+  return [season, episodes].filter(Boolean).join(" · ");
+}
+
+function BackLink() {
+  return (
+    <Link
+      href="/lists"
+      className="mb-4 inline-flex min-h-10 items-center gap-1.5 text-muted-foreground hover:text-foreground md:mb-5"
+    >
+      <ArrowLeft aria-hidden="true" className="size-4 stroke-[1.75]" />
+      Collections
+    </Link>
+  );
+}
+
+function PageSkeleton() {
+  return (
+    <main className="page" aria-busy="true">
+      <BackLink />
+      <Skeleton className="h-[38px] w-64 max-w-full md:h-[52px]" />
+      <Skeleton className="mt-3 h-4 w-20" />
+      <ul aria-hidden="true" className="mt-6 border-t border-foreground md:mt-7">
+        {Array.from({ length: 4 }, (_, i) => (
+          <li key={i} className={ROW}>
+            <Skeleton className="h-12 w-9" />
+            <div>
+              <Skeleton className="h-[18px] w-3/5 max-w-[260px]" />
+              <Skeleton className="mt-2 h-3 w-2/5 max-w-[160px]" />
+            </div>
+            <Skeleton className="hidden h-4 w-32 md:block" />
+            <Skeleton className="size-8 rounded-full" />
+          </li>
+        ))}
+      </ul>
+    </main>
+  );
+}
+
 export default function ListDetailPage() {
   const { id } = useParams<{ id: string }>();
   const { data: session, status: sessionStatus } = useSession();
   const queryClient = useQueryClient();
   const listKey = ["list", id];
+  const [pendingRemove, setPendingRemove] = useState<{
+    animeId: number;
+    title: string;
+  } | null>(null);
 
-  const {
-    data: list,
-    isLoading,
-    error,
-    refetch,
-    isFetching,
-  } = useQuery({
+  const { data: list, isLoading, error, refetch } = useQuery({
     queryKey: listKey,
     queryFn: async () => {
       const res = await fetch(`/api/user/lists/${id}`);
@@ -76,149 +144,150 @@ export default function ListDetailPage() {
     },
   });
 
-  if (sessionStatus === "loading" || isLoading) {
-    return (
-      <main className="min-h-screen bg-background flex items-center justify-center px-4">
-        <p className="text-muted-foreground text-sm sm:text-base">Loading...</p>
-      </main>
-    );
+  function confirmRemove() {
+    if (!pendingRemove) return;
+    removeAnime.mutate(pendingRemove.animeId);
+    setPendingRemove(null);
+  }
+
+  if (sessionStatus === "loading" || (session && isLoading)) {
+    return <PageSkeleton />;
   }
 
   if (!session) {
-    return (
-      <main className="min-h-screen bg-background flex items-center justify-center px-4">
-        <div className="text-center space-y-4">
-          <p className="text-muted-foreground text-sm sm:text-base">
-            Sign in to view this list.
-          </p>
-          <Button asChild>
-            <Link href="/auth/signin">Sign in</Link>
-          </Button>
-        </div>
-      </main>
-    );
+    return <SignInPrompt title="Collection" subject="this collection" />;
   }
 
   if (error && !(error instanceof HttpError && error.status === 404)) {
     return (
-      <main className="min-h-screen bg-background flex items-center justify-center px-4">
-        <div className="text-center space-y-4">
-          <p className="text-destructive text-sm sm:text-base">
-            Failed to load this collection.
-          </p>
-          <Button
-            variant="outline"
-            onClick={() => refetch()}
-            disabled={isFetching}
-          >
-            {isFetching ? "Retrying..." : "Try again"}
-          </Button>
-        </div>
-      </main>
+      <ErrorPanel
+        title="Collection"
+        message="This collection could not be loaded."
+        onRetry={() => refetch()}
+      />
     );
   }
 
   if (!list) {
     return (
-      <main className="min-h-screen bg-background flex items-center justify-center px-4">
-        <p className="text-muted-foreground text-sm sm:text-base">
-          List not found.
+      <main className="page">
+        <BackLink />
+        <PageHeading title="Collection not found" />
+        <p className="mt-9 text-xl">
+          It may have been deleted, or the link is wrong.
         </p>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-background">
-      <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-8">
-        <Link
-          href="/lists"
-          className="inline-flex items-center text-xs sm:text-sm text-muted-foreground hover:text-foreground mb-4 sm:mb-6 transition-colors"
-        >
-          <ArrowLeft className="h-3.5 sm:h-4 w-3.5 sm:w-4 mr-1" />
-          Back to collections
-        </Link>
+    <main className="page">
+      <BackLink />
+      <PageHeading
+        title={list.name}
+        description={list.count > 0 ? showCount(list.count) : undefined}
+        rule
+      />
 
-        <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-center sm:text-left">
-          {list.name}
-        </h1>
-
-        {removeAnime.isError && (
-          <p role="alert" className="text-xs sm:text-sm text-destructive mb-4">
-            The show was not removed: {removeAnime.error.message}
-          </p>
-        )}
-
-        {list.animes.length === 0 ? (
-          <p className="text-muted-foreground text-sm sm:text-base text-center sm:text-left">
-            No anime in this collection yet.
-          </p>
-        ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
-            <AnimatePresence>
-              {list.animes.map((entry) => (
-                <CollectionItem
-                  key={entry.id}
-                  animeId={entry.animeId}
-                  anime={entry.anime}
-                  onRemove={() => removeAnime.mutate(entry.animeId)}
-                />
-              ))}
-            </AnimatePresence>
-          </div>
-        )}
-      </div>
-    </main>
-  );
-}
-
-function CollectionItem({
-  animeId,
-  anime,
-  onRemove,
-}: {
-  animeId: number;
-  anime: StoredShow | null;
-  onRemove: () => void;
-}) {
-  const title = showTitle(anime, animeId);
-
-  return (
-    <motion.div
-      layout
-      exit={{ opacity: 0, scale: 0.5 }}
-      transition={{ duration: 0.25, ease: "easeIn" }}
-      className="relative group"
-    >
-      {anime?.imageUrl ? (
-        <AnimeCard anime={toJikanAnime(anime)} />
-      ) : (
-        <Link href={`/anime/${animeId}`} className="block h-full">
-          <div className="rounded-lg overflow-hidden bg-card border transition-all h-full hover:ring-2 hover:ring-primary">
-            <div className="w-full aspect-3/4 bg-muted flex items-center justify-center">
-              <span className="text-xs text-muted-foreground">N/A</span>
-            </div>
-            <div className="p-3 border-t">
-              <h3 className="font-medium text-sm truncate">{title}</h3>
-              <p className="text-[10px] text-muted-foreground mt-1.5">
-                Details not loaded yet
-              </p>
-            </div>
-          </div>
-        </Link>
+      {removeAnime.isError && (
+        <InlineMessage className="mt-4 flex flex-wrap items-baseline gap-x-4">
+          <span>The show was not removed: {removeAnime.error.message}</span>
+          <Button
+            type="button"
+            variant="link"
+            className="min-h-10 text-base"
+            onClick={() => {
+              if (removeAnime.variables !== undefined) {
+                removeAnime.mutate(removeAnime.variables);
+              }
+            }}
+          >
+            Try again
+          </Button>
+        </InlineMessage>
       )}
-      <button
-        type="button"
-        aria-label={`Remove ${title} from this collection`}
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          onRemove();
+
+      {list.animes.length === 0 ? (
+        <EmptyState
+          className="mt-2"
+          action={
+            <Button variant="outline" asChild>
+              <Link href="/search">Find a show</Link>
+            </Button>
+          }
+        >
+          This collection is empty. Shows are added from their own page.
+        </EmptyState>
+      ) : (
+        <ul className="mt-2">
+          {list.animes.map(({ id: rowId, animeId, anime }) => {
+            const title = showTitle(anime, animeId);
+            const href = `/anime/${animeId}`;
+            const info = details(anime);
+            return (
+              <li key={rowId} className={ROW}>
+                <Link
+                  href={href}
+                  tabIndex={-1}
+                  aria-hidden="true"
+                  className="self-start"
+                >
+                  <Poster src={anime?.imageUrl} title={title} size="sm" />
+                </Link>
+                <div className="min-w-0">
+                  <ShowTitle
+                    title={title}
+                    japanese={anime?.titleJapanese}
+                    href={href}
+                    className={TITLE}
+                  />
+                  {info && (
+                    <p className="mt-1 text-[15px] text-muted-foreground md:hidden">
+                      {info}
+                    </p>
+                  )}
+                </div>
+                <p className="hidden text-muted-foreground md:block">{info}</p>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon-lg"
+                  aria-label={`Remove ${title} from ${list.name}`}
+                  onClick={() => setPendingRemove({ animeId, title })}
+                >
+                  <Trash2 aria-hidden="true" className="size-[17px]" />
+                </Button>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+
+      <Dialog
+        open={!!pendingRemove}
+        onOpenChange={(open) => {
+          if (!open) setPendingRemove(null);
         }}
-        className="absolute top-1 right-1 h-7 w-7 rounded-full bg-black/60 text-red-400 hover:bg-black/80 hover:text-red-300 flex items-center justify-center cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       >
-        <Trash2 className="h-3.5 w-3.5" />
-      </button>
-    </motion.div>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Remove from this collection?</DialogTitle>
+            <DialogDescription>
+              {pendingRemove
+                ? `${pendingRemove.title} will be removed from ${list.name}. Your watch list is not affected.`
+                : ""}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setPendingRemove(null)}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={confirmRemove}>
+              Remove
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </main>
   );
 }

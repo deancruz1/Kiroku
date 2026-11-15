@@ -2,20 +2,11 @@
 
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import Image from "next/image";
 import { useState } from "react";
-import { Check, X, Edit3, Trash2, Plus, Minus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { NativeSelect } from "@/components/ui/native-select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Dialog,
   DialogContent,
@@ -24,8 +15,20 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { motion, AnimatePresence } from "framer-motion";
-import { Star } from "lucide-react";
+import { PageHeading } from "@/components/page-heading";
+import { SectionHeading } from "@/components/section-heading";
+import { SignInPrompt } from "@/components/sign-in-prompt";
+import { ErrorPanel } from "@/components/error-panel";
+import { EmptyState } from "@/components/empty-state";
+import { InlineMessage } from "@/components/inline-message";
+import { Skeleton } from "@/components/skeleton";
+import {
+  STATUS_LABEL,
+  STATUS_ORDER,
+  StatusGlyph,
+  type WatchStatus,
+} from "@/components/status-mark";
+import { ListEntryRow, ListRowsSkeleton } from "@/components/list-entry-row";
 import {
   useDeleteEntry,
   useEntries,
@@ -34,281 +37,149 @@ import {
   type EntryPatch,
 } from "@/hooks/use-entries";
 import { showTitle } from "@/lib/anime-shape";
+import { cn } from "@/lib/utils";
 
-const STATUS_ORDER = ["watching", "plan_to_watch", "completed", "dropped"];
+type Sort = "updated" | "title" | "rating";
 
-const STATUS_LABELS: Record<string, string> = {
-  watching: "Watching",
-  plan_to_watch: "Plan to Watch",
-  completed: "Completed",
-  dropped: "Dropped",
+const EMPTY_TAB: Record<WatchStatus, string> = {
+  watching: "You are not watching anything right now.",
+  plan_to_watch: "Nothing is planned yet.",
+  completed: "You have not completed anything yet.",
+  dropped: "You have not dropped anything.",
 };
 
-function AnimeEntryCard({
-  entry,
-  onSave,
-  onDelete,
-}: {
-  entry: Entry;
-  onSave: (patch: EntryPatch) => void;
-  onDelete: () => void;
-}) {
-  const [editing, setEditing] = useState(false);
-  const [status, setStatus] = useState(entry.status);
-  const [episodes, setEpisodes] = useState(entry.episodes);
-  const [rating, setRating] = useState(entry.rating || 0);
-
-  const anime = entry.anime;
-  const title = showTitle(anime, entry.animeId);
-  const totalEpisodes = anime?.episodes || 0;
-
-  function startEditing() {
-    setStatus(entry.status);
-    setEpisodes(entry.episodes);
-    setRating(entry.rating || 0);
-    setEditing(true);
+function sortEntries(entries: Entry[], sort: Sort) {
+  if (sort === "title") {
+    return [...entries].sort((a, b) =>
+      showTitle(a.anime, a.animeId).localeCompare(
+        showTitle(b.anime, b.animeId),
+        "en",
+        { sensitivity: "base" },
+      ),
+    );
   }
-
-  function handleSave() {
-    onSave({ status, episodes, rating: rating || null });
-    setEditing(false);
+  if (sort === "rating") {
+    return [...entries].sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
   }
-
-  return (
-    <Card className="overflow-hidden hover:ring-2 hover:ring-primary/50 transition-all">
-      <div className="flex p-2.5 sm:p-3 gap-3 sm:gap-4">
-        <Link
-          href={`/anime/${entry.animeId}`}
-          className="shrink-0 cursor-pointer"
-        >
-          {anime?.imageUrl ? (
-            <div className="relative w-20 sm:w-24 h-20 sm:h-24 rounded-lg overflow-hidden">
-              <Image
-                src={anime.imageUrl}
-                alt={title}
-                fill
-                sizes="96px"
-                className="object-cover"
-              />
-            </div>
-          ) : (
-            <div className="w-20 sm:w-24 h-20 sm:h-24 bg-muted flex items-center justify-center rounded-lg">
-              <span className="text-xs text-muted-foreground">N/A</span>
-            </div>
-          )}
-        </Link>
-
-        <div className="flex-1 min-w-0">
-          <Link href={`/anime/${entry.animeId}`} className="cursor-pointer">
-            <h3 className="font-semibold text-sm sm:text-base truncate hover:underline">
-              {title}
-            </h3>
-          </Link>
-
-          {editing ? (
-            <div className="mt-2 space-y-2">
-              <Select value={status} onValueChange={setStatus}>
-                <SelectTrigger
-                  className="h-7 sm:h-8 text-xs"
-                  aria-label="Status"
-                >
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {STATUS_ORDER.map((s) => (
-                    <SelectItem key={s} value={s}>
-                      {STATUS_LABELS[s]}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <div className="flex items-center gap-1">
-                <Button
-                  size="icon"
-                  variant="outline"
-                  className="h-6 sm:h-7 w-6 sm:w-7"
-                  aria-label="One episode fewer"
-                  onClick={() => setEpisodes(Math.max(0, episodes - 1))}
-                >
-                  <Minus className="h-3 w-3" />
-                </Button>
-                <span className="text-xs sm:text-sm w-8 text-center">
-                  {episodes}
-                </span>
-                <Button
-                  size="icon"
-                  variant="outline"
-                  className="h-6 sm:h-7 w-6 sm:w-7"
-                  aria-label="One episode more"
-                  onClick={() => {
-                    if (totalEpisodes === 0 || episodes < totalEpisodes) {
-                      setEpisodes(episodes + 1);
-                    }
-                  }}
-                  disabled={totalEpisodes > 0 && episodes >= totalEpisodes}
-                >
-                  <Plus className="h-3 w-3" />
-                </Button>
-                <span className="text-xs sm:text-sm text-muted-foreground ml-1">
-                  / {totalEpisodes > 0 ? totalEpisodes : "?"} ep
-                </span>
-              </div>
-              <div className="flex items-center gap-0.5 flex-wrap">
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
-                  <button
-                    key={n}
-                    type="button"
-                    aria-label={`Rate ${n} out of 10`}
-                    aria-pressed={n === rating}
-                    onClick={() => setRating(n === rating ? 0 : n)}
-                    className={`text-xs sm:text-sm cursor-pointer ${
-                      n <= rating
-                        ? "text-yellow-500"
-                        : "text-muted-foreground/30"
-                    } hover:text-yellow-500 transition-colors`}
-                  >
-                    <Star
-                      className="h-3 sm:h-3.5 w-3 sm:w-3.5"
-                      fill={n <= rating ? "currentColor" : "none"}
-                    />
-                  </button>
-                ))}
-                {rating > 0 && (
-                  <span className="text-xs sm:text-sm text-yellow-500 ml-1">
-                    {rating}/10
-                  </span>
-                )}
-              </div>
-              <div className="flex gap-1">
-                <Button
-                  size="sm"
-                  className="h-6 sm:h-7 text-xs"
-                  onClick={handleSave}
-                >
-                  <Check className="h-3 w-3 mr-1" />
-                  Save
-                </Button>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  className="h-6 sm:h-7 text-xs"
-                  onClick={() => setEditing(false)}
-                >
-                  <X className="h-3 w-3 mr-1" />
-                  Cancel
-                </Button>
-              </div>
-            </div>
-          ) : (
-            <div className="flex items-center gap-1.5 sm:gap-2 mt-1 sm:mt-1.5 flex-wrap">
-              <Badge variant="secondary" className="text-[10px] sm:text-xs">
-                {STATUS_LABELS[entry.status]}
-              </Badge>
-              <span className="text-xs sm:text-sm text-muted-foreground">
-                {entry.episodes > 0 || totalEpisodes > 0
-                  ? `${entry.episodes} / ${totalEpisodes > 0 ? totalEpisodes : "?"} ep`
-                  : ""}
-              </span>
-              {entry.rating && (
-                <span className="text-xs sm:text-sm text-yellow-500">
-                  ★ {entry.rating}
-                </span>
-              )}
-              <div className="ml-auto flex gap-1">
-                <Button
-                  size="icon"
-                  variant="ghost"
-                  className="h-7 sm:h-8 w-7 sm:w-8 cursor-pointer"
-                  aria-label={`Edit ${title}`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    startEditing();
-                  }}
-                >
-                  <Edit3 className="h-3.5 sm:h-4 w-3.5 sm:w-4" />
-                </Button>
-                <Button
-                  size="icon"
-                  variant="ghost"
-                  className="h-7 sm:h-8 w-7 sm:w-8 text-destructive cursor-pointer"
-                  aria-label={`Remove ${title} from your list`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    onDelete();
-                  }}
-                >
-                  <Trash2 className="h-3.5 sm:h-4 w-3.5 sm:w-4" />
-                </Button>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </Card>
-  );
+  // The API already returns the most recently updated first.
+  return entries;
 }
 
-function ListSkeleton() {
+function matchesTitle(entry: Entry, query: string) {
+  const q = query.trim().toLowerCase();
+  if (!q) return true;
+  const a = entry.anime;
+  return [showTitle(a, entry.animeId), a?.title, a?.titleJapanese]
+    .filter(Boolean)
+    .some((t) => t!.toLowerCase().includes(q));
+}
+
+function PageSkeleton() {
   return (
-    <div className="space-y-3">
-      {[...Array(4)].map((_, i) => (
-        <div
-          key={i}
-          className="h-24 sm:h-28 bg-muted animate-pulse rounded-lg"
-        />
-      ))}
-    </div>
+    <main className="page" aria-busy="true">
+      <PageHeading title="Watch list" />
+      <div className="mt-6 flex gap-7 border-b border-foreground pb-3 md:mt-7">
+        {[48, 90, 110, 100, 80].map((w, i) => (
+          <Skeleton key={i} className="h-5" style={{ width: w }} />
+        ))}
+      </div>
+      <Skeleton className="mt-10 h-6 w-40" />
+      <div className="mt-2">
+        <ListRowsSkeleton />
+      </div>
+    </main>
   );
 }
 
 export default function WatchListPage() {
   const { data: session, status: sessionStatus } = useSession();
   const [activeTab, setActiveTab] = useState("all");
+  const [query, setQuery] = useState("");
+  const [sort, setSort] = useState<Sort>("updated");
   const [pendingDelete, setPendingDelete] = useState<Entry | null>(null);
 
-  const { data: entries, isLoading, error, refetch, isFetching } =
-    useEntries();
+  const { data: entries, isLoading, error, refetch } = useEntries();
   const updateEntry = useUpdateEntry();
   const deleteEntry = useDeleteEntry();
 
-  if (sessionStatus === "loading") {
-    return (
-      <main className="min-h-screen bg-background">
-        <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-8 max-w-3xl">
-          <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-center sm:text-left">
-            My Watch List
-          </h1>
-          <ListSkeleton />
-        </div>
-      </main>
-    );
-  }
+  if (sessionStatus === "loading") return <PageSkeleton />;
 
   if (!session) {
+    return <SignInPrompt title="Watch list" subject="your watch list" />;
+  }
+
+  if (isLoading) return <PageSkeleton />;
+
+  if (error && !entries) {
     return (
-      <main className="min-h-screen bg-background flex items-center justify-center px-4">
-        <div className="text-center space-y-4">
-          <p className="text-muted-foreground text-sm sm:text-base">
-            Sign in to view your watch list.
-          </p>
-          <Button asChild>
-            <Link href="/auth/signin">Sign in</Link>
-          </Button>
-        </div>
-      </main>
+      <ErrorPanel
+        title="Watch list"
+        message="Your watch list could not be loaded."
+        onRetry={() => refetch()}
+      />
     );
   }
 
-  const filteredEntries =
-    activeTab === "all"
-      ? entries || []
-      : (entries || []).filter((e) => e.status === activeTab);
+  const all = entries ?? [];
+  const counts = Object.fromEntries(
+    STATUS_ORDER.map((s) => [s, all.filter((e) => e.status === s).length]),
+  ) as Record<WatchStatus, number>;
+  const shown = sortEntries(
+    all.filter(
+      (e) =>
+        (activeTab === "all" || e.status === activeTab) &&
+        matchesTitle(e, query),
+    ),
+    sort,
+  );
 
-  const mutationError = updateEntry.isError
-    ? `Your changes were not saved: ${updateEntry.error.message}`
+  const failedId = updateEntry.isError
+    ? updateEntry.variables?.id
     : deleteEntry.isError
-      ? `The show was not removed: ${deleteEntry.error.message}`
-      : null;
+      ? deleteEntry.variables
+      : undefined;
+  const failure = failedId ? (
+    <InlineMessage className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+      <span>
+        {updateEntry.isError
+          ? `Your changes were not saved: ${updateEntry.error.message}`
+          : `The show was not removed: ${deleteEntry.error?.message}`}
+      </span>
+      <span className="flex gap-4">
+        <Button
+          type="button"
+          variant="link"
+          className="min-h-10 text-base"
+          onClick={() => {
+            if (updateEntry.isError && updateEntry.variables) {
+              updateEntry.mutate(updateEntry.variables);
+            } else if (deleteEntry.isError && deleteEntry.variables) {
+              deleteEntry.mutate(deleteEntry.variables);
+            }
+          }}
+        >
+          Try again
+        </Button>
+        <Button
+          type="button"
+          variant="link"
+          className="min-h-10 text-base"
+          onClick={() => {
+            updateEntry.reset();
+            deleteEntry.reset();
+          }}
+        >
+          Dismiss
+        </Button>
+      </span>
+    </InlineMessage>
+  ) : null;
+  const failureShown = shown.some((e) => e.id === failedId);
+
+  function save(entry: Entry, patch: EntryPatch) {
+    deleteEntry.reset();
+    updateEntry.mutate({ id: entry.id, patch });
+  }
 
   function confirmDelete() {
     if (!pendingDelete) return;
@@ -317,123 +188,158 @@ export default function WatchListPage() {
     setPendingDelete(null);
   }
 
+  function rows(list: Entry[]) {
+    return (
+      <ul>
+        {list.map((entry) => (
+          <ListEntryRow
+            key={entry.id}
+            entry={entry}
+            onSave={(patch) => save(entry, patch)}
+            onRemove={() => setPendingDelete(entry)}
+            message={entry.id === failedId ? failure : undefined}
+          />
+        ))}
+      </ul>
+    );
+  }
+
+  const tabs = [
+    { value: "all", label: "All", count: all.length },
+    ...STATUS_ORDER.map((s) => ({
+      value: s,
+      label: STATUS_LABEL[s],
+      count: counts[s],
+    })),
+  ];
+
   return (
-    <main className="min-h-screen bg-background">
-      <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-8 max-w-3xl">
-        <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-center sm:text-left">
-          My Watch List
-        </h1>
+    <main className="page">
+      <PageHeading title="Watch list" />
 
-        {mutationError && (
-          <div
-            role="alert"
-            className="mb-4 flex items-center justify-between gap-2 rounded-lg border border-destructive/40 bg-destructive/10 px-3 py-2 text-xs sm:text-sm text-destructive"
-          >
-            <span>{mutationError}</span>
-            <Button
-              size="icon-xs"
-              variant="ghost"
-              aria-label="Dismiss"
-              onClick={() => {
-                updateEntry.reset();
-                deleteEntry.reset();
-              }}
-            >
-              <X />
-            </Button>
-          </div>
-        )}
-
-        {isLoading && <ListSkeleton />}
-
-        {error && !entries && (
-          <div className="text-center py-12 sm:py-16 space-y-4">
-            <p className="text-destructive text-sm sm:text-base">
-              Failed to load entries.
-            </p>
-            <Button
-              variant="outline"
-              onClick={() => refetch()}
-              disabled={isFetching}
-            >
-              {isFetching ? "Retrying..." : "Try again"}
-            </Button>
-          </div>
-        )}
-
-        {entries && entries.length === 0 && (
-          <div className="text-center py-12 sm:py-16">
-            <p className="text-muted-foreground text-sm sm:text-base mb-4">
-              Your list is empty.
-            </p>
+      {all.length === 0 ? (
+        <EmptyState
+          className="mt-6 md:mt-7"
+          action={
             <Button asChild>
-              <Link href="/search">Search Anime</Link>
+              <Link href="/search">Find a show</Link>
             </Button>
-          </div>
-        )}
-
-        {entries && entries.length > 0 && (
-          <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="mb-4 w-full h-9 sm:h-10">
-              <TabsTrigger
-                value="all"
-                className="flex-1 text-xs sm:text-sm cursor-pointer"
-              >
-                All
-              </TabsTrigger>
-              {STATUS_ORDER.map((status) => (
-                <TabsTrigger
-                  key={status}
-                  value={status}
-                  className="flex-1 text-xs sm:text-sm cursor-pointer"
-                >
-                  {STATUS_LABELS[status]}
+          }
+        >
+          Your watch list is empty.
+        </EmptyState>
+      ) : (
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="gap-0">
+          <div className="mt-6 flex flex-col-reverse gap-4 border-b border-foreground md:mt-7 md:flex-row md:items-end md:justify-between md:gap-8">
+            <TabsList
+              aria-label="Filter by status"
+              className="-mb-px max-w-full overflow-x-auto scrollbar-none"
+            >
+              {tabs.map((t) => (
+                <TabsTrigger key={t.value} value={t.value} className="min-h-10">
+                  {t.label}
+                  <span>{t.count}</span>
                 </TabsTrigger>
               ))}
             </TabsList>
-
-            <div className="space-y-2.5 sm:space-y-3">
-              <AnimatePresence mode="wait">
-                {filteredEntries.length > 0 ? (
-                  filteredEntries.map((entry, index) => (
-                    <motion.div
-                      key={entry.id}
-                      initial={{ opacity: 0, y: 12 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -12 }}
-                      transition={{
-                        duration: 0.25,
-                        delay: index * 0.04,
-                        ease: "easeOut",
-                      }}
-                    >
-                      <AnimeEntryCard
-                        entry={entry}
-                        onSave={(patch) => {
-                          deleteEntry.reset();
-                          updateEntry.mutate({ id: entry.id, patch });
-                        }}
-                        onDelete={() => setPendingDelete(entry)}
-                      />
-                    </motion.div>
-                  ))
-                ) : (
-                  <motion.p
-                    key="empty"
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -12 }}
-                    transition={{ duration: 0.25, ease: "easeOut" }}
-                    className="text-center text-muted-foreground py-8 text-sm sm:text-base"
-                  >
-                    No anime in this category.
-                  </motion.p>
-                )}
-              </AnimatePresence>
+            <div className="flex items-end gap-5 md:pb-2">
+              <Input
+                type="search"
+                placeholder="Filter by title"
+                aria-label="Filter by title"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                className="h-10 flex-1 md:w-[220px] md:flex-none"
+              />
+              <label className="flex items-center gap-2.5 text-muted-foreground">
+                Sort
+                <NativeSelect
+                  value={sort}
+                  onChange={(e) => setSort(e.target.value as Sort)}
+                  className="h-10"
+                >
+                  <option value="updated">Last updated</option>
+                  <option value="title">Title</option>
+                  <option value="rating">Rating</option>
+                </NativeSelect>
+              </label>
             </div>
-          </Tabs>
-        )}
-      </div>
+          </div>
+
+          <TabsContent value={activeTab}>
+            {failure && !failureShown && (
+              <div className="mt-4">{failure}</div>
+            )}
+
+            {shown.length === 0 ? (
+              query.trim() ? (
+                <EmptyState
+                  className="mt-2"
+                  action={
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setQuery("")}
+                    >
+                      Clear the filter
+                    </Button>
+                  }
+                >
+                  No shows here match &ldquo;{query.trim()}&rdquo;.
+                </EmptyState>
+              ) : (
+                <EmptyState
+                  className="mt-2"
+                  action={
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setActiveTab("all")}
+                    >
+                      Show all
+                    </Button>
+                  }
+                >
+                  {EMPTY_TAB[activeTab as WatchStatus]}
+                </EmptyState>
+              )
+            ) : activeTab === "all" ? (
+              STATUS_ORDER.map((s) => {
+                const group = shown.filter((e) => e.status === s);
+                if (group.length === 0) return null;
+                return (
+                  <section
+                    key={s}
+                    aria-labelledby={`group-${s}`}
+                    className="mt-10"
+                  >
+                    <SectionHeading
+                      id={`group-${s}`}
+                      className="mb-1 items-center gap-2.5"
+                    >
+                      <span
+                        className={cn(
+                          "inline-flex",
+                          s === "watching" && "text-vermilion",
+                        )}
+                      >
+                        <StatusGlyph status={s} size="md" />
+                      </span>
+                      {STATUS_LABEL[s]}
+                      <span className="text-lg font-normal text-muted-foreground">
+                        {group.length}
+                      </span>
+                    </SectionHeading>
+                    {rows(group)}
+                  </section>
+                );
+              })
+            ) : (
+              <div className="mt-2">{rows(shown)}</div>
+            )}
+          </TabsContent>
+        </Tabs>
+      )}
 
       <Dialog
         open={!!pendingDelete}
@@ -443,7 +349,7 @@ export default function WatchListPage() {
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Remove from your list?</DialogTitle>
+            <DialogTitle>Remove from your watch list?</DialogTitle>
             <DialogDescription>
               {pendingDelete
                 ? `${showTitle(pendingDelete.anime, pendingDelete.animeId)} will be removed, along with your progress, rating and review.`
