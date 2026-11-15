@@ -6,60 +6,70 @@ import { useSession, signOut } from "next-auth/react";
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  List,
-  BarChart3,
-  Search,
-  LogOut,
-  TrendingUp,
-  Sparkles,
-  FolderHeart,
-  Tv,
-  User,
-  Menu,
-  X,
-} from "lucide-react";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { cn } from "@/lib/utils";
+import { Search, User, Menu, X } from "lucide-react";
 
 const links = [
-  { href: "/top", label: "Top Shows", icon: TrendingUp },
-  { href: "/season", label: "Season", icon: Tv },
-  { href: "/list", label: "Watch List", icon: List },
-  { href: "/recommendations", label: "For You", icon: Sparkles },
-  { href: "/stats", label: "My Stats", icon: BarChart3 },
-  { href: "/lists", label: "Collections", icon: FolderHeart },
+  { href: "/top", label: "Top shows" },
+  { href: "/season", label: "Season" },
+  { href: "/list", label: "Watch list" },
+  { href: "/recommendations", label: "For you" },
+  { href: "/stats", label: "Stats" },
+  { href: "/lists", label: "Collections" },
 ];
+
+const MENU_ROW =
+  "flex w-full cursor-pointer py-3 text-left text-[17px] hover:no-underline";
+
+function MenuLabel({ active, children }: { active: boolean; children: React.ReactNode }) {
+  return (
+    <span
+      className={cn(
+        "border-b-2 pb-0.5",
+        active
+          ? "border-vermilion text-foreground"
+          : "border-transparent text-muted-foreground",
+      )}
+    >
+      {children}
+    </span>
+  );
+}
 
 export function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const { data: session } = useSession();
-  const [searchOpen, setSearchOpen] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [mobileQuery, setMobileQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
   const mobileInputRef = useRef<HTMLInputElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const searchButtonRef = useRef<HTMLButtonElement>(null);
 
   const showSearch = pathname !== "/" && !pathname.startsWith("/search");
 
   useEffect(() => {
-    if (searchOpen) {
-      setTimeout(() => inputRef.current?.focus(), 150);
-    }
-  }, [searchOpen]);
-
-  useEffect(() => {
     if (mobileSearchOpen) {
-      setTimeout(() => mobileInputRef.current?.focus(), 150);
+      mobileInputRef.current?.focus();
     }
   }, [mobileSearchOpen]);
 
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
       if (e.key === "Escape") {
-        setSearchOpen(false);
+        const menuButton = menuButtonRef.current;
+        const searchButton = searchButtonRef.current;
+        if (menuButton?.getAttribute("aria-expanded") === "true") {
+          menuButton.focus();
+        } else if (
+          searchButton?.getAttribute("aria-expanded") === "true" &&
+          document.activeElement === mobileInputRef.current
+        ) {
+          searchButton.focus();
+        }
         setMobileSearchOpen(false);
         setQuery("");
         setMobileQuery("");
@@ -78,7 +88,6 @@ export function Navbar() {
     e.preventDefault();
     if (query.trim()) {
       router.push(`/search?q=${encodeURIComponent(query.trim())}`);
-      setSearchOpen(false);
       setQuery("");
     }
   }
@@ -99,208 +108,213 @@ export function Navbar() {
   }, [pathname]);
 
   return (
-    <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
-      <div className="container mx-auto px-3 sm:px-4 flex items-center justify-between h-14 sm:h-16">
-        <div className="flex items-center gap-1">
-          <Link
-            href="/"
-            className="font-bold text-lg sm:text-xl mr-2 sm:mr-6 hover:text-primary transition-colors shrink-0"
+    <header className="border-b border-rule bg-background">
+      <div className="page-frame flex h-14 items-center justify-between gap-3 xl:h-[72px] xl:justify-start xl:gap-10">
+        <Link
+          href="/"
+          className="flex shrink-0 items-baseline gap-2.5 hover:no-underline"
+        >
+          <b
+            lang="ja"
+            aria-hidden="true"
+            className="text-[22px] font-bold tracking-[.04em] xl:text-[26px]"
           >
-            <span className="hidden sm:inline">Kiroku | 記録</span>
-            <span className="sm:hidden">Kiroku</span>
-          </Link>
+            記録
+          </b>
+          <span className="text-muted-foreground">Kiroku</span>
+        </Link>
 
-          {/* Desktop nav (xl+) */}
-          <nav className="hidden xl:flex items-center gap-1">
-            {links.map(({ href, label, icon: Icon }) => (
-              <Button
+        <nav aria-label="Main" className="hidden flex-1 gap-7 xl:flex">
+          {links.map(({ href, label }) => {
+            const active = pathname === href;
+            return (
+              <Link
                 key={href}
-                variant={pathname === href ? "secondary" : "ghost"}
-                size="default"
-                asChild
-                className="text-sm"
+                href={href}
+                aria-current={active ? "page" : undefined}
+                className={cn(
+                  "border-b-2 pt-6 pb-[22px] text-base hover:text-foreground hover:no-underline",
+                  active
+                    ? "border-vermilion text-foreground"
+                    : "border-transparent text-muted-foreground",
+                )}
               >
-                <Link href={href}>
-                  <Icon className="h-4 w-4 mr-2" />
-                  {label}
-                </Link>
-              </Button>
-            ))}
-          </nav>
+                {label}
+              </Link>
+            );
+          })}
+        </nav>
 
-          {/* Tablet nav (md-xl) - icons only */}
-          <nav className="hidden md:flex xl:hidden items-center gap-0.5">
-            {links.map(({ href, icon: Icon }) => (
-              <Button
-                key={href}
-                variant={pathname === href ? "secondary" : "ghost"}
-                size="default"
-                asChild
-                className="px-2"
-              >
-                <Link href={href}>
-                  <Icon className="h-4 w-4" />
-                </Link>
-              </Button>
-            ))}
-          </nav>
-        </div>
-
-        <div className="flex items-center gap-0.5 sm:gap-1">
-          {/* Desktop Search (lg+) */}
+        <div className="flex items-center gap-1.5">
           {showSearch && (
             <form
+              role="search"
               onSubmit={handleSearch}
-              className="hidden lg:flex items-center gap-1 sm:gap-2"
+              className="relative mr-2 hidden xl:block"
             >
-              <AnimatePresence initial={false}>
-                {searchOpen && (
-                  <motion.div
-                    initial={{ width: 0, opacity: 0 }}
-                    animate={{ width: "14rem", opacity: 1 }}
-                    exit={{ width: 0, opacity: 0 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="overflow-hidden"
-                  >
-                    <Input
-                      ref={inputRef}
-                      value={query}
-                      onChange={(e) => setQuery(e.target.value)}
-                      placeholder="Search anime..."
-                      className="h-9 text-sm rounded-md focus-visible:ring-0 focus-visible:ring-offset-0"
-                    />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-              <button
-                type="button"
-                className={`h-9 w-9 inline-flex items-center justify-center shrink-0 rounded-md transition-colors cursor-pointer ${
-                  searchOpen
-                    ? "bg-primary text-primary-foreground"
-                    : "hover:bg-accent hover:text-accent-foreground"
-                }`}
-                onClick={() => {
-                  if (searchOpen && query.trim()) {
-                    handleSearch(
-                      new Event("submit") as unknown as React.FormEvent,
-                    );
-                  } else {
-                    setSearchOpen(!searchOpen);
-                  }
-                }}
-              >
-                <Search className="h-4 w-4" />
-              </button>
+              <Search
+                aria-hidden="true"
+                className="absolute top-2.5 left-1.5 size-4 stroke-[1.75] text-muted-foreground"
+              />
+              <Input
+                type="search"
+                aria-label="Search anime"
+                placeholder="Search anime"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                className="w-[220px] pr-2.5 pl-[34px]"
+              />
             </form>
           )}
 
-          {/* Mobile/Tablet Search Icon (< lg) */}
           {showSearch && (
-            <button
+            <Button
+              ref={searchButtonRef}
               type="button"
-              className="lg:hidden h-9 w-9 inline-flex items-center justify-center shrink-0 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors cursor-pointer"
+              variant="ghost"
+              size="icon"
+              aria-label="Search"
+              aria-expanded={mobileSearchOpen}
+              aria-controls="mobile-search"
+              className="text-foreground xl:hidden"
               onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
             >
-              <Search className="h-4 w-4" />
-            </button>
+              <Search aria-hidden="true" />
+            </Button>
           )}
+
+          <ThemeToggle />
 
           {session && (
             <Button
               variant="ghost"
-              size="default"
+              size="icon"
               asChild
-              className="px-2 sm:px-3"
+              className="hidden text-foreground xl:inline-flex"
             >
-              <Link href="/profile">
-                <User className="h-4 w-4" />
+              <Link
+                href="/profile"
+                aria-label="Profile"
+                aria-current={pathname === "/profile" ? "page" : undefined}
+              >
+                <User aria-hidden="true" />
               </Link>
             </Button>
           )}
 
           {session ? (
             <Button
+              type="button"
               variant="ghost"
-              size="default"
+              className="hidden xl:inline-flex"
               onClick={() => signOut()}
-              className="cursor-pointer px-2 sm:px-3"
             >
-              <LogOut className="h-4 w-4 sm:mr-2" />
-              <span className="hidden sm:inline">Sign out</span>
+              Sign out
             </Button>
           ) : (
-            <Button size="default" asChild className="text-sm">
+            <Button variant="ghost" asChild className="hidden xl:inline-flex">
               <Link href="/auth/signin">Sign in</Link>
             </Button>
           )}
 
           <Button
+            ref={menuButtonRef}
+            type="button"
             variant="ghost"
-            size="default"
-            className="md:hidden px-2"
+            size="icon"
+            aria-label="Menu"
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-menu"
+            className="text-foreground xl:hidden"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            {mobileMenuOpen ? (
-              <X className="h-5 w-5" />
-            ) : (
-              <Menu className="h-5 w-5" />
-            )}
+            {mobileMenuOpen ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
           </Button>
         </div>
       </div>
 
-      {/* Mobile/Tablet Search Bar (< lg) */}
-      <AnimatePresence>
-        {mobileSearchOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2, ease: "easeInOut" }}
-            className="lg:hidden border-t bg-background overflow-hidden"
+      {showSearch && (
+        <div
+          id="mobile-search"
+          hidden={!mobileSearchOpen}
+          className="border-t border-rule xl:hidden"
+        >
+          <form
+            role="search"
+            onSubmit={handleMobileSearch}
+            className="page-frame relative py-3"
           >
-            <form onSubmit={handleMobileSearch} className="p-3">
-              <Input
-                ref={mobileInputRef}
-                value={mobileQuery}
-                onChange={(e) => setMobileQuery(e.target.value)}
-                placeholder="Search anime..."
-                className="h-9 text-sm rounded-md focus-visible:ring-0 focus-visible:ring-offset-0"
-              />
-            </form>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <Search
+              aria-hidden="true"
+              className="absolute top-1/2 left-[calc(var(--gutter)+6px)] size-4 -translate-y-1/2 stroke-[1.75] text-muted-foreground"
+            />
+            <Input
+              ref={mobileInputRef}
+              type="search"
+              aria-label="Search anime"
+              placeholder="Search anime"
+              value={mobileQuery}
+              onChange={(e) => setMobileQuery(e.target.value)}
+              className="pl-[34px]"
+            />
+          </form>
+        </div>
+      )}
 
-      {/* Mobile Menu (< md) */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2, ease: "easeInOut" }}
-            className="md:hidden border-t bg-background overflow-hidden"
-          >
-            <nav className="flex flex-col p-3 gap-1">
-              {links.map(({ href, label, icon: Icon }) => (
-                <Button
-                  key={href}
-                  variant={pathname === href ? "secondary" : "ghost"}
-                  size="default"
-                  asChild
-                  className="justify-start"
+      <div
+        id="mobile-menu"
+        hidden={!mobileMenuOpen}
+        className="border-t border-rule xl:hidden"
+      >
+        <div className="page-frame pb-3">
+          <nav aria-label="Main">
+            <ul>
+              {links.map(({ href, label }) => {
+                const active = pathname === href;
+                return (
+                  <li key={href} className="border-b border-rule">
+                    <Link
+                      href={href}
+                      aria-current={active ? "page" : undefined}
+                      className={MENU_ROW}
+                    >
+                      <MenuLabel active={active}>{label}</MenuLabel>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+          <ul>
+            {session && (
+              <li className="border-b border-rule">
+                <Link
+                  href="/profile"
+                  aria-current={pathname === "/profile" ? "page" : undefined}
+                  className={MENU_ROW}
                 >
-                  <Link href={href}>
-                    <Icon className="h-4 w-4 mr-3" />
-                    {label}
-                  </Link>
-                </Button>
-              ))}
-            </nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                  <MenuLabel active={pathname === "/profile"}>Profile</MenuLabel>
+                </Link>
+              </li>
+            )}
+            <li>
+              {session ? (
+                <button
+                  type="button"
+                  className={MENU_ROW}
+                  onClick={() => signOut()}
+                >
+                  <MenuLabel active={false}>Sign out</MenuLabel>
+                </button>
+              ) : (
+                <Link href="/auth/signin" className={MENU_ROW}>
+                  <MenuLabel active={pathname === "/auth/signin"}>Sign in</MenuLabel>
+                </Link>
+              )}
+            </li>
+          </ul>
+        </div>
+      </div>
     </header>
   );
 }

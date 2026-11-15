@@ -1,7 +1,10 @@
 "use client";
 
+import { useLayoutEffect } from "react";
 import "./globals.css";
-import { Button } from "@/components/ui/button";
+import { fontVariables } from "@/components/fonts";
+import { syncTheme } from "@/components/theme-toggle";
+import { ErrorPanel } from "@/components/error-panel";
 
 export default function GlobalError({
   unstable_retry,
@@ -9,16 +12,13 @@ export default function GlobalError({
   error: Error & { digest?: string };
   unstable_retry: () => void;
 }) {
+  useLayoutEffect(() => syncTheme(), []);
+
   return (
-    <html lang="en" className="dark">
-      <body>
+    <html lang="en" suppressHydrationWarning>
+      <body className={fontVariables}>
         <title>Something went wrong | Kiroku</title>
-        <main className="min-h-screen bg-background flex items-center justify-center px-4">
-          <div role="alert" className="text-center space-y-4">
-            <p className="text-sm sm:text-base">Could not load Kiroku.</p>
-            <Button onClick={() => unstable_retry()}>Try again</Button>
-          </div>
-        </main>
+        <ErrorPanel message="Could not load Kiroku." onRetry={unstable_retry} />
       </body>
     </html>
   );

@@ -1,20 +1,14 @@
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { PageHeading } from "@/components/page-heading";
 
 export default function NotFound() {
   return (
-    <main className="min-h-screen bg-background flex items-center justify-center px-4">
-      <div className="text-center space-y-3">
-        <h1 className="text-xl sm:text-2xl font-bold">Page not found</h1>
-        <p className="text-muted-foreground text-sm sm:text-base">
-          This page does not exist.
-        </p>
-        <Link
-          href="/"
-          className="inline-block text-sm text-muted-foreground hover:text-foreground transition-colors"
-        >
-          Go to the home page
-        </Link>
-      </div>
+    <main className="page">
+      <PageHeading title="Page not found" />
+      <Button variant="link" asChild className="mt-9">
+        <Link href="/">Go to the home page</Link>
+      </Button>
     </main>
   );
 }

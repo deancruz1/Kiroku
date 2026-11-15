@@ -1,12 +1,15 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { QueryProvider } from "@/app/providers/query-provider";
 import { SessionProvider } from "@/app/providers/session-provider";
 import { Navbar } from "@/components/navbar";
+import { fontVariables } from "@/components/fonts";
+import { themeScript } from "@/components/theme-script";
 // import { Analytics } from "@vercel/analytics/next";
 
-const inter = Inter({ subsets: ["latin"] });
+export const viewport: Viewport = {
+  colorScheme: "light dark",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://kiroku-nyaa.vercel.app"),
@@ -62,15 +65,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script
           defer
           src="https://cloud.umami.is/script.js"
           data-website-id="ad1e6c9c-6a21-4f1b-a3c7-ec5b3ff46320"
         ></script>
       </head>
-      <body className={inter.className}>
+      <body className={fontVariables}>
         <SessionProvider>
           <QueryProvider>
             <Navbar />

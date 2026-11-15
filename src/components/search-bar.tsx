@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
 export function SearchBar({ defaultQuery = "" }: { defaultQuery?: string }) {
@@ -21,14 +22,18 @@ export function SearchBar({ defaultQuery = "" }: { defaultQuery?: string }) {
       onSubmit={handleSubmit}
       className="flex items-stretch gap-2 w-full h-14"
     >
-      <div className="flex-1">
+      <div className="relative flex-1">
+        <Search
+          aria-hidden="true"
+          className="absolute top-1/2 left-1 size-5 -translate-y-1/2 stroke-[1.75] text-muted-foreground"
+        />
         <Input
           name="q"
           aria-label="Search anime"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search for an anime..."
-          className="h-full text-lg px-5"
+          className="h-full pl-9 text-xl md:text-2xl"
         />
       </div>
     </form>

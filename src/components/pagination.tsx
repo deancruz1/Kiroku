@@ -12,7 +12,7 @@ interface PaginationProps {
 }
 
 const LINK_CLASS =
-  "px-2 sm:px-3 py-1.5 sm:py-2 rounded-md bg-secondary text-xs sm:text-sm hover:bg-secondary/80 transition-colors";
+  "px-1 py-1.5 text-base text-muted-foreground transition-colors hover:text-foreground";
 
 export function Pagination({
   currentPage,
@@ -68,7 +68,7 @@ export function Pagination({
   return (
     <nav
       aria-label="Pagination"
-      className="flex justify-center items-center gap-1 sm:gap-2 mt-6 sm:mt-8 flex-wrap"
+      className="flex justify-center items-center gap-x-4 gap-y-2 mt-8 sm:mt-10 flex-wrap"
     >
       {currentPage > 2 && (
         <Link href={buildUrl(1)} aria-label="First page" className={LINK_CLASS}>
@@ -85,7 +85,7 @@ export function Pagination({
         </Link>
       )}
 
-      <form onSubmit={handleJump} className="flex items-center gap-1">
+      <form onSubmit={handleJump} className="flex items-center gap-2">
         <label htmlFor={inputId} className="sr-only">
           Go to page (currently page {currentPage} of {lastPage})
         </label>
@@ -98,11 +98,11 @@ export function Pagination({
           placeholder={String(currentPage)}
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? errorId : undefined}
-          className="w-12 sm:w-16 px-1.5 sm:px-2 py-1.5 sm:py-2 rounded-md bg-secondary text-xs sm:text-sm text-center focus:outline-none focus:ring-2 focus:ring-primary"
+          className="h-9 w-14 border-0 border-b border-control bg-transparent px-0.5 text-base text-center aria-invalid:border-destructive"
         />
         <span
           aria-hidden="true"
-          className="text-xs sm:text-sm text-muted-foreground"
+          className="text-base text-muted-foreground"
         >
           / {lastPage}
         </span>
@@ -112,7 +112,7 @@ export function Pagination({
         <span
           id={errorId}
           role="alert"
-          className="text-[10px] sm:text-xs text-destructive w-full text-center"
+          className="text-[15px] text-vermilion w-full text-center order-last"
         >
           {error}
         </span>
