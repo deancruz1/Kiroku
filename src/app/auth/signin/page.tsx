@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { PageHeading } from "@/components/page-heading";
+import { FormField } from "@/components/form-field";
+import { InlineMessage } from "@/components/inline-message";
 import {
   validateEmail,
   validatePassword,
@@ -14,23 +14,68 @@ import {
 } from "@/lib/account-validation";
 import { NETWORK_ERROR_MESSAGE, requestJson } from "@/lib/fetch-json";
 
+type Mode = "signin" | "register";
+
+type RegisterErrors = {
+  username?: string;
+  email?: string;
+  password?: string;
+};
+
+const FIELD = "[&_input]:h-10";
+// The capture scripts find the sign-in fields by their placeholders, so the
+// placeholders stay in the markup but are not shown.
+const SIGNIN_FIELD = "[&_input]:h-10 [&_input]:placeholder:text-transparent";
+
 export default function SignInPage() {
   const router = useRouter();
+  const [mode, setMode] = useState<Mode>("signin");
+  const [switched, setSwitched] = useState(false);
+  const firstFieldRef = useRef<HTMLInputElement>(null);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loginErrors, setLoginErrors] = useState<{
+    login?: string;
+    password?: string;
+  }>({});
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [registered, setRegistered] = useState("");
 
   const [regUsername, setRegUsername] = useState("");
   const [regEmail, setRegEmail] = useState("");
   const [regPassword, setRegPassword] = useState("");
+  const [regErrors, setRegErrors] = useState<RegisterErrors>({});
   const [regError, setRegError] = useState("");
-  const [regSuccess, setRegSuccess] = useState("");
   const [regLoading, setRegLoading] = useState(false);
+
+  useEffect(() => {
+    if (switched) firstFieldRef.current?.focus();
+  }, [mode, switched]);
+
+  function switchMode(next: Mode) {
+    setMode(next);
+    setSwitched(true);
+    setError("");
+    setLoginErrors({});
+    setRegError("");
+    setRegErrors({});
+    if (next === "register") setRegistered("");
+  }
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
+    if (loading) return;
     setError("");
+
+    const errors = {
+      login: email.trim() ? undefined : "Enter your email or username.",
+      password: password ? undefined : "Enter your password.",
+    };
+    setLoginErrors(errors);
+    if (errors.login || errors.password) return;
+
     setLoading(true);
 
     try {
@@ -57,19 +102,19 @@ export default function SignInPage() {
 
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
+    if (regLoading) return;
     setRegError("");
-    setRegSuccess("");
 
-    for (const result of [
-      validateUsername(regUsername),
-      validateEmail(regEmail),
-      validatePassword(regPassword),
-    ]) {
-      if (!result.ok) {
-        setRegError(result.error);
-        return;
-      }
-    }
+    const username = validateUsername(regUsername);
+    const emailCheck = validateEmail(regEmail);
+    const passwordCheck = validatePassword(regPassword);
+    const errors: RegisterErrors = {
+      username: username.ok ? undefined : username.error,
+      email: emailCheck.ok ? undefined : emailCheck.error,
+      password: passwordCheck.ok ? undefined : passwordCheck.error,
+    };
+    setRegErrors(errors);
+    if (!username.ok || !emailCheck.ok || !passwordCheck.ok) return;
 
     setRegLoading(true);
 
@@ -94,145 +139,189 @@ export default function SignInPage() {
       return;
     }
 
-    setRegSuccess("Account created! You may now sign in.");
+    setEmail(username.value);
+    setPassword("");
     setRegUsername("");
     setRegEmail("");
     setRegPassword("");
+    switchMode("signin");
+    setRegistered("Account created. You can now sign in.");
   }
 
   return (
-    <main className="min-h-screen bg-background flex items-center justify-center">
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle className="text-center text-2xl">
-            Welcome to Kiroku
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Tabs defaultValue="signin">
-            <TabsList className="w-full mb-4">
-              <TabsTrigger value="signin" className="flex-1">
-                Sign In
-              </TabsTrigger>
-              <TabsTrigger value="register" className="flex-1">
-                Register
-              </TabsTrigger>
-            </TabsList>
+    <main className="page">
+      <div className="max-w-md md:pt-6">
+        {mode === "signin" ? (
+          <>
+            <PageHeading title="Sign in" />
 
-            <TabsContent value="signin">
-              <form onSubmit={handleLogin} className="space-y-3">
-                <Input
+            {registered && (
+              <InlineMessage tone="success" className="mt-6">
+                {registered}
+              </InlineMessage>
+            )}
+
+            <form onSubmit={handleLogin} noValidate className="mt-8">
+              <div className="flex flex-col gap-5">
+                <FormField
+                  ref={firstFieldRef}
+                  label="Email or username"
                   type="text"
-                  placeholder="Email or Username"
-                  aria-label="Email or username"
                   name="username"
                   autoComplete="username"
+                  placeholder="Email or Username"
+                  className={SIGNIN_FIELD}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  error={loginErrors.login}
                   required
                 />
-                <Input
+                <FormField
+                  label="Password"
                   type="password"
-                  placeholder="Password"
-                  aria-label="Password"
                   name="password"
                   autoComplete="current-password"
+                  placeholder="Password"
+                  className={SIGNIN_FIELD}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  error={loginErrors.password}
                   required
                 />
-                {error && (
-                  <p role="alert" className="text-sm text-destructive">
-                    {error}
-                  </p>
-                )}
-                <Button type="submit" className="w-full" disabled={loading}>
-                  {loading ? "Signing in..." : "Sign In"}
-                </Button>
-              </form>
-
-              <div className="relative my-4">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t" />
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-background px-2 text-muted-foreground">
-                    Or
-                  </span>
-                </div>
               </div>
-
+              {error && <InlineMessage className="mt-5">{error}</InlineMessage>}
               <Button
-                variant="outline"
-                className="w-full"
-                onClick={() =>
-                  signIn("discord", { callbackUrl: "/" }).catch(() =>
-                    setError(NETWORK_ERROR_MESSAGE),
-                  )
-                }
+                type="submit"
+                size="lg"
+                className="mt-7 w-full"
+                disabled={loading}
               >
-                Sign in with Discord
+                {loading ? "Signing in..." : "Sign in"}
               </Button>
-            </TabsContent>
+            </form>
 
-            <TabsContent value="register">
-              <form onSubmit={handleRegister} className="space-y-3">
-                <Input
-                  type="text"
-                  placeholder="Username (3-20 letters, numbers or _)"
-                  aria-label="Username"
-                  name="username"
-                  autoComplete="username"
-                  value={regUsername}
-                  onChange={(e) => setRegUsername(e.target.value)}
-                  required
-                />
-                <Input
+            <div className="my-6 flex items-center gap-3 text-muted-foreground">
+              <span aria-hidden="true" className="h-px flex-1 bg-rule" />
+              <span className="italic">or</span>
+              <span aria-hidden="true" className="h-px flex-1 bg-rule" />
+            </div>
+
+            <Button
+              type="button"
+              variant="outline"
+              size="lg"
+              className="w-full"
+              onClick={() =>
+                signIn("discord", { callbackUrl: "/" }).catch(() =>
+                  setError(NETWORK_ERROR_MESSAGE),
+                )
+              }
+            >
+              Sign in with Discord
+            </Button>
+
+            <p className="mt-10 flex flex-wrap items-center gap-x-2 border-t border-rule pt-4 text-muted-foreground">
+              No account yet?
+              <Button
+                type="button"
+                variant="link"
+                className="h-10"
+                onClick={() => switchMode("register")}
+              >
+                Create an account
+              </Button>
+            </p>
+          </>
+        ) : (
+          <>
+            <PageHeading title="Create account" />
+
+            <form onSubmit={handleRegister} noValidate className="mt-8">
+              <div className="flex flex-col gap-5">
+                <div>
+                  <FormField
+                    ref={firstFieldRef}
+                    className={FIELD}
+                    label="Username"
+                    type="text"
+                    name="username"
+                    autoComplete="username"
+                    aria-describedby={regErrors.username ? undefined : "reg-username-hint"}
+                    value={regUsername}
+                    onChange={(e) => setRegUsername(e.target.value)}
+                    error={regErrors.username}
+                    required
+                  />
+                  {!regErrors.username && (
+                    <p
+                      id="reg-username-hint"
+                      className="mt-1.5 text-sm text-muted-foreground"
+                    >
+                      3 to 20 letters, numbers or underscores.
+                    </p>
+                  )}
+                </div>
+                <FormField
+                  className={FIELD}
+                  label="Email"
                   type="email"
-                  placeholder="Email"
-                  aria-label="Email"
                   name="email"
                   autoComplete="email"
                   value={regEmail}
                   onChange={(e) => setRegEmail(e.target.value)}
+                  error={regErrors.email}
                   required
                 />
-                <Input
-                  type="password"
-                  placeholder="Password (min 8 characters)"
-                  aria-label="Password"
-                  name="new-password"
-                  autoComplete="new-password"
-                  value={regPassword}
-                  onChange={(e) => setRegPassword(e.target.value)}
-                  required
-                />
-                {regError && (
-                  <p role="alert" className="text-sm text-destructive">
-                    {regError}
-                  </p>
-                )}
-                {regSuccess && (
-                  <p role="status" className="text-sm text-green-500">
-                    {regSuccess}
-                  </p>
-                )}
-                <Button
-                  type="submit"
-                  className="w-full"
-                  disabled={regLoading || !!regSuccess}
-                >
-                  {regLoading
-                    ? "Creating account..."
-                    : regSuccess
-                      ? "Account Created!"
-                      : "Create Account"}
-                </Button>
-              </form>
-            </TabsContent>
-          </Tabs>
-        </CardContent>
-      </Card>
+                <div>
+                  <FormField
+                    className={FIELD}
+                    label="Password"
+                    type="password"
+                    name="password"
+                    autoComplete="new-password"
+                    aria-describedby={regErrors.password ? undefined : "reg-password-hint"}
+                    value={regPassword}
+                    onChange={(e) => setRegPassword(e.target.value)}
+                    error={regErrors.password}
+                    required
+                  />
+                  {!regErrors.password && (
+                    <p
+                      id="reg-password-hint"
+                      className="mt-1.5 text-sm text-muted-foreground"
+                    >
+                      At least 8 characters.
+                    </p>
+                  )}
+                </div>
+              </div>
+              {regError && (
+                <InlineMessage className="mt-5">{regError}</InlineMessage>
+              )}
+              <Button
+                type="submit"
+                size="lg"
+                className="mt-7 w-full"
+                disabled={regLoading}
+              >
+                {regLoading ? "Creating account..." : "Create account"}
+              </Button>
+            </form>
+
+            <p className="mt-10 flex flex-wrap items-center gap-x-2 border-t border-rule pt-4 text-muted-foreground">
+              Already have an account?
+              <Button
+                type="button"
+                variant="link"
+                className="h-10"
+                onClick={() => switchMode("signin")}
+              >
+                Sign in
+              </Button>
+            </p>
+          </>
+        )}
+      </div>
     </main>
   );
 }

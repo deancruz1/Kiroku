@@ -4,18 +4,27 @@ import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { AlertTriangle } from "lucide-react";
+import { PageHeading } from "@/components/page-heading";
+import { Skeleton } from "@/components/skeleton";
 
 const ERROR_MESSAGES: Record<string, { title: string; message: string }> = {
   OAuthAccountNotLinked: {
-    title: "Account Already Linked",
+    title: "Discord is linked elsewhere",
     message:
-      "This Discord account is already associated with a different Kiroku account. If you want to link it to this account, you must first sign in to the other account and unlink Discord from there. If it is a Discord only account, you must delete that account first.",
+      "This Discord account is already linked to a different Kiroku account, so it cannot be used for this one.",
+  },
+  AccessDenied: {
+    title: "Sign-in refused",
+    message: "You do not have permission to sign in.",
+  },
+  Configuration: {
+    title: "Sign-in failed",
+    message:
+      "Kiroku could not finish signing you in because of a problem on the server.",
   },
   default: {
-    title: "Something went wrong",
-    message: "An unexpected error occurred. Please try again.",
+    title: "Sign-in failed",
+    message: "Something went wrong while signing you in.",
   },
 };
 
@@ -25,42 +34,31 @@ function ErrorContent() {
   const { title, message } = ERROR_MESSAGES[error] || ERROR_MESSAGES.default;
 
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader>
-        <div className="flex items-center justify-center gap-2 mb-2">
-          <AlertTriangle className="h-8 w-8 text-yellow-500" />
-        </div>
-        <CardTitle className="text-center text-xl">{title}</CardTitle>
-      </CardHeader>
-      <CardContent className="text-center space-y-4">
-        <p className="text-sm text-muted-foreground">{message}</p>
-        <div className="flex gap-2 justify-center">
-          <Button variant="outline" size="sm" asChild>
-            <Link href="/profile">Back to Profile</Link>
-          </Button>
-          <Button size="sm" asChild>
-            <Link href="/">Go Home</Link>
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
+    <>
+      <PageHeading title={title} />
+      <p className="mt-6 text-xl">{message}</p>
+      <Button variant="link" asChild className="mt-4 h-10">
+        <Link href="/auth/signin">Back to sign in</Link>
+      </Button>
+    </>
   );
 }
 
 export default function AuthErrorPage() {
   return (
-    <main className="min-h-screen bg-background flex items-center justify-center px-4">
-      <Suspense
-        fallback={
-          <Card className="w-full max-w-md">
-            <CardContent className="p-6 text-center">
-              <p className="text-muted-foreground text-sm">Loading...</p>
-            </CardContent>
-          </Card>
-        }
-      >
-        <ErrorContent />
-      </Suspense>
+    <main className="page">
+      <div className="max-w-xl md:pt-6">
+        <Suspense
+          fallback={
+            <div role="status" aria-label="Loading">
+              <Skeleton className="h-10 w-64 md:h-12" />
+              <Skeleton className="mt-6 h-6 w-full" />
+            </div>
+          }
+        >
+          <ErrorContent />
+        </Suspense>
+      </div>
     </main>
   );
 }

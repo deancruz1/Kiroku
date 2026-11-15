@@ -1,15 +1,27 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
-import Link from "next/link";
-import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { User, Key, Shield, Trash2, AlertTriangle, Mail } from "lucide-react";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { PageHeading } from "@/components/page-heading";
+import { Section } from "@/components/section-heading";
+import { FormField } from "@/components/form-field";
+import { InlineMessage } from "@/components/inline-message";
+import { Skeleton } from "@/components/skeleton";
+import { ErrorPanel } from "@/components/error-panel";
+import { SignInPrompt } from "@/components/sign-in-prompt";
 import { validatePassword, validateUsername } from "@/lib/account-validation";
 import { NETWORK_ERROR_MESSAGE, requestJson } from "@/lib/fetch-json";
 
@@ -26,17 +38,63 @@ interface Profile {
 }
 
 const JSON_HEADERS = { "Content-Type": "application/json" };
+const FIELD = "[&_input]:h-10";
+const HINT = "mt-1.5 text-sm text-muted-foreground";
+
+// requestJson only returns the message, so the status is read on the way
+// through to tell which field a server error belongs to.
+async function sendJson(
+  url: string,
+  method: string,
+  body: unknown,
+  fallback: string,
+) {
+  let status = 0;
+  const result = await requestJson(
+    url,
+    { method, body: JSON.stringify(body), headers: JSON_HEADERS },
+    fallback,
+    async (input, init) => {
+      const res = await fetch(input, init);
+      status = res.status;
+      return res;
+    },
+  );
+  return { result, status };
+}
+
+function ProfileSkeleton() {
+  return (
+    <main className="page">
+      <div className="max-w-2xl">
+        <PageHeading title="Profile" />
+        <div
+          role="status"
+          aria-label="Loading your profile"
+          className="mt-10 md:mt-12"
+        >
+          {[0, 1, 2, 3].map((i) => (
+            <div key={i} className="mb-12 border-t border-foreground pt-3">
+              <Skeleton className="h-7 w-40" />
+              <Skeleton className="mt-6 h-4 w-24" />
+              <Skeleton className="mt-3 h-6 w-full max-w-sm" />
+              <Skeleton className="mt-6 h-10 w-36" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </main>
+  );
+}
 
 function ProfileContent() {
   const { data: session, status } = useSession();
   const queryClient = useQueryClient();
   const searchParams = useSearchParams();
-  const authError = searchParams.get("error");
-  const [message, setMessage] = useState<{
-    type: "success" | "error";
-    text: string;
-  } | null>(null);
-  const [unlinking, setUnlinking] = useState(false);
+  const linkError =
+    searchParams.get("error") === "OAuthAccountNotLinked"
+      ? "This Discord account is already linked to a different Kiroku account. To link it here, sign in to that account and unlink Discord there, or delete that account if Discord is its only way to sign in."
+      : "";
 
   const {
     data: profile,
@@ -53,261 +111,44 @@ function ProfileContent() {
     enabled: status === "authenticated",
   });
 
-  useEffect(() => {
-    if (authError === "OAuthAccountNotLinked") {
-      queueMicrotask(() => {
-        setMessage({
-          type: "error",
-          text: "This Discord account is already associated with a different Kiroku account. If you want to link it to this account, you must first sign in to the other account and unlink Discord from there. If it is a Discord only account, you must delete that account first.",
-        });
-        clearMessage();
-      });
-    }
-  }, [authError]);
-
-  if (status === "loading") {
-    return (
-      <main className="min-h-screen bg-background flex items-center justify-center px-4">
-        <p className="text-muted-foreground text-sm sm:text-base">Loading...</p>
-      </main>
-    );
-  }
+  if (status === "loading") return <ProfileSkeleton />;
 
   if (!session) {
-    return (
-      <main className="min-h-screen bg-background flex items-center justify-center px-4">
-        <div className="text-center space-y-4">
-          <p className="text-muted-foreground text-sm sm:text-base">
-            Sign in to view your profile.
-          </p>
-          <Button asChild>
-            <Link href="/auth/signin">Sign in</Link>
-          </Button>
-        </div>
-      </main>
-    );
+    return <SignInPrompt title="Profile" subject="your profile" />;
   }
 
   if (isError) {
     return (
-      <main className="min-h-screen bg-background flex items-center justify-center px-4">
-        <div className="text-center space-y-4">
-          <p
-            role="alert"
-            className="text-muted-foreground text-sm sm:text-base"
-          >
-            Could not load your profile.
-          </p>
-          <Button onClick={() => refetch()}>Try again</Button>
-        </div>
-      </main>
+      <ErrorPanel
+        title="Profile"
+        message="Could not load your profile."
+        onRetry={() => refetch()}
+      />
     );
   }
 
-  if (isLoading || !profile) {
-    return (
-      <main className="min-h-screen bg-background flex items-center justify-center px-4">
-        <p className="text-muted-foreground text-sm sm:text-base">Loading...</p>
-      </main>
-    );
-  }
-
-  function clearMessage() {
-    setTimeout(() => setMessage(null), 5000);
-  }
-
-  function showSuccess(text: string) {
-    setMessage({ type: "success", text });
-    clearMessage();
-  }
-
-  function showError(text: string) {
-    setMessage({ type: "error", text });
-    clearMessage();
-  }
+  if (isLoading || !profile) return <ProfileSkeleton />;
 
   function refreshProfile() {
     queryClient.invalidateQueries({ queryKey: ["user-profile"] });
   }
 
-  async function handleUnlinkDiscord() {
-    setUnlinking(true);
-    const result = await requestJson(
-      "/api/user/discord",
-      { method: "DELETE" },
-      "Failed to unlink Discord.",
-    );
-    setUnlinking(false);
-    if (result.ok) {
-      showSuccess("Discord unlinked.");
-      refreshProfile();
-    } else {
-      showError(result.error);
-    }
-  }
-
-  const isDiscordOnly = !profile.hasPassword && profile.hasDiscord;
-
-  const unlinkRequirements = [
-    !profile.hasPassword && "a password",
-    !profile.hasUsername && !profile.email && "a username",
-  ].filter(Boolean);
-
   return (
-    <main className="min-h-screen bg-background">
-      <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-8 max-w-2xl">
-        <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-center sm:text-left">
-          Profile Settings
-        </h1>
-
-        {message && (
-          <div
-            role={message.type === "error" ? "alert" : "status"}
-            className={`mb-4 p-3 rounded-md text-xs sm:text-sm ${
-              message.type === "success"
-                ? "bg-green-500/10 text-green-500 border border-green-500/20"
-                : "bg-red-500/10 text-red-500 border border-red-500/20"
-            }`}
-          >
-            {message.text}
-          </div>
-        )}
-
-        <div className="space-y-4 sm:space-y-6">
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm sm:text-base flex items-center gap-2">
-                <User className="h-4 w-4" />
-                Username
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <UsernameForm
-                key={profile.username}
-                currentUsername={profile.username}
-                hasUsername={profile.hasUsername}
-                onSuccess={(msg) => {
-                  showSuccess(msg);
-                  refreshProfile();
-                }}
-                onError={showError}
-              />
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm sm:text-base flex items-center gap-2">
-                <Mail className="h-4 w-4" />
-                Email
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-xs sm:text-sm text-muted-foreground">
-                {isDiscordOnly
-                  ? "No email set. You signed in with Discord."
-                  : profile.email || "No email set."}
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm sm:text-base flex items-center gap-2">
-                <Key className="h-4 w-4" />
-                Password
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {profile.hasPassword ? (
-                <PasswordForm onSuccess={showSuccess} onError={showError} />
-              ) : (
-                <div className="space-y-3">
-                  <p className="text-xs sm:text-sm text-muted-foreground">
-                    {profile.hasDiscord
-                      ? "No password set. You can only sign in with Discord."
-                      : "No password set."}
-                  </p>
-                  <SetPasswordForm
-                    onSuccess={(msg) => {
-                      showSuccess(msg);
-                      refreshProfile();
-                    }}
-                    onError={showError}
-                  />
-                </div>
-              )}
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm sm:text-base flex items-center gap-2">
-                <Shield className="h-4 w-4" />
-                Discord Connection
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {profile.hasDiscord ? (
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
-                  <div>
-                    <p className="text-xs sm:text-sm text-muted-foreground">
-                      Discord is linked to your account.
-                    </p>
-                    {unlinkRequirements.length > 0 && (
-                      <p className="text-[10px] sm:text-xs text-muted-foreground mt-1">
-                        You must set {unlinkRequirements.join(" and ")} before
-                        unlinking Discord.
-                      </p>
-                    )}
-                  </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="cursor-pointer text-xs w-full sm:w-auto"
-                    disabled={!profile.canUnlinkDiscord || unlinking}
-                    onClick={handleUnlinkDiscord}
-                  >
-                    {unlinking ? "Unlinking..." : "Unlink Discord"}
-                  </Button>
-                </div>
-              ) : (
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
-                  <p className="text-xs sm:text-sm text-muted-foreground">
-                    Discord is not linked.
-                  </p>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="cursor-pointer text-xs w-full sm:w-auto"
-                    onClick={() =>
-                      signIn("discord").catch(() =>
-                        showError(NETWORK_ERROR_MESSAGE),
-                      )
-                    }
-                  >
-                    Link Discord
-                  </Button>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-
-          <Card className="border-destructive/20">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm sm:text-base flex items-center gap-2 text-destructive">
-                <AlertTriangle className="h-4 w-4" />
-                Danger Zone
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <DeleteAccountForm
-                hasPassword={profile.hasPassword}
-                onSuccess={() => signOut({ redirectTo: "/" })}
-                onError={showError}
-              />
-            </CardContent>
-          </Card>
+    <main className="page">
+      <div className="max-w-2xl">
+        <PageHeading title="Profile" />
+        <div className="mt-10 md:mt-12">
+          <AccountSection profile={profile} onChanged={refreshProfile} />
+          <PasswordSection profile={profile} onChanged={refreshProfile} />
+          <DiscordSection
+            profile={profile}
+            linkError={linkError}
+            onChanged={refreshProfile}
+          />
+          <DeleteSection
+            hasPassword={profile.hasPassword}
+            hasDiscord={profile.hasDiscord}
+          />
         </div>
       </div>
     </main>
@@ -316,39 +157,81 @@ function ProfileContent() {
 
 export default function ProfilePage() {
   return (
-    <Suspense
-      fallback={
-        <main className="min-h-screen bg-background flex items-center justify-center px-4">
-          <p className="text-muted-foreground text-sm sm:text-base">
-            Loading...
-          </p>
-        </main>
-      }
-    >
+    <Suspense fallback={<ProfileSkeleton />}>
       <ProfileContent />
     </Suspense>
+  );
+}
+
+function AccountSection({
+  profile,
+  onChanged,
+}: {
+  profile: Profile;
+  onChanged: () => void;
+}) {
+  const [message, setMessage] = useState("");
+  const isDiscordOnly = !profile.hasPassword && profile.hasDiscord;
+
+  return (
+    <Section title="Account">
+      <div className="max-w-sm">
+        <p className="mb-1.5 text-sm text-muted-foreground">Email</p>
+        <p className="break-words">
+          {isDiscordOnly
+            ? "No email set. You signed in with Discord."
+            : profile.email || "No email set."}
+        </p>
+        <UsernameForm
+          key={profile.username}
+          currentUsername={profile.username}
+          hasUsername={profile.hasUsername}
+          onSubmit={() => setMessage("")}
+          onSuccess={() => {
+            setMessage("Username updated.");
+            onChanged();
+          }}
+        />
+        {message && (
+          <InlineMessage tone="success" className="mt-4">
+            {message}
+          </InlineMessage>
+        )}
+      </div>
+    </Section>
   );
 }
 
 function UsernameForm({
   currentUsername,
   hasUsername,
+  onSubmit,
   onSuccess,
-  onError,
 }: {
   currentUsername: string;
   hasUsername: boolean;
-  onSuccess: (msg: string) => void;
-  onError: (msg: string) => void;
+  onSubmit: () => void;
+  onSuccess: () => void;
 }) {
   const [username, setUsername] = useState(currentUsername || "");
+  const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
+  const hint = [
+    !error && "3 to 20 letters, numbers or underscores.",
+    !hasUsername &&
+      "You have not saved a username yet. With a username and a password you can sign in without Discord.",
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
+    if (saving) return;
+    onSubmit();
+    setError("");
     const check = validateUsername(username);
     if (!check.ok) {
-      onError(check.error);
+      setError(check.error);
       return;
     }
     setSaving(true);
@@ -363,136 +246,201 @@ function UsernameForm({
     );
     setSaving(false);
     if (result.ok) {
-      onSuccess("Username updated.");
+      onSuccess();
     } else {
-      onError(result.error);
+      setError(result.error);
     }
   }
 
   return (
-    <form onSubmit={handleSave} className="space-y-2">
-      <div className="flex items-center gap-2">
-        <Input
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          className="flex-1 text-xs sm:text-sm h-9"
-          aria-label="Username"
-          autoComplete="username"
-          name="username"
-        />
-        <Button
-          type="submit"
-          size="sm"
-          disabled={
-            saving ||
-            !username.trim() ||
-            (hasUsername && username === currentUsername)
-          }
-          className="h-9 cursor-pointer text-xs shrink-0"
-        >
-          {saving ? "Saving..." : "Save"}
-        </Button>
-      </div>
-      {!hasUsername && (
-        <p className="text-[10px] sm:text-xs text-muted-foreground">
-          You have not saved a username yet. Save one to sign in without
-          Discord.
+    <form onSubmit={handleSave} noValidate className="mt-6">
+      <FormField
+        className={FIELD}
+        label="Username"
+        type="text"
+        name="username"
+        autoComplete="username"
+        aria-describedby={hint ? "username-hint" : undefined}
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        error={error}
+        required
+      />
+      {hint && (
+        <p id="username-hint" className={HINT}>
+          {hint}
         </p>
       )}
+      <Button
+        type="submit"
+        variant="outline"
+        size="lg"
+        className="mt-5"
+        disabled={saving || (hasUsername && username === currentUsername)}
+      >
+        {saving ? "Saving..." : "Save username"}
+      </Button>
     </form>
   );
 }
 
-function PasswordForm({
-  onSuccess,
-  onError,
+function PasswordSection({
+  profile,
+  onChanged,
 }: {
-  onSuccess: (msg: string) => void;
-  onError: (msg: string) => void;
+  profile: Profile;
+  onChanged: () => void;
+}) {
+  const [message, setMessage] = useState("");
+
+  return (
+    <Section title="Password">
+      <div className="max-w-sm">
+        {profile.hasPassword ? (
+          <ChangePasswordForm
+            onSubmit={() => setMessage("")}
+            onSuccess={() => setMessage("Password updated.")}
+          />
+        ) : (
+          <>
+            <p>
+              {profile.hasDiscord
+                ? "No password set. You can only sign in with Discord."
+                : "No password set."}
+            </p>
+            <SetPasswordForm
+              onSubmit={() => setMessage("")}
+              onSuccess={() => {
+                setMessage("Password set.");
+                onChanged();
+              }}
+            />
+          </>
+        )}
+        {message && (
+          <InlineMessage tone="success" className="mt-4">
+            {message}
+          </InlineMessage>
+        )}
+      </div>
+    </Section>
+  );
+}
+
+function ChangePasswordForm({
+  onSubmit,
+  onSuccess,
+}: {
+  onSubmit: () => void;
+  onSuccess: () => void;
 }) {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [errors, setErrors] = useState<{ current?: string; next?: string }>(
+    {},
+  );
+  const [formError, setFormError] = useState("");
   const [saving, setSaving] = useState(false);
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
-    if (!currentPassword) return;
+    if (saving) return;
+    onSubmit();
+    setFormError("");
     const check = validatePassword(newPassword);
-    if (!check.ok) {
-      onError(check.error);
-      return;
-    }
+    const nextErrors = {
+      current: currentPassword ? undefined : "Current password is required.",
+      next: check.ok ? undefined : check.error,
+    };
+    setErrors(nextErrors);
+    if (nextErrors.current || nextErrors.next) return;
+
     setSaving(true);
-    const result = await requestJson(
+    const { result, status } = await sendJson(
       "/api/user/password",
-      {
-        method: "PATCH",
-        body: JSON.stringify({ currentPassword, newPassword }),
-        headers: JSON_HEADERS,
-      },
+      "PATCH",
+      { currentPassword, newPassword },
       "Failed to update password.",
     );
     setSaving(false);
     if (result.ok) {
-      onSuccess("Password updated.");
+      onSuccess();
       setCurrentPassword("");
       setNewPassword("");
+    } else if (status === 403) {
+      setErrors({ current: result.error });
     } else {
-      onError(result.error);
+      setFormError(result.error);
     }
   }
 
   return (
-    <form onSubmit={handleSave} className="space-y-3">
-      <Input
-        type="password"
-        placeholder="Current password"
-        value={currentPassword}
-        onChange={(e) => setCurrentPassword(e.target.value)}
-        className="w-full text-xs sm:text-sm h-9"
-        aria-label="Current password"
-        name="current-password"
-        autoComplete="current-password"
-      />
-      <div className="flex items-center gap-2">
-        <Input
+    <form onSubmit={handleSave} noValidate>
+      <div className="flex flex-col gap-5">
+        <FormField
+          className={FIELD}
+          label="Current password"
           type="password"
-          placeholder="New password (min 8 characters)"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          className="flex-1 text-xs sm:text-sm h-9"
-          aria-label="New password"
-          name="new-password"
-          autoComplete="new-password"
+          name="current-password"
+          autoComplete="current-password"
+          value={currentPassword}
+          onChange={(e) => setCurrentPassword(e.target.value)}
+          error={errors.current}
+          required
         />
-        <Button
-          type="submit"
-          size="sm"
-          disabled={saving || !currentPassword || !newPassword}
-          className="h-9 cursor-pointer text-xs shrink-0"
-        >
-          {saving ? "Updating..." : "Update Password"}
-        </Button>
+        <div>
+          <FormField
+            className={FIELD}
+            label="New password"
+            type="password"
+            name="new-password"
+            autoComplete="new-password"
+            aria-describedby={errors.next ? undefined : "new-password-hint"}
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            error={errors.next}
+            required
+          />
+          {!errors.next && (
+            <p id="new-password-hint" className={HINT}>
+              At least 8 characters.
+            </p>
+          )}
+        </div>
       </div>
+      {formError && <InlineMessage className="mt-4">{formError}</InlineMessage>}
+      <Button
+        type="submit"
+        variant="outline"
+        size="lg"
+        className="mt-5"
+        disabled={saving}
+      >
+        {saving ? "Changing password..." : "Change password"}
+      </Button>
     </form>
   );
 }
 
 function SetPasswordForm({
+  onSubmit,
   onSuccess,
-  onError,
 }: {
-  onSuccess: (msg: string) => void;
-  onError: (msg: string) => void;
+  onSubmit: () => void;
+  onSuccess: () => void;
 }) {
   const [newPassword, setNewPassword] = useState("");
+  const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
+    if (saving) return;
+    onSubmit();
+    setError("");
     const check = validatePassword(newPassword);
     if (!check.ok) {
-      onError(check.error);
+      setError(check.error);
       return;
     }
     setSaving(true);
@@ -507,75 +455,211 @@ function SetPasswordForm({
     );
     setSaving(false);
     if (result.ok) {
-      onSuccess("Password set.");
+      onSuccess();
       setNewPassword("");
     } else {
-      onError(result.error);
+      setError(result.error);
     }
   }
 
   return (
-    <form onSubmit={handleSave} className="flex items-center gap-2">
-      <Input
+    <form onSubmit={handleSave} noValidate className="mt-6">
+      <FormField
+        className={FIELD}
+        label="New password"
         type="password"
-        placeholder="New password (min 8 characters)"
-        value={newPassword}
-        onChange={(e) => setNewPassword(e.target.value)}
-        className="flex-1 text-xs sm:text-sm h-9"
-        aria-label="New password"
         name="new-password"
         autoComplete="new-password"
+        aria-describedby={error ? undefined : "set-password-hint"}
+        value={newPassword}
+        onChange={(e) => setNewPassword(e.target.value)}
+        error={error}
+        required
       />
+      {!error && (
+        <p id="set-password-hint" className={HINT}>
+          At least 8 characters.
+        </p>
+      )}
       <Button
         type="submit"
-        size="sm"
-        disabled={saving || !newPassword}
-        className="h-9 cursor-pointer text-xs shrink-0"
+        variant="outline"
+        size="lg"
+        className="mt-5"
+        disabled={saving}
       >
-        {saving ? "Setting..." : "Set Password"}
+        {saving ? "Setting password..." : "Set password"}
       </Button>
     </form>
   );
 }
 
-function DeleteAccountForm({
+function DiscordSection({
+  profile,
+  linkError,
+  onChanged,
+}: {
+  profile: Profile;
+  linkError: string;
+  onChanged: () => void;
+}) {
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const [pending, setPending] = useState(false);
+
+  const unlinkRequirements = [
+    !profile.hasPassword && "a password",
+    !profile.hasUsername && !profile.email && "a username",
+  ].filter(Boolean);
+
+  async function handleUnlink() {
+    if (pending) return;
+    setMessage("");
+    setError("");
+    setPending(true);
+    const result = await requestJson(
+      "/api/user/discord",
+      { method: "DELETE" },
+      "Failed to unlink Discord.",
+    );
+    setPending(false);
+    if (result.ok) {
+      setMessage("Discord unlinked.");
+      onChanged();
+    } else {
+      setError(result.error);
+    }
+  }
+
+  function handleLink() {
+    if (pending) return;
+    setMessage("");
+    setError("");
+    setPending(true);
+    signIn("discord").catch(() => {
+      setError(NETWORK_ERROR_MESSAGE);
+      setPending(false);
+    });
+  }
+
+  const shownError = error || (message ? "" : linkError);
+
+  return (
+    <Section title="Discord">
+      <div className="max-w-sm">
+        {profile.hasDiscord ? (
+          <>
+            <p>Discord is linked to your account.</p>
+            {unlinkRequirements.length > 0 && (
+              <p id="unlink-reason" className="mt-1.5 text-muted-foreground">
+                Discord is your only way to sign in, so it cannot be unlinked
+                until you set {unlinkRequirements.join(" and ")}.
+              </p>
+            )}
+            <Button
+              type="button"
+              variant="outline"
+              size="lg"
+              className="mt-5"
+              disabled={!profile.canUnlinkDiscord || pending}
+              aria-describedby={
+                unlinkRequirements.length > 0 ? "unlink-reason" : undefined
+              }
+              onClick={handleUnlink}
+            >
+              {pending ? "Unlinking..." : "Unlink Discord"}
+            </Button>
+          </>
+        ) : (
+          <>
+            <p>Discord is not linked.</p>
+            <Button
+              type="button"
+              variant="outline"
+              size="lg"
+              className="mt-5"
+              disabled={pending}
+              onClick={handleLink}
+            >
+              {pending ? "Opening Discord..." : "Link Discord"}
+            </Button>
+          </>
+        )}
+        {shownError && (
+          <InlineMessage className="mt-4">{shownError}</InlineMessage>
+        )}
+        {message && (
+          <InlineMessage tone="success" className="mt-4">
+            {message}
+          </InlineMessage>
+        )}
+      </div>
+    </Section>
+  );
+}
+
+function DeleteSection({
   hasPassword,
-  onSuccess,
-  onError,
+  hasDiscord,
 }: {
   hasPassword: boolean;
-  onSuccess: () => Promise<unknown>;
-  onError: (msg: string) => void;
+  hasDiscord: boolean;
 }) {
+  const [open, setOpen] = useState(false);
   const [confirmText, setConfirmText] = useState("");
   const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState<{ password?: string; confirm?: string }>(
+    {},
+  );
+  const [formError, setFormError] = useState("");
   const [deleting, setDeleting] = useState(false);
 
-  const canDelete = confirmText === "DELETE" && (!hasPassword || !!password);
+  function handleOpenChange(next: boolean) {
+    if (deleting) return;
+    setOpen(next);
+    if (!next) {
+      setConfirmText("");
+      setPassword("");
+      setErrors({});
+      setFormError("");
+    }
+  }
 
   async function handleDelete(e: React.FormEvent) {
     e.preventDefault();
-    if (!canDelete) return;
+    if (deleting) return;
+    setFormError("");
+    const nextErrors = {
+      password:
+        hasPassword && !password
+          ? "Enter your password to delete your account."
+          : undefined,
+      confirm: confirmText === "DELETE" ? undefined : "Type DELETE to confirm.",
+    };
+    setErrors(nextErrors);
+    if (nextErrors.password || nextErrors.confirm) return;
+
     setDeleting(true);
-    const result = await requestJson(
+    const { result, status } = await sendJson(
       "/api/user/delete",
-      {
-        method: "DELETE",
-        body: JSON.stringify(hasPassword ? { password } : {}),
-        headers: JSON_HEADERS,
-      },
+      "DELETE",
+      hasPassword ? { password } : {},
       "Failed to delete account.",
     );
     if (!result.ok) {
-      onError(result.error);
+      if (hasPassword && (status === 400 || status === 403)) {
+        setErrors({ password: result.error });
+      } else {
+        setFormError(result.error);
+      }
       setDeleting(false);
       return;
     }
     // On success the sign-out redirects away, so deleting stays true.
     try {
-      await onSuccess();
+      await signOut({ redirectTo: "/" });
     } catch {
-      onError(
+      setFormError(
         "Your account was deleted, but signing out failed. Reload the page.",
       );
       setDeleting(false);
@@ -583,42 +667,79 @@ function DeleteAccountForm({
   }
 
   return (
-    <form onSubmit={handleDelete} className="space-y-3">
-      <p className="text-xs sm:text-sm text-muted-foreground">
-        Type <strong>DELETE</strong> to confirm. This action is irreversible.
+    <Section title="Delete account">
+      <p className="max-w-xl">
+        Deleting your account also deletes your watch list and collections.
+        It cannot be undone.
       </p>
-      {hasPassword && (
-        <Input
-          type="password"
-          placeholder="Your password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full text-xs sm:text-sm h-9"
-          aria-label="Password"
-          name="current-password"
-          autoComplete="current-password"
-        />
-      )}
-      <div className="flex items-center gap-2">
-        <Input
-          placeholder='Type "DELETE" to confirm'
-          value={confirmText}
-          onChange={(e) => setConfirmText(e.target.value)}
-          className="flex-1 text-xs sm:text-sm h-9"
-          aria-label="Type DELETE to confirm"
-          autoComplete="off"
-        />
-        <Button
-          type="submit"
-          variant="destructive"
-          size="sm"
-          disabled={deleting || !canDelete}
-          className="h-9 cursor-pointer text-xs shrink-0"
-        >
-          <Trash2 className="h-4 w-4 mr-1" />
-          {deleting ? "Deleting..." : "Delete Account"}
-        </Button>
-      </div>
-    </form>
+      <Dialog open={open} onOpenChange={handleOpenChange}>
+        <DialogTrigger asChild>
+          <Button type="button" variant="outline" size="lg" className="mt-5">
+            Delete account
+          </Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete your account?</DialogTitle>
+            <DialogDescription>
+              This permanently deletes your Kiroku account, every show on your
+              watch list with its status, episode count, rating, dates, notes
+              and review, and all of your collections
+              {hasDiscord ? ", and removes the link to your Discord account" : ""}
+              . It cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleDelete} noValidate className="grid gap-5">
+            {hasPassword && (
+              <FormField
+                className={FIELD}
+                label="Password"
+                type="password"
+                name="password"
+                autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                error={errors.password}
+                required
+              />
+            )}
+            <FormField
+              className={FIELD}
+              label="Type DELETE to confirm"
+              type="text"
+              name="confirm"
+              autoComplete="off"
+              autoCapitalize="characters"
+              spellCheck={false}
+              value={confirmText}
+              onChange={(e) => setConfirmText(e.target.value)}
+              error={errors.confirm}
+              required
+            />
+            {formError && <InlineMessage>{formError}</InlineMessage>}
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="lg"
+                  disabled={deleting}
+                >
+                  Cancel
+                </Button>
+              </DialogClose>
+              <Button
+                type="submit"
+                variant="destructive"
+                size="lg"
+                disabled={deleting}
+              >
+                {deleting ? "Deleting..." : "Delete account"}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+    </Section>
   );
 }
