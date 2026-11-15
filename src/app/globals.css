@@ -40,6 +40,7 @@
   --color-plate: var(--plate);
   --color-plate-foreground: var(--plate-foreground);
   --color-hatch: var(--hatch);
+  --color-scrim: var(--scrim);
   --radius-sm: calc(var(--radius) * 0.5);
   --radius-md: var(--radius);
   --radius-lg: var(--radius);
@@ -121,6 +122,7 @@
   --plate: #e4d9c6;
   --plate-foreground: #3d352b;
   --hatch: #8a7e6b;
+  --scrim: rgb(33 28 22 / 0.4);
   --gutter: 16px;
   color-scheme: light;
 }
@@ -157,6 +159,7 @@
   --plate: #2c2720;
   --plate-foreground: #cfc4b0;
   --hatch: #8d816e;
+  --scrim: rgb(0 0 0 / 0.6);
   color-scheme: dark;
 }
 
@@ -240,5 +243,15 @@
   input::placeholder,
   textarea::placeholder {
     color: var(--muted-foreground);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }

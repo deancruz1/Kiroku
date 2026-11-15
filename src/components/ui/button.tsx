@@ -23,11 +23,11 @@ const buttonVariants = cva(
       },
       size: {
         default:
-          "h-9 px-4 has-data-[icon=inline-end]:pr-3 has-data-[icon=inline-start]:pl-3",
+          "h-10 px-4 has-data-[icon=inline-end]:pr-3 has-data-[icon=inline-start]:pl-3",
         xs: "h-7 gap-1 px-2 text-sm has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3",
         sm: "h-8 gap-1 px-3 text-[15px] has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 [&_svg:not([class*='size-'])]:size-3.5",
         lg: "h-10 px-5 text-[17px] has-data-[icon=inline-end]:pr-4 has-data-[icon=inline-start]:pl-4",
-        icon: "size-9 rounded-full [&_svg:not([class*='size-'])]:size-[18px]",
+        icon: "size-10 rounded-full [&_svg:not([class*='size-'])]:size-[18px]",
         "icon-xs":
           "size-7 rounded-full [&_svg:not([class*='size-'])]:size-3.5",
         "icon-sm":
@@ -42,7 +42,7 @@ const buttonVariants = cva(
         class: "hover:bg-plate aria-expanded:bg-plate",
       },
       { variant: "ghost", size: "default", class: "px-2" },
-      { variant: "link", class: "h-auto px-0" },
+      { variant: "link", class: "h-auto min-h-10 px-0" },
     ],
     defaultVariants: {
       variant: "default",

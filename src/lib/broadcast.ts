@@ -177,7 +177,7 @@ export function nextOccurrence(
   return from + 7 * DAY;
 }
 
-// Jikan dates are the Japanese calendar date written as midnight UTC.
+// Aired dates from the API are the Japanese calendar date written as midnight UTC.
 function parseAiredDate(
   value: string | null | undefined,
   prop: DateProp | null | undefined,

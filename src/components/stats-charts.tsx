@@ -1,13 +1,10 @@
 import type { CSSProperties } from "react";
 import { LeaderList, LeaderRow } from "@/components/leader-row";
-import { STATUS_LABEL, type WatchStatus } from "@/components/status-mark";
-
-export const STATS_STATUS_ORDER: WatchStatus[] = [
-  "completed",
-  "watching",
-  "plan_to_watch",
-  "dropped",
-];
+import {
+  STATUS_LABEL,
+  STATUS_ORDER,
+  type WatchStatus,
+} from "@/components/status-mark";
 
 const HATCH =
   "repeating-linear-gradient(135deg, var(--hatch) 0 1.5px, transparent 1.5px 5px)";
@@ -20,7 +17,7 @@ const STATUS_FILL: Record<WatchStatus, CSSProperties> = {
   dropped: { boxShadow: OUTLINE },
 };
 
-export function percent(part: number, whole: number) {
+function percent(part: number, whole: number) {
   return whole > 0 ? `${Math.round((part / whole) * 100)}%` : "";
 }
 
@@ -31,14 +28,14 @@ export function StatusBreakdown({
   counts: Record<string, number>;
   total: number;
 }) {
-  const label = STATS_STATUS_ORDER.map(
+  const label = STATUS_ORDER.map(
     (s) => `${STATUS_LABEL[s]} ${counts[s] ?? 0}`,
   ).join(", ");
 
   return (
     <>
       <div role="img" aria-label={label} className="mb-5 flex h-4 gap-0.5">
-        {STATS_STATUS_ORDER.filter((s) => (counts[s] ?? 0) > 0).map((s) => (
+        {STATUS_ORDER.filter((s) => (counts[s] ?? 0) > 0).map((s) => (
           <span
             key={s}
             className="block h-full"
@@ -47,7 +44,7 @@ export function StatusBreakdown({
         ))}
       </div>
       <LeaderList>
-        {STATS_STATUS_ORDER.map((s) => {
+        {STATUS_ORDER.map((s) => {
           const count = counts[s] ?? 0;
           return (
             <LeaderRow

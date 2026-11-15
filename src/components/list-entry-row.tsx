@@ -381,9 +381,9 @@ export function ListRowsSkeleton({ rows = 5 }: { rows?: number }) {
             <Skeleton className="mt-2 h-0.5 w-[150px]" />
           </div>
           <Skeleton className="hidden h-5 w-10 md:block" />
-          <div className="flex justify-end gap-2">
-            <Skeleton className="size-8 rounded-full" />
-            <Skeleton className="size-8 rounded-full" />
+          <div className="flex justify-end">
+            <Skeleton className="size-10 rounded-full" />
+            <Skeleton className="size-10 rounded-full" />
           </div>
         </li>
       ))}

@@ -71,7 +71,7 @@ function ProfileSkeleton() {
         <div
           role="status"
           aria-label="Loading your profile"
-          className="mt-10 md:mt-12"
+          className="mt-6 md:mt-8"
         >
           {[0, 1, 2, 3].map((i) => (
             <div key={i} className="mb-12 border-t border-foreground pt-3">
@@ -137,7 +137,7 @@ function ProfileContent() {
     <main className="page">
       <div className="max-w-2xl">
         <PageHeading title="Profile" />
-        <div className="mt-10 md:mt-12">
+        <div className="mt-6 md:mt-8">
           <AccountSection profile={profile} onChanged={refreshProfile} />
           <PasswordSection profile={profile} onChanged={refreshProfile} />
           <DiscordSection
@@ -719,21 +719,11 @@ function DeleteSection({
             {formError && <InlineMessage>{formError}</InlineMessage>}
             <DialogFooter>
               <DialogClose asChild>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="lg"
-                  disabled={deleting}
-                >
+                <Button type="button" variant="outline" disabled={deleting}>
                   Cancel
                 </Button>
               </DialogClose>
-              <Button
-                type="submit"
-                variant="destructive"
-                size="lg"
-                disabled={deleting}
-              >
+              <Button type="submit" variant="destructive" disabled={deleting}>
                 {deleting ? "Deleting..." : "Delete account"}
               </Button>
             </DialogFooter>

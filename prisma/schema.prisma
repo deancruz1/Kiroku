@@ -107,7 +107,7 @@ model ListAnime {
   @@unique([customListId, animeId])
 }
 
-// Show details copied from Jikan, keyed by MyAnimeList id. AnimeEntry and
+// Show details copied from Tenrai, keyed by MyAnimeList id. AnimeEntry and
 // ListAnime join to it by animeId in code, without a foreign key.
 model Anime {
   id              Int      @id

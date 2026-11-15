@@ -176,7 +176,7 @@ export async function fetchCalendarSeason(
     let body: RawPage;
     try {
       ({ data: body } = await jikanApi.get<RawPage>(path, {
-        params: { page, limit: PAGE_SIZE, continuing: true },
+        params: { page, limit: PAGE_SIZE, continuing: true, sfw: true },
       }));
       if (!Array.isArray(body?.data)) throw unexpectedPage();
     } catch (error) {
@@ -200,12 +200,13 @@ export async function fetchCalendarSeason(
 // A thrown error is never cached, so a failed or partial load is retried on the next visit.
 // An empty season is returned but not cached either.
 // seasonKey only splits the cache, so /seasons/now is not reused once the season changes.
+// "sfw" in the key parts keeps entries stored before the safe filter from being served.
 const getCachedCalendarSeason = cacheUpstream(
   async (path: string, seasonKey: string) => {
     void seasonKey;
     return fetchCalendarSeason(path);
   },
-  ["season-calendar"],
+  ["season-calendar", "sfw"],
   {
     revalidate: CALENDAR_CACHE_SECONDS,
     tags: ["season-calendar"],
@@ -237,7 +238,7 @@ export async function getCalendarSeason(
 export const getArchiveSeasonPage = cacheUpstream(
   async (year: number, season: SeasonName, page: number): Promise<SeasonPage> => {
     const { data } = await jikanApi.get<RawPage>(`/seasons/${year}/${season}`, {
-      params: { page, limit: PAGE_SIZE },
+      params: { page, limit: PAGE_SIZE, sfw: true },
     });
     if (!Array.isArray(data?.data)) throw unexpectedPage();
     return {
@@ -245,7 +246,7 @@ export const getArchiveSeasonPage = cacheUpstream(
       lastPage: Math.max(1, data.pagination?.last_visible_page ?? 1),
     };
   },
-  ["season-archive"],
+  ["season-archive", "sfw"],
   {
     revalidate: ARCHIVE_CACHE_SECONDS,
     tags: ["season-archive"],

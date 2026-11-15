@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
-import { useState, useRef, useEffect } from "react";
+import { Suspense, useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -35,6 +35,29 @@ function MenuLabel({ active, children }: { active: boolean; children: React.Reac
       {children}
     </span>
   );
+}
+
+// Remembers the last page that was not a show, with its query, for the show
+// page's back button, and the page before the current one so it can tell
+// whether going back in history reaches it.
+function RouteMemory() {
+  const pathname = usePathname();
+  const search = useSearchParams().toString();
+
+  useEffect(() => {
+    const path = search ? `${pathname}?${search}` : pathname;
+    try {
+      const current = sessionStorage.getItem("currentRoute");
+      if (current === path) return;
+      if (current) sessionStorage.setItem("routeBefore", current);
+      sessionStorage.setItem("currentRoute", path);
+      if (!pathname.startsWith("/anime/")) {
+        sessionStorage.setItem("previousRoute", path);
+      }
+    } catch {}
+  }, [pathname, search]);
+
+  return null;
 }
 
 export function Navbar() {
@@ -101,18 +124,15 @@ export function Navbar() {
     }
   }
 
-  useEffect(() => {
-    if (!pathname.startsWith("/anime/")) {
-      sessionStorage.setItem("previousRoute", pathname);
-    }
-  }, [pathname]);
-
   return (
     <header className="border-b border-rule bg-background">
+      <Suspense fallback={null}>
+        <RouteMemory />
+      </Suspense>
       <div className="page-frame flex h-14 items-center justify-between gap-3 xl:h-[72px] xl:justify-start xl:gap-10">
         <Link
           href="/"
-          className="flex shrink-0 items-baseline gap-2.5 hover:no-underline"
+          className="flex min-h-10 shrink-0 items-baseline gap-2.5 py-1 hover:no-underline"
         >
           <b
             lang="ja"
@@ -154,12 +174,12 @@ export function Navbar() {
             >
               <Search
                 aria-hidden="true"
-                className="absolute top-2.5 left-1.5 size-4 stroke-[1.75] text-muted-foreground"
+                className="absolute top-3 left-1.5 size-4 stroke-[1.75] text-muted-foreground"
               />
               <Input
                 type="search"
-                aria-label="Search anime"
-                placeholder="Search anime"
+                aria-label="Search shows"
+                placeholder="Search shows"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 className="w-[220px] pr-2.5 pl-[34px]"
@@ -251,8 +271,8 @@ export function Navbar() {
             <Input
               ref={mobileInputRef}
               type="search"
-              aria-label="Search anime"
-              placeholder="Search anime"
+              aria-label="Search shows"
+              placeholder="Search shows"
               value={mobileQuery}
               onChange={(e) => setMobileQuery(e.target.value)}
               className="pl-[34px]"

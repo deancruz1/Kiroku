@@ -11,7 +11,7 @@ export default function TopError({
   return (
     <ErrorPanel
       title="Top shows"
-      message="Could not load the top shows. The anime data source may be down or busy."
+      message="Could not load the top shows. The show data service may be down or busy."
       onRetry={unstable_retry}
     />
   );

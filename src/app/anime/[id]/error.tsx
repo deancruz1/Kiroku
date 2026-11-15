@@ -11,7 +11,7 @@ export default function AnimeError({
   return (
     <ErrorPanel
       title="Could not load this show"
-      message="The anime data source may be down or busy."
+      message="The show data service may be down or busy."
       onRetry={unstable_retry}
     />
   );

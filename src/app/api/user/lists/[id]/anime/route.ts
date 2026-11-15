@@ -40,7 +40,7 @@ export async function POST(
 
   if (existing) {
     return NextResponse.json(
-      { error: "Already in this list" },
+      { error: "Already in this collection" },
       { status: 409 },
     );
   }
@@ -53,7 +53,7 @@ export async function POST(
   } catch (error) {
     if (isUniqueViolation(error)) {
       return NextResponse.json(
-        { error: "Already in this list" },
+        { error: "Already in this collection" },
         { status: 409 },
       );
     }

@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     template: "%s | Kiroku",
   },
   description:
-    "Track your anime, discover seasonal shows, get personalized recommendations, and visualize your watching habits. A full-stack anime tracker.",
+    "Track your anime, discover seasonal shows, get personalised recommendations, and visualise your watching habits. A full-stack anime tracker.",
   keywords: [
     "anime tracker",
     "watch list",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     siteName: "Kiroku",
     title: "Kiroku | Anime Watch Tracker",
     description:
-      "Track your anime, discover seasonal shows, and get personalized recommendations.",
+      "Track your anime, discover seasonal shows, and get personalised recommendations.",
     images: [
       {
         url: "/og-image.webp",
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Kiroku | Anime Watch Tracker",
     description:
-      "Track your anime, discover seasonal shows, and get personalized recommendations.",
+      "Track your anime, discover seasonal shows, and get personalised recommendations.",
     images: ["/og-image.webp"],
   },
   robots: {

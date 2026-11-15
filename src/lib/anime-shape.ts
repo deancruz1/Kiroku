@@ -36,10 +36,18 @@ export interface JikanAnimeData {
   year?: number | null;
 }
 
+// The API's safe filter is applied upstream, but these are never offered as
+// genre names in case a tagged show still comes through.
+const HIDDEN_GENRES = new Set(["Hentai", "Erotica"]);
+
+export function visibleGenres(names: string[]) {
+  return names.filter((name) => !HIDDEN_GENRES.has(name));
+}
+
 export const AIRING_REFRESH_MS = 24 * 60 * 60 * 1000;
 export const FINISHED_REFRESH_MS = 30 * 24 * 60 * 60 * 1000;
 
-// Jikan formats: "24 min per ep", "1 hr 55 min", "1 hr", "45 sec per ep", "Unknown"
+// Duration formats in the API: "24 min per ep", "1 hr 55 min", "1 hr", "45 sec per ep", "Unknown"
 export function parseDurationMinutes(duration: string | null | undefined) {
   if (!duration) return null;
   const hours = /(\d+)\s*hr/.exec(duration);

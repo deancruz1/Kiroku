@@ -9,7 +9,7 @@ export default function AnimeNotFound() {
         title="Show not found"
         description="There is no show with this ID."
       />
-      <Button variant="link" asChild className="mt-9">
+      <Button variant="link" asChild className="mt-6 md:mt-8">
         <Link href="/search">Search for a show</Link>
       </Button>
     </main>

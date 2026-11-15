@@ -1,3 +1,5 @@
+import { cache } from "react";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
@@ -10,6 +12,7 @@ import {
   isJikanNotFound,
 } from "@/lib/jikan";
 import { parseAnimeId } from "@/lib/params";
+import { visibleGenres } from "@/lib/anime-shape";
 import { Poster } from "@/components/poster";
 import { Section } from "@/components/section-heading";
 import { LeaderList, LeaderRow } from "@/components/leader-row";
@@ -24,7 +27,6 @@ import type {
 } from "@/types/anime";
 
 const MAX_REVIEWS = 10;
-const HIDDEN_GENRES = new Set(["Hentai", "Erotica"]);
 
 type FullAnime = JikanAnime & {
   type?: string | null;
@@ -53,6 +55,22 @@ function voiceActor(char: JikanCharacter) {
   );
 }
 
+// Shared by generateMetadata and the page so a cold load asks upstream once.
+const getShow = cache((id: number) => getAnimeById(id));
+
+export async function generateMetadata({
+  params,
+}: AnimePageProps): Promise<Metadata> {
+  const malId = parseAnimeId((await params).id);
+  if (malId === null) return { title: "Show not found" };
+  try {
+    const { data } = await getShow(malId);
+    return { title: data.title_english || data.title };
+  } catch (error) {
+    return { title: isJikanNotFound(error) ? "Show not found" : "Show" };
+  }
+}
+
 export default async function AnimePage({ params }: AnimePageProps) {
   const { id } = await params;
   const malId = parseAnimeId(id);
@@ -60,7 +78,7 @@ export default async function AnimePage({ params }: AnimePageProps) {
 
   // The show is requested first so it takes the first rate-limit slot. The
   // other sections are optional: a failure there only hides that section.
-  const animeRequest = getAnimeById(malId);
+  const animeRequest = getShow(malId);
   const secondary = Promise.allSettled([
     getAnimeRecommendations(malId),
     getAnimeReviews(malId),
@@ -93,9 +111,7 @@ export default async function AnimePage({ params }: AnimePageProps) {
   const displayTitle = anime.title_english || anime.title;
   const trailerId: string | undefined = videos[0]?.trailer?.youtube_id;
 
-  const genres = (anime.genres ?? [])
-    .map((g) => g.name)
-    .filter((name) => !HIDDEN_GENRES.has(name));
+  const genres = visibleGenres((anime.genres ?? []).map((g) => g.name));
   const studios = (anime.studios ?? []).map((s) => s.name);
 
   return (

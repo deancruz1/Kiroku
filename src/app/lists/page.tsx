@@ -48,7 +48,7 @@ const showCount = (n: number) => `${n} ${n === 1 ? "show" : "shows"}`;
 
 function RowsSkeleton() {
   return (
-    <ul aria-hidden="true" className="mt-6 md:mt-7">
+    <ul aria-hidden="true" className="mt-2">
       {Array.from({ length: 3 }, (_, i) => (
         <li key={i} className={ROW}>
           <div className="order-last col-span-full flex gap-1 md:order-none md:col-span-1">
@@ -60,9 +60,9 @@ function RowsSkeleton() {
             <Skeleton className="h-5 w-48 max-w-full" />
             <Skeleton className="mt-2 h-3.5 w-16" />
           </div>
-          <div className="flex gap-2">
-            <Skeleton className="size-8 rounded-full" />
-            <Skeleton className="size-8 rounded-full" />
+          <div className="flex">
+            <Skeleton className="size-10 rounded-full" />
+            <Skeleton className="size-10 rounded-full" />
           </div>
         </li>
       ))}
@@ -143,7 +143,7 @@ export default function ListsPage() {
   if (sessionStatus === "loading") {
     return (
       <main className="page" aria-busy="true">
-        <PageHeading title="Collections" />
+        <PageHeading title="Collections" rule />
         <RowsSkeleton />
       </main>
     );
@@ -157,7 +157,7 @@ export default function ListsPage() {
     return (
       <ErrorPanel
         title="Collections"
-        message="Your collections could not be loaded."
+        message="Could not load your collections."
         onRetry={() => refetch()}
       />
     );
@@ -192,7 +192,7 @@ export default function ListsPage() {
             </div>
             <Button
               type="submit"
-              className="h-10"
+              variant="outline"
               disabled={createList.isPending || !newName.trim()}
             >
               {createList.isPending ? "Creating" : "Create"}

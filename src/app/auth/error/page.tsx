@@ -36,7 +36,7 @@ function ErrorContent() {
   return (
     <>
       <PageHeading title={title} />
-      <p className="mt-6 text-xl">{message}</p>
+      <p className="mt-6 text-xl md:mt-8">{message}</p>
       <Button variant="link" asChild className="mt-4 h-10">
         <Link href="/auth/signin">Back to sign in</Link>
       </Button>
@@ -47,12 +47,12 @@ function ErrorContent() {
 export default function AuthErrorPage() {
   return (
     <main className="page">
-      <div className="max-w-xl md:pt-6">
+      <div className="max-w-xl">
         <Suspense
           fallback={
             <div role="status" aria-label="Loading">
               <Skeleton className="h-10 w-64 md:h-12" />
-              <Skeleton className="mt-6 h-6 w-full" />
+              <Skeleton className="mt-6 h-6 w-full md:mt-8" />
             </div>
           }
         >

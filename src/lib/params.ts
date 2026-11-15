@@ -40,7 +40,7 @@ export function getSearchQuery(value: ParamValue) {
   return (first(value) ?? "").trim();
 }
 
-// Jikan's search ignores case and extra spaces, so these all share one cache entry.
+// Tenrai's search ignores case and extra spaces, so these all share one cache entry.
 export function normalizeSearchQuery(value: string) {
   return value
     .trim()

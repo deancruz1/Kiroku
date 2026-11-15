@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { getTopAnime } from "@/lib/jikan";
 import { parsePage, parseTopFilter, uniqueByMalId } from "@/lib/params";
 import { AnimeRow, AnimeRowHeader, type AnimeRowShow } from "@/components/anime-row";
@@ -8,6 +9,8 @@ import { RankingTabs } from "./ranking-tabs";
 import type { JikanTopResponse } from "@/types/anime";
 
 const PAGE_SIZE = 20;
+
+export const metadata: Metadata = { title: "Top shows" };
 
 type TopResponse = JikanTopResponse & {
   data: AnimeRowShow[];
@@ -26,7 +29,7 @@ export default async function TopPage({
   // Failures are thrown to top/error.tsx, which offers a retry.
   const response: TopResponse = await getTopAnime(currentPage, activeFilter);
   const rows = response.data || [];
-  // Jikan lists are scraped from MAL and can repeat an entry; rows are keyed by id.
+  // Ranking lists come from MyAnimeList data and can repeat an entry; rows are keyed by id.
   const anime = uniqueByMalId(rows);
   const pagination = response.pagination;
   const perPage = pagination?.items?.per_page || PAGE_SIZE;

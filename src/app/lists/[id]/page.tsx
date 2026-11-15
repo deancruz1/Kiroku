@@ -58,13 +58,16 @@ function details(anime: StoredShow | null) {
 
 function BackLink() {
   return (
-    <Link
-      href="/lists"
-      className="mb-4 inline-flex min-h-10 items-center gap-1.5 text-muted-foreground hover:text-foreground md:mb-5"
-    >
-      <ArrowLeft aria-hidden="true" className="size-4 stroke-[1.75]" />
-      Collections
-    </Link>
+    <div className="mb-4 md:mb-6">
+      <Link
+        href="/lists"
+        className="-ml-0.5 inline-flex min-h-10 items-center gap-1.5 text-base text-muted-foreground transition-colors hover:text-foreground hover:no-underline motion-reduce:transition-none"
+      >
+        <ArrowLeft aria-hidden="true" className="size-4 stroke-[1.75]" />
+        <span className="sr-only">Back to </span>
+        Collections
+      </Link>
+    </div>
   );
 }
 
@@ -72,9 +75,11 @@ function PageSkeleton() {
   return (
     <main className="page" aria-busy="true">
       <BackLink />
-      <Skeleton className="h-[38px] w-64 max-w-full md:h-[52px]" />
-      <Skeleton className="mt-3 h-4 w-20" />
-      <ul aria-hidden="true" className="mt-6 border-t border-foreground md:mt-7">
+      <div className="border-b border-foreground pb-3.5 md:pb-5">
+        <Skeleton className="h-[38px] w-64 max-w-full md:h-[52px]" />
+        <Skeleton className="mt-3 h-5 w-20" />
+      </div>
+      <ul aria-hidden="true" className="mt-2">
         {Array.from({ length: 4 }, (_, i) => (
           <li key={i} className={ROW}>
             <Skeleton className="h-12 w-9" />
@@ -83,7 +88,7 @@ function PageSkeleton() {
               <Skeleton className="mt-2 h-3 w-2/5 max-w-[160px]" />
             </div>
             <Skeleton className="hidden h-4 w-32 md:block" />
-            <Skeleton className="size-8 rounded-full" />
+            <Skeleton className="size-10 rounded-full" />
           </li>
         ))}
       </ul>
@@ -162,7 +167,7 @@ export default function ListDetailPage() {
     return (
       <ErrorPanel
         title="Collection"
-        message="This collection could not be loaded."
+        message="Could not load this collection."
         onRetry={() => refetch()}
       />
     );
@@ -173,7 +178,7 @@ export default function ListDetailPage() {
       <main className="page">
         <BackLink />
         <PageHeading title="Collection not found" />
-        <p className="mt-9 text-xl">
+        <p className="mt-6 text-xl md:mt-8">
           It may have been deleted, or the link is wrong.
         </p>
       </main>
@@ -182,6 +187,7 @@ export default function ListDetailPage() {
 
   return (
     <main className="page">
+      <title>{`${list.name} | Kiroku`}</title>
       <BackLink />
       <PageHeading
         title={list.name}
@@ -211,12 +217,12 @@ export default function ListDetailPage() {
         <EmptyState
           className="mt-2"
           action={
-            <Button variant="outline" asChild>
+            <Button asChild>
               <Link href="/search">Find a show</Link>
             </Button>
           }
         >
-          This collection is empty. Shows are added from their own page.
+          This collection is empty; shows are added from their own page.
         </EmptyState>
       ) : (
         <ul className="mt-2">

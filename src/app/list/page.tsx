@@ -78,7 +78,7 @@ function PageSkeleton() {
   return (
     <main className="page" aria-busy="true">
       <PageHeading title="Watch list" />
-      <div className="mt-6 flex gap-7 border-b border-foreground pb-3 md:mt-7">
+      <div className="mt-6 flex gap-7 border-b border-foreground pb-3 md:mt-8">
         {[48, 90, 110, 100, 80].map((w, i) => (
           <Skeleton key={i} className="h-5" style={{ width: w }} />
         ))}
@@ -114,7 +114,7 @@ export default function WatchListPage() {
     return (
       <ErrorPanel
         title="Watch list"
-        message="Your watch list could not be loaded."
+        message="Could not load your watch list."
         onRetry={() => refetch()}
       />
     );
@@ -219,7 +219,7 @@ export default function WatchListPage() {
 
       {all.length === 0 ? (
         <EmptyState
-          className="mt-6 md:mt-7"
+          className="mt-6 md:mt-8"
           action={
             <Button asChild>
               <Link href="/search">Find a show</Link>
@@ -230,7 +230,7 @@ export default function WatchListPage() {
         </EmptyState>
       ) : (
         <Tabs value={activeTab} onValueChange={setActiveTab} className="gap-0">
-          <div className="mt-6 flex flex-col-reverse gap-4 border-b border-foreground md:mt-7 md:flex-row md:items-end md:justify-between md:gap-8">
+          <div className="mt-6 flex flex-col-reverse gap-4 border-b border-foreground md:mt-8 md:flex-row md:items-end md:justify-between md:gap-8">
             <TabsList
               aria-label="Filter by status"
               className="-mb-px max-w-full overflow-x-auto scrollbar-none"

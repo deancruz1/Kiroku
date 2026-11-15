@@ -70,7 +70,7 @@ function RecommendationsSkeleton() {
   return (
     <div role="status" aria-label="Loading recommendations">
       <Skeleton className="mt-2.5 h-5 w-[min(520px,100%)]" />
-      <ul className="mt-9 max-w-3xl border-t border-foreground">
+      <ul className="mt-6 border-t border-foreground md:mt-8">
         {Array.from({ length: 6 }, (_, i) => (
           <li key={i} className={ROW}>
             <Skeleton className="h-[88px] w-[66px]" />
@@ -108,7 +108,7 @@ export default function RecommendationsPage() {
     return (
       <ErrorPanel
         title="For you"
-        message="Your recommendations could not be loaded."
+        message="Could not load your recommendations."
         onRetry={() => refetch()}
       />
     );
@@ -117,7 +117,7 @@ export default function RecommendationsPage() {
   if (!data) {
     return (
       <main className="page">
-        <h1 className="type-display-sm md:type-display">For you</h1>
+        <PageHeading title="For you" />
         <RecommendationsSkeleton />
       </main>
     );
@@ -130,7 +130,7 @@ export default function RecommendationsPage() {
       <main className="page">
         <PageHeading title="For you" />
         <EmptyState
-          className="mt-9 max-w-3xl"
+          className="mt-6 md:mt-8"
           action={
             basedOn.length > 0 ? (
               <Button type="button" onClick={() => refetch()} disabled={isFetching}>
@@ -155,11 +155,11 @@ export default function RecommendationsPage() {
         title="For you"
         description={
           basedOn.length > 0
-            ? `Shows scored ${MIN_SCORE} or higher from your top genres: ${listWords(basedOn)}. Shows already on your list are left out.`
+            ? `Shows scored ${MIN_SCORE} or higher from your top genres: ${listWords(basedOn)}. Shows already on your watch list are left out.`
             : undefined
         }
       />
-      <ul className="mt-9 max-w-3xl border-t border-foreground">
+      <ul className="mt-6 border-t border-foreground md:mt-8">
         {recommendations.map((rec) => (
           <RecommendationRow key={rec.mal_id} rec={rec} basedOn={basedOn} />
         ))}

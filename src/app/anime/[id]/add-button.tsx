@@ -40,7 +40,7 @@ export function AddButton({ animeId }: { animeId: number }) {
     return (
       <Button size="lg" disabled>
         <Plus aria-hidden="true" />
-        Add to list
+        Add to watch list
       </Button>
     );
   }
@@ -83,19 +83,19 @@ export function AddButton({ animeId }: { animeId: number }) {
               disabled={addEntry.isPending || updateEntry.isPending}
               className="hover:border-foreground hover:bg-transparent aria-expanded:border-foreground aria-expanded:bg-transparent"
             >
-              <span className="sr-only">In your list: </span>
+              <span className="sr-only">On your watch list: </span>
               <StatusMark status={shownStatus} size="md" />
               <ChevronDown aria-hidden="true" className="ml-1 text-control" />
             </Button>
           ) : existing ? (
             <Button size="lg" variant="outline" disabled={updateEntry.isPending}>
               <Check aria-hidden="true" />
-              In your list
+              On your watch list
             </Button>
           ) : (
             <Button size="lg" disabled={entriesPending || addEntry.isPending}>
               <Plus aria-hidden="true" />
-              Add to list
+              Add to watch list
             </Button>
           )}
         </DropdownMenuTrigger>

@@ -11,7 +11,7 @@ export default function SeasonError({
   return (
     <ErrorPanel
       title="Season"
-      message="Could not load the season. The anime data source may be down or busy."
+      message="Could not load the season. The show data service may be down or busy."
       onRetry={unstable_retry}
     />
   );

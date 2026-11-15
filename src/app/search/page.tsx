@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { searchAnime } from "@/lib/jikan";
 import { getSearchQuery, parsePage, uniqueByMalId } from "@/lib/params";
 import { AnimeRow, AnimeRowHeader, type AnimeRowShow } from "@/components/anime-row";
@@ -8,6 +9,13 @@ import { Pagination } from "@/components/pagination";
 
 interface SearchPageProps {
   searchParams: Promise<{ q?: string | string[]; page?: string | string[] }>;
+}
+
+export async function generateMetadata({
+  searchParams,
+}: SearchPageProps): Promise<Metadata> {
+  const query = getSearchQuery((await searchParams).q);
+  return { title: query ? `Search results for “${query}”` : "Search" };
 }
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
@@ -54,12 +62,14 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             </ul>
           </div>
 
-          <Pagination
-            currentPage={currentPage}
-            lastPage={results.pagination.last_visible_page}
-            baseUrl={`/search?q=${encodeURIComponent(query)}`}
-            paramName="page"
-          />
+          {results.pagination.last_visible_page > 1 && (
+            <Pagination
+              currentPage={currentPage}
+              lastPage={results.pagination.last_visible_page}
+              baseUrl={`/search?q=${encodeURIComponent(query)}`}
+              paramName="page"
+            />
+          )}
         </>
       )}
     </main>

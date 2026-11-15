@@ -3,17 +3,7 @@
 import { useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
-
-const PAGE_LABELS: Record<string, string> = {
-  "/search": "Search",
-  "/top": "Top shows",
-  "/season": "Season",
-  "/list": "Watch list",
-  "/recommendations": "For you",
-  "/stats": "Stats",
-  "/lists": "Collections",
-  "/": "Home",
-};
+import { backTarget, routeLabel } from "@/lib/back-route";
 
 // The navigation entry is the URL the browser loaded as a document. Links
 // inside the app navigate client-side, so it only matches the current URL when
@@ -29,14 +19,17 @@ function cameFromInsideApp() {
   );
 }
 
-function getPreviousLabel() {
-  if (!cameFromInsideApp()) return PAGE_LABELS["/"];
+function stored(key: string) {
   try {
-    const prev = sessionStorage.getItem("previousRoute");
-    return prev ? PAGE_LABELS[prev] || null : null;
+    return sessionStorage.getItem(key);
   } catch {
     return null;
   }
+}
+
+function getPreviousLabel() {
+  if (!cameFromInsideApp()) return routeLabel("/");
+  return routeLabel(stored("previousRoute"));
 }
 
 function subscribe() {
@@ -51,20 +44,31 @@ export function BackButton() {
     () => null,
   );
 
+  function goBack() {
+    if (!cameFromInsideApp()) {
+      router.push("/");
+      return;
+    }
+    const target = backTarget(stored("previousRoute"), stored("routeBefore"));
+    if (target.kind === "push") router.push(target.to);
+    else router.back();
+  }
+
   return (
     <button
       type="button"
-      onClick={() => {
-        if (cameFromInsideApp()) {
-          router.back();
-        } else {
-          router.push("/");
-        }
-      }}
-      className="-ml-0.5 inline-flex min-h-10 cursor-pointer items-center gap-1.5 text-base text-muted-foreground transition-colors hover:text-foreground"
+      onClick={goBack}
+      className="-ml-0.5 inline-flex min-h-10 cursor-pointer items-center gap-1.5 text-base text-muted-foreground transition-colors hover:text-foreground motion-reduce:transition-none"
     >
       <ArrowLeft className="size-4 stroke-[1.75]" aria-hidden="true" />
-      Back{previousLabel ? ` to ${previousLabel}` : ""}
+      {previousLabel ? (
+        <>
+          <span className="sr-only">Back to </span>
+          {previousLabel}
+        </>
+      ) : (
+        "Back"
+      )}
     </button>
   );
 }

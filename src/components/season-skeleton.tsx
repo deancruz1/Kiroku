@@ -89,7 +89,7 @@ export function SeasonDayHeading({
   );
 }
 
-export function SeasonRowSkeleton({ withTime = true }: { withTime?: boolean }) {
+function SeasonRowSkeleton({ withTime = true }: { withTime?: boolean }) {
   return (
     <li
       className={cn(

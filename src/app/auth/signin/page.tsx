@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { Suspense, useEffect, useRef, useState } from "react";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { PageHeading } from "@/components/page-heading";
 import { FormField } from "@/components/form-field";
@@ -12,6 +12,7 @@ import {
   validatePassword,
   validateUsername,
 } from "@/lib/account-validation";
+import { signInErrorMessage } from "@/lib/auth-errors";
 import { NETWORK_ERROR_MESSAGE, requestJson } from "@/lib/fetch-json";
 
 type Mode = "signin" | "register";
@@ -23,14 +24,31 @@ type RegisterErrors = {
 };
 
 const FIELD = "[&_input]:h-10";
-// The capture scripts find the sign-in fields by their placeholders, so the
-// placeholders stay in the markup but are not shown.
-const SIGNIN_FIELD = "[&_input]:h-10 [&_input]:placeholder:text-transparent";
+
+// Auth.js redirects here with ?error= when a sign-in fails outside this form,
+// for example a Discord account that belongs to someone else.
+function UrlError() {
+  const router = useRouter();
+  const error = useSearchParams().get("error");
+  const { status } = useSession();
+  const linking = status === "authenticated" && error === "OAuthAccountNotLinked";
+
+  // A signed-in user only gets here by linking Discord from the profile page,
+  // which explains the conflict in full.
+  useEffect(() => {
+    if (linking) router.replace("/profile?error=OAuthAccountNotLinked");
+  }, [linking, router]);
+
+  const message = signInErrorMessage(error);
+  if (!message || linking) return null;
+  return <InlineMessage className="mt-6">{message}</InlineMessage>;
+}
 
 export default function SignInPage() {
   const router = useRouter();
   const [mode, setMode] = useState<Mode>("signin");
   const [switched, setSwitched] = useState(false);
+  const [showUrlError, setShowUrlError] = useState(true);
   const firstFieldRef = useRef<HTMLInputElement>(null);
 
   const [email, setEmail] = useState("");
@@ -57,6 +75,7 @@ export default function SignInPage() {
   function switchMode(next: Mode) {
     setMode(next);
     setSwitched(true);
+    setShowUrlError(false);
     setError("");
     setLoginErrors({});
     setRegError("");
@@ -68,6 +87,7 @@ export default function SignInPage() {
     e.preventDefault();
     if (loading) return;
     setError("");
+    setShowUrlError(false);
 
     const errors = {
       login: email.trim() ? undefined : "Enter your email or username.",
@@ -150,10 +170,16 @@ export default function SignInPage() {
 
   return (
     <main className="page">
-      <div className="max-w-md md:pt-6">
+      <div className="max-w-md">
         {mode === "signin" ? (
           <>
             <PageHeading title="Sign in" />
+
+            {showUrlError && (
+              <Suspense fallback={null}>
+                <UrlError />
+              </Suspense>
+            )}
 
             {registered && (
               <InlineMessage tone="success" className="mt-6">
@@ -161,7 +187,7 @@ export default function SignInPage() {
               </InlineMessage>
             )}
 
-            <form onSubmit={handleLogin} noValidate className="mt-8">
+            <form onSubmit={handleLogin} noValidate className="mt-6 md:mt-8">
               <div className="flex flex-col gap-5">
                 <FormField
                   ref={firstFieldRef}
@@ -169,8 +195,7 @@ export default function SignInPage() {
                   type="text"
                   name="username"
                   autoComplete="username"
-                  placeholder="Email or Username"
-                  className={SIGNIN_FIELD}
+                  className={FIELD}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   error={loginErrors.login}
@@ -181,8 +206,7 @@ export default function SignInPage() {
                   type="password"
                   name="password"
                   autoComplete="current-password"
-                  placeholder="Password"
-                  className={SIGNIN_FIELD}
+                  className={FIELD}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   error={loginErrors.password}
@@ -236,7 +260,7 @@ export default function SignInPage() {
           <>
             <PageHeading title="Create account" />
 
-            <form onSubmit={handleRegister} noValidate className="mt-8">
+            <form onSubmit={handleRegister} noValidate className="mt-6 md:mt-8">
               <div className="flex flex-col gap-5">
                 <div>
                   <FormField

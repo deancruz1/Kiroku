@@ -32,7 +32,7 @@ export async function GET() {
     return NextResponse.json({
       recommendations: [],
       basedOn: [],
-      message: "Add some anime to get recommendations.",
+      message: "Add shows to your watch list to get recommendations.",
     });
   }
 

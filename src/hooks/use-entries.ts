@@ -54,7 +54,7 @@ export function useAddEntry() {
         body: JSON.stringify(vars),
         headers: { "Content-Type": "application/json" },
       });
-      if (!res.ok) throw await responseError(res, "Could not add to your list");
+      if (!res.ok) throw await responseError(res, "Could not add it to your watch list");
       return res.json() as Promise<Entry>;
     },
     onSuccess: (entry) => {

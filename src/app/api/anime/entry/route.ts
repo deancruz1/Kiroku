@@ -36,7 +36,7 @@ export async function POST(request: Request) {
 
   if (existing) {
     return NextResponse.json(
-      { error: "Already in your list" },
+      { error: "Already on your watch list" },
       { status: 409 },
     );
   }
@@ -53,7 +53,7 @@ export async function POST(request: Request) {
   } catch (error) {
     if (isUniqueViolation(error)) {
       return NextResponse.json(
-        { error: "Already in your list" },
+        { error: "Already on your watch list" },
         { status: 409 },
       );
     }

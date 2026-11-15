@@ -39,7 +39,7 @@ function DialogOverlay({
     <DialogPrimitive.Overlay
       data-slot="dialog-overlay"
       className={cn(
-        "fixed inset-0 isolate z-50 bg-black/40 duration-100 dark:bg-black/60 data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0",
+        "fixed inset-0 isolate z-50 bg-scrim duration-100 data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0",
         className
       )}
       {...props}
@@ -51,15 +51,33 @@ function DialogContent({
   className,
   children,
   showCloseButton = true,
+  onOpenAutoFocus,
+  onCloseAutoFocus,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
   showCloseButton?: boolean
 }) {
+  // Dialogs opened from state have no Trigger for Radix to return focus to,
+  // so focus goes back to whatever opened them.
+  const opener = React.useRef<HTMLElement | null>(null)
+
   return (
     <DialogPortal>
       <DialogOverlay />
       <DialogPrimitive.Content
         data-slot="dialog-content"
+        onOpenAutoFocus={(e) => {
+          opener.current = document.activeElement as HTMLElement | null
+          onOpenAutoFocus?.(e)
+        }}
+        onCloseAutoFocus={(e) => {
+          onCloseAutoFocus?.(e)
+          if (e.defaultPrevented) return
+          if (opener.current?.isConnected) {
+            e.preventDefault()
+            opener.current.focus()
+          }
+        }}
         className={cn(
           "fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-5 rounded-md border border-rule bg-popover p-6 text-base text-popover-foreground shadow-[0_8px_30px_rgb(0_0_0/0.14)] duration-100 outline-none sm:max-w-md data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
           className
@@ -71,11 +89,10 @@ function DialogContent({
           <DialogPrimitive.Close data-slot="dialog-close" asChild>
             <Button
               variant="ghost"
-              className="absolute top-3 right-3 text-foreground"
-              size="icon-sm"
+              className="absolute top-2 right-2 text-foreground"
+              size="icon-lg"
             >
-              <XIcon
-              />
+              <XIcon className="size-[18px]" />
               <span className="sr-only">Close</span>
             </Button>
           </DialogPrimitive.Close>
@@ -89,7 +106,7 @@ function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="dialog-header"
-      className={cn("flex flex-col gap-1.5 pr-8", className)}
+      className={cn("flex flex-col gap-1.5 pr-10", className)}
       {...props}
     />
   )

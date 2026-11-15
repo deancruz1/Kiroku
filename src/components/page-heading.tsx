@@ -24,7 +24,9 @@ export function PageHeading({
       <div>
         <h1 className="type-display-sm md:type-display">{title}</h1>
         {description && (
-          <p className="mt-2.5 text-muted-foreground">{description}</p>
+          <p className="mt-2.5 max-w-[65ch] text-muted-foreground">
+            {description}
+          </p>
         )}
       </div>
       {children && (

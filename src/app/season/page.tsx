@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { SeasonContent } from "@/components/season-content";
 import {
@@ -22,6 +23,15 @@ interface SeasonPageProps {
     season?: string | string[];
     page?: string | string[];
   }>;
+}
+
+export async function generateMetadata({
+  searchParams,
+}: SeasonPageProps): Promise<Metadata> {
+  const query = parseSeasonQuery(await searchParams);
+  const { year, season } =
+    query.kind === "season" ? query : getSeasonAt(new Date());
+  return { title: `${season[0].toUpperCase()}${season.slice(1)} ${year}` };
 }
 
 export default async function SeasonPage({ searchParams }: SeasonPageProps) {

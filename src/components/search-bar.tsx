@@ -29,10 +29,10 @@ export function SearchBar({ defaultQuery = "" }: { defaultQuery?: string }) {
         />
         <Input
           name="q"
-          aria-label="Search anime"
+          aria-label="Search shows"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search for an anime..."
+          placeholder="Search for a show"
           className="h-full pl-9 text-xl md:text-2xl"
         />
       </div>

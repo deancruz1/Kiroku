@@ -11,7 +11,7 @@ function NativeSelect({
     <span data-slot="native-select" className="relative inline-flex">
       <select
         className={cn(
-          "h-9 cursor-pointer appearance-none rounded-none border-0 border-b border-control bg-transparent pr-7 pl-0.5 text-base text-foreground disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive [&>option]:bg-raised [&>option]:text-foreground",
+          "h-10 cursor-pointer appearance-none rounded-none border-0 border-b border-control bg-transparent pr-7 pl-0.5 text-base text-foreground disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive [&>option]:bg-raised [&>option]:text-foreground",
           className
         )}
         {...props}

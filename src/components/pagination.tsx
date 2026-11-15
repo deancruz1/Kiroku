@@ -12,7 +12,7 @@ interface PaginationProps {
 }
 
 const LINK_CLASS =
-  "px-1 py-1.5 text-base text-muted-foreground transition-colors hover:text-foreground";
+  "inline-flex min-h-10 min-w-10 items-center justify-center px-1 text-base text-muted-foreground transition-colors hover:text-foreground motion-reduce:transition-none";
 
 export function Pagination({
   currentPage,
@@ -98,7 +98,7 @@ export function Pagination({
           placeholder={String(currentPage)}
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? errorId : undefined}
-          className="h-9 w-14 border-0 border-b border-control bg-transparent px-0.5 text-base text-center aria-invalid:border-destructive"
+          className="h-10 w-14 border-0 border-b border-control bg-transparent px-0.5 text-base text-center aria-invalid:border-destructive"
         />
         <span
           aria-hidden="true"

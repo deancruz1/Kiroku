@@ -13,12 +13,11 @@ import { Skeleton } from "@/components/skeleton";
 import { EmptyState } from "@/components/empty-state";
 import { SignInPrompt } from "@/components/sign-in-prompt";
 import { ErrorPanel } from "@/components/error-panel";
-import { STATUS_LABEL } from "@/components/status-mark";
+import { STATUS_LABEL, STATUS_ORDER } from "@/components/status-mark";
 import {
   GenreBars,
   RatingColumns,
   StatusBreakdown,
-  STATS_STATUS_ORDER,
 } from "@/components/stats-charts";
 import type { Stats } from "@/lib/stats";
 
@@ -39,7 +38,7 @@ function watchTime(stats: Stats) {
 
 function Statement({ stats }: { stats: Stats }) {
   return (
-    <p className={`${STATEMENT} mt-8 max-w-[980px] md:mt-9`}>
+    <p className={`${STATEMENT} mt-6 max-w-[980px] md:mt-8`}>
       You have logged <b className="font-semibold">{count(stats.totalEntries, "show")}</b>
       {stats.totalEpisodesWatched > 0 ? (
         <>
@@ -197,7 +196,7 @@ function StatsView({ stats }: { stats: Stats }) {
 
           <Section title="Episodes">
             <LeaderList>
-              {STATS_STATUS_ORDER.map((s) => {
+              {STATUS_ORDER.map((s) => {
                 const n = stats.episodesByStatus[s] ?? 0;
                 return (
                   <LeaderRow
@@ -231,7 +230,7 @@ function SkeletonRows({ rows }: { rows: number }) {
 function StatsSkeleton() {
   return (
     <div role="status" aria-label="Loading your stats">
-      <div className="mt-8 max-w-[980px] space-y-3 md:mt-9">
+      <div className="mt-6 max-w-[980px] space-y-3 md:mt-8">
         <Skeleton className="h-8 md:h-10" />
         <Skeleton className="h-8 w-2/3 md:h-10" />
       </div>
@@ -282,7 +281,7 @@ export default function StatsPage() {
     return (
       <ErrorPanel
         title="Stats"
-        message="Your stats could not be loaded."
+        message="Could not load your stats."
         onRetry={() => refetch()}
       />
     );
@@ -295,7 +294,7 @@ export default function StatsPage() {
         <StatsSkeleton />
       ) : stats.totalEntries === 0 ? (
         <EmptyState
-          className="mt-9"
+          className="mt-6 md:mt-8"
           action={
             <Button asChild>
               <Link href="/season">Browse the current season</Link>

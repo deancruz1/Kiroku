@@ -12,7 +12,7 @@ export function SignInPrompt({
   return (
     <main className="page">
       {title && <PageHeading title={title} />}
-      <div className={title ? "mt-9" : undefined}>
+      <div className={title ? "mt-6 md:mt-8" : undefined}>
         <p className="text-xl">Sign in to see {subject}.</p>
         <Button asChild className="mt-5">
           <Link href="/auth/signin">Sign in</Link>

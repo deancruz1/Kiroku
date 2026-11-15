@@ -155,7 +155,7 @@ describe("fetchCalendarSeason", () => {
     expect(result.map((a) => a.mal_id)).toEqual([1, 3, 4]);
     expect(get).toHaveBeenCalledTimes(3);
     expect(get).toHaveBeenLastCalledWith("/seasons/now", {
-      params: { page: 3, limit: 25, continuing: true },
+      params: { page: 3, limit: 25, continuing: true, sfw: true },
     });
   });
 
@@ -207,7 +207,7 @@ describe("fetchCalendarSeason", () => {
     expect(result.complete).toBe(false);
     expect(result.anime).toHaveLength(1);
     expect(get).toHaveBeenCalledWith("/seasons/now", {
-      params: { page: 1, limit: 25, continuing: true },
+      params: { page: 1, limit: 25, continuing: true, sfw: true },
     });
   });
 
@@ -216,7 +216,7 @@ describe("fetchCalendarSeason", () => {
     const result = await getCalendarSeason(2027, "winter", false);
     expect(result).toEqual({ anime: [toSeasonAnime(anime(1))], complete: true });
     expect(get).toHaveBeenCalledWith("/seasons/2027/winter", {
-      params: { page: 1, limit: 25, continuing: true },
+      params: { page: 1, limit: 25, continuing: true, sfw: true },
     });
   });
 
@@ -244,7 +244,7 @@ describe("getArchiveSeasonPage", () => {
     get.mockResolvedValueOnce({ data: fall2025 });
     const result = await getArchiveSeasonPage(2025, "fall", 2);
 
-    expect(get).toHaveBeenCalledWith("/seasons/2025/fall", { params: { page: 2, limit: 25 } });
+    expect(get).toHaveBeenCalledWith("/seasons/2025/fall", { params: { page: 2, limit: 25, sfw: true } });
     expect(result.lastPage).toBe(7);
     expect(result.anime.map((a) => a.mal_id)).toEqual(fall2025.data.map((a) => a.mal_id));
     expect(result.anime.every((a) => a.synopsis === null)).toBe(true);
@@ -263,6 +263,20 @@ describe("getArchiveSeasonPage", () => {
   it("throws on an error body so it is not cached", async () => {
     get.mockResolvedValueOnce({ data: notFoundBody });
     await expect(getArchiveSeasonPage(2025, "fall", 1)).rejects.toThrow("Unexpected season page");
+  });
+});
+
+describe("safe filter", () => {
+  it("keys both season caches by the safe filter", async () => {
+    get
+      .mockResolvedValueOnce(page([anime(1)], false))
+      .mockResolvedValueOnce({ data: fall2025 });
+    await getCalendarSeason(2026, "fall", true);
+    await getArchiveSeasonPage(2025, "fall", 2);
+    expect([...store.keys()]).toEqual([
+      'season-calendar,sfw-["/seasons/now","2026-fall"]',
+      'season-archive,sfw-[2025,"fall",2]',
+    ]);
   });
 });
 

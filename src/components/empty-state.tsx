@@ -11,7 +11,7 @@ export function EmptyState({
 }) {
   return (
     <div className={cn("border-b border-rule py-3", className)}>
-      <p className="italic text-muted-foreground">{children}</p>
+      <p className="max-w-[65ch] italic text-muted-foreground">{children}</p>
       {action && <div className="mt-3">{action}</div>}
     </div>
   );

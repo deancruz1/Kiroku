@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
 import { Button } from "@/components/ui/button";
 import type { SeasonAnime } from "@/lib/season";
+import { visibleGenres } from "@/lib/anime-shape";
 
 const SEASONS = ["winter", "spring", "summer", "fall"];
 const SEASON_LABELS: Record<string, string> = {
@@ -90,11 +91,11 @@ export function SeasonContent({
 
   const allGenres = useMemo(
     () =>
-      [
+      visibleGenres([
         ...new Set(
           uniqueAnime.flatMap((a) => a.genres?.map((g) => g.name) || []),
         ),
-      ].sort(),
+      ]).sort(),
     [uniqueAnime],
   );
 
@@ -207,7 +208,7 @@ export function SeasonContent({
               onChange={(e) => setShowTrackedOnly(e.target.checked)}
               className="size-4 cursor-pointer accent-vermilion"
             />
-            Only my list
+            On my watch list
           </label>
         )}
       </PageHeading>
@@ -231,7 +232,7 @@ export function SeasonContent({
               type="button"
               aria-pressed={selectedGenres.includes(genre)}
               onClick={() => toggleGenre(genre)}
-              className="inline-flex min-h-10 shrink-0 cursor-pointer items-center whitespace-nowrap text-[15px] text-muted-foreground transition-colors hover:text-foreground motion-reduce:transition-none aria-pressed:text-vermilion aria-pressed:underline aria-pressed:decoration-1 aria-pressed:underline-offset-[5px] md:min-h-8"
+              className="inline-flex min-h-10 min-w-10 shrink-0 cursor-pointer items-center justify-center whitespace-nowrap text-[15px] text-muted-foreground transition-colors hover:text-foreground motion-reduce:transition-none aria-pressed:text-vermilion aria-pressed:underline aria-pressed:decoration-1 aria-pressed:underline-offset-[5px] md:min-h-8"
             >
               {genre}
             </button>

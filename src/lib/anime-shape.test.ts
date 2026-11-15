@@ -6,6 +6,7 @@ import {
   planFetches,
   showTitle,
   toJikanAnime,
+  visibleGenres,
 } from "@/lib/anime-shape";
 import batch from "@/lib/fixtures/tenrai/batch-16-search-ids.json";
 import fmab from "@/lib/fixtures/tenrai/fmab-5114-full.json";
@@ -15,6 +16,16 @@ import upcoming from "@/lib/fixtures/tenrai/top-upcoming-p1.json";
 
 const now = new Date("2026-11-15T12:00:00Z");
 const hoursAgo = (h: number) => new Date(now.getTime() - h * 60 * 60 * 1000);
+
+describe("visibleGenres", () => {
+  it("leaves out adult genres and keeps the rest in order", () => {
+    expect(visibleGenres(["Comedy", "Hentai", "Ecchi", "Erotica", "Action"])).toEqual([
+      "Comedy",
+      "Ecchi",
+      "Action",
+    ]);
+  });
+});
 
 describe("parseDurationMinutes", () => {
   it("parses minutes per episode", () => {
