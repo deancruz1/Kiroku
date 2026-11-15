@@ -1,0 +1,1035 @@
+{
+  "data": [
+    {
+      "node": {
+        "id": 61469,
+        "title": "Steel Ball Run: JoJo no Kimyou na Bouken",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1065/158884.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/1065/158884l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "JoJo's Bizarre Adventure Part 7: Steel Ball Run",
+            "JoJo no Kimyou na Bouken Part 7: Steel Ball Run",
+            "SBR"
+          ],
+          "en": "Steel Ball Run: JoJo's Bizarre Adventure",
+          "ja": "スティール・ボール・ラン ジョジョの奇妙な冒険"
+        },
+        "mean": 9.03,
+        "media_type": "ona",
+        "num_episodes": 0,
+        "status": "currently_airing",
+        "start_date": "2026-03-19",
+        "start_season": {
+          "year": 2026,
+          "season": "winter"
+        },
+        "genres": [
+          {
+            "id": 1,
+            "name": "Action"
+          },
+          {
+            "id": 2,
+            "name": "Adventure"
+          },
+          {
+            "id": 13,
+            "name": "Historical"
+          },
+          {
+            "id": 7,
+            "name": "Mystery"
+          },
+          {
+            "id": 3,
+            "name": "Racing"
+          },
+          {
+            "id": 42,
+            "name": "Seinen"
+          },
+          {
+            "id": 27,
+            "name": "Shounen"
+          },
+          {
+            "id": 37,
+            "name": "Supernatural"
+          }
+        ],
+        "num_list_users": 257944,
+        "popularity": 1131,
+        "rank": 10
+      },
+      "ranking": {
+        "rank": 1
+      }
+    },
+    {
+      "node": {
+        "id": 61967,
+        "title": "Black Clover 2nd Season",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1857/160133.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/1857/160133l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [],
+          "en": "Black Clover Season 2",
+          "ja": "ブラッククローバー 2nd season"
+        },
+        "mean": 8.89,
+        "media_type": "tv",
+        "num_episodes": 0,
+        "status": "currently_airing",
+        "start_date": "2026-10-03",
+        "start_season": {
+          "year": 2026,
+          "season": "fall"
+        },
+        "genres": [
+          {
+            "id": 1,
+            "name": "Action"
+          },
+          {
+            "id": 10,
+            "name": "Fantasy"
+          },
+          {
+            "id": 27,
+            "name": "Shounen"
+          }
+        ],
+        "num_list_users": 178862,
+        "popularity": 1588,
+        "rank": 26
+      },
+      "ranking": {
+        "rank": 2
+      }
+    },
+    {
+      "node": {
+        "id": 21,
+        "title": "One Piece",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1244/138851.webp",
+          "large": "https://cdn.myanimelist.net/images/anime/1244/138851l.webp"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "OP"
+          ],
+          "en": "One Piece",
+          "ja": "ONE PIECE"
+        },
+        "mean": 8.72,
+        "media_type": "tv",
+        "num_episodes": 0,
+        "status": "currently_airing",
+        "start_date": "1999-10-20",
+        "start_season": {
+          "year": 1999,
+          "season": "fall"
+        },
+        "genres": [
+          {
+            "id": 1,
+            "name": "Action"
+          },
+          {
+            "id": 2,
+            "name": "Adventure"
+          },
+          {
+            "id": 10,
+            "name": "Fantasy"
+          },
+          {
+            "id": 27,
+            "name": "Shounen"
+          }
+        ],
+        "num_list_users": 2746325,
+        "popularity": 17,
+        "rank": 62
+      },
+      "ranking": {
+        "rank": 3
+      }
+    },
+    {
+      "node": {
+        "id": 50250,
+        "title": "Chiikawa",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1783/121944.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/1783/121944l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [],
+          "en": "Chiikawa",
+          "ja": "ちいかわ"
+        },
+        "mean": 8.63,
+        "media_type": "tv",
+        "num_episodes": 0,
+        "status": "currently_airing",
+        "start_date": "2022-04-04",
+        "start_season": {
+          "year": 2022,
+          "season": "spring"
+        },
+        "genres": [
+          {
+            "id": 36,
+            "name": "Slice of Life"
+          }
+        ],
+        "num_list_users": 28610,
+        "popularity": 4895,
+        "rank": 94
+      },
+      "ranking": {
+        "rank": 4
+      }
+    },
+    {
+      "node": {
+        "id": 61987,
+        "title": "Kusuriya no Hitorigoto 3rd Season",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1028/160277.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/1028/160277l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "The Pharmacist's Monologue",
+            "Drugstore Soliloquy"
+          ],
+          "en": "The Apothecary Diaries Season 3",
+          "ja": "薬屋のひとりごと 第3期"
+        },
+        "mean": 8.6,
+        "media_type": "tv",
+        "num_episodes": 12,
+        "status": "currently_airing",
+        "start_date": "2026-10-02",
+        "start_season": {
+          "year": 2026,
+          "season": "fall"
+        },
+        "genres": [
+          {
+            "id": 8,
+            "name": "Drama"
+          },
+          {
+            "id": 13,
+            "name": "Historical"
+          },
+          {
+            "id": 67,
+            "name": "Medical"
+          },
+          {
+            "id": 7,
+            "name": "Mystery"
+          }
+        ],
+        "num_list_users": 230452,
+        "popularity": 1263,
+        "rank": 117
+      },
+      "ranking": {
+        "rank": 5
+      }
+    },
+    {
+      "node": {
+        "id": 55809,
+        "title": "Xian Ni",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1289/149708.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/1289/149708l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "RI"
+          ],
+          "en": "Renegade Immortal",
+          "ja": "仙逆"
+        },
+        "mean": 8.47,
+        "media_type": "ona",
+        "num_episodes": 180,
+        "status": "currently_airing",
+        "start_date": "2023-09-25",
+        "start_season": {
+          "year": 2023,
+          "season": "summer"
+        },
+        "genres": [
+          {
+            "id": 1,
+            "name": "Action"
+          },
+          {
+            "id": 2,
+            "name": "Adventure"
+          },
+          {
+            "id": 10,
+            "name": "Fantasy"
+          },
+          {
+            "id": 13,
+            "name": "Historical"
+          },
+          {
+            "id": 17,
+            "name": "Martial Arts"
+          }
+        ],
+        "num_list_users": 13418,
+        "popularity": 6612,
+        "rank": 182
+      },
+      "ranking": {
+        "rank": 6
+      }
+    },
+    {
+      "node": {
+        "id": 60988,
+        "title": "Tian Guan Cifu Short Films",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1174/149943.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/1174/149943l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "天官賜福 短片",
+            "TGCF"
+          ],
+          "en": "Heaven Official's Blessing Short Films",
+          "ja": "天官賜福 全新动画短片"
+        },
+        "mean": 8.46,
+        "media_type": "ona",
+        "num_episodes": 0,
+        "status": "currently_airing",
+        "start_date": "2025-02-12",
+        "start_season": {
+          "year": 2025,
+          "season": "winter"
+        },
+        "genres": [
+          {
+            "id": 1,
+            "name": "Action"
+          },
+          {
+            "id": 2,
+            "name": "Adventure"
+          },
+          {
+            "id": 8,
+            "name": "Drama"
+          },
+          {
+            "id": 10,
+            "name": "Fantasy"
+          },
+          {
+            "id": 13,
+            "name": "Historical"
+          },
+          {
+            "id": 6,
+            "name": "Mythology"
+          }
+        ],
+        "num_list_users": 12908,
+        "popularity": 6734,
+        "rank": 187
+      },
+      "ranking": {
+        "rank": 7
+      }
+    },
+    {
+      "node": {
+        "id": 64534,
+        "title": "Koori no Jouheki 2nd Season",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1963/159754.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/1963/159754l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [],
+          "en": "The Ramparts of Ice Season 2",
+          "ja": "氷の城壁 第2期"
+        },
+        "mean": 8.33,
+        "media_type": "tv",
+        "num_episodes": 13,
+        "status": "currently_airing",
+        "start_date": "2026-10-02",
+        "start_season": {
+          "year": 2026,
+          "season": "fall"
+        },
+        "genres": [
+          {
+            "id": 8,
+            "name": "Drama"
+          },
+          {
+            "id": 22,
+            "name": "Romance"
+          },
+          {
+            "id": 23,
+            "name": "School"
+          }
+        ],
+        "num_list_users": 76495,
+        "popularity": 2915,
+        "rank": 298
+      },
+      "ranking": {
+        "rank": 8
+      }
+    },
+    {
+      "node": {
+        "id": 56524,
+        "title": "Tunshi Xingkong 4th Season",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1335/138907.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/1335/138907l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "吞噬星空 宇宙篇",
+            "Tunshi Xingkong: Yuzhou Pian",
+            "Swallowed Star 5th Season"
+          ],
+          "en": "Swallowed Star 4th Season",
+          "ja": "吞噬星空 第四季"
+        },
+        "mean": 8.32,
+        "media_type": "ona",
+        "num_episodes": 175,
+        "status": "currently_airing",
+        "start_date": "2023-10-03",
+        "start_season": {
+          "year": 2023,
+          "season": "fall"
+        },
+        "genres": [
+          {
+            "id": 1,
+            "name": "Action"
+          },
+          {
+            "id": 2,
+            "name": "Adventure"
+          },
+          {
+            "id": 10,
+            "name": "Fantasy"
+          },
+          {
+            "id": 17,
+            "name": "Martial Arts"
+          },
+          {
+            "id": 24,
+            "name": "Sci-Fi"
+          }
+        ],
+        "num_list_users": 6784,
+        "popularity": 8728,
+        "rank": 319
+      },
+      "ranking": {
+        "rank": 9
+      }
+    },
+    {
+      "node": {
+        "id": 59953,
+        "title": "Mushen Ji",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1324/150012.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/1324/150012l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Mu Shen Ji",
+            "ToHG"
+          ],
+          "en": "Tales of Herding Gods",
+          "ja": "牧神记"
+        },
+        "mean": 8.31,
+        "media_type": "ona",
+        "num_episodes": 0,
+        "status": "currently_airing",
+        "start_date": "2024-10-27",
+        "start_season": {
+          "year": 2024,
+          "season": "fall"
+        },
+        "genres": [
+          {
+            "id": 1,
+            "name": "Action"
+          },
+          {
+            "id": 2,
+            "name": "Adventure"
+          },
+          {
+            "id": 10,
+            "name": "Fantasy"
+          },
+          {
+            "id": 13,
+            "name": "Historical"
+          },
+          {
+            "id": 17,
+            "name": "Martial Arts"
+          }
+        ],
+        "num_list_users": 16709,
+        "popularity": 6079,
+        "rank": 325
+      },
+      "ranking": {
+        "rank": 10
+      }
+    },
+    {
+      "node": {
+        "id": 61603,
+        "title": "Ao Ashi Season 2",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1295/158726.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/1295/158726l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [],
+          "en": "Aoashi Season 2",
+          "ja": "アオアシ Season2"
+        },
+        "mean": 8.27,
+        "media_type": "tv",
+        "num_episodes": 0,
+        "status": "currently_airing",
+        "start_date": "2026-10-04",
+        "start_season": {
+          "year": 2026,
+          "season": "fall"
+        },
+        "genres": [
+          {
+            "id": 42,
+            "name": "Seinen"
+          },
+          {
+            "id": 30,
+            "name": "Sports"
+          },
+          {
+            "id": 77,
+            "name": "Team Sports"
+          }
+        ],
+        "num_list_users": 53125,
+        "popularity": 3595,
+        "rank": 362
+      },
+      "ranking": {
+        "rank": 11
+      }
+    },
+    {
+      "node": {
+        "id": 63367,
+        "title": "Dragon Ball Super: Beerus",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1624/159991.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/1624/159991l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [],
+          "en": "Dragon Ball Super: Beerus",
+          "ja": "ドラゴンボール超 ビルス"
+        },
+        "mean": 8.18,
+        "media_type": "tv",
+        "num_episodes": 0,
+        "status": "currently_airing",
+        "start_date": "2026-10-11",
+        "start_season": {
+          "year": 2026,
+          "season": "fall"
+        },
+        "genres": [
+          {
+            "id": 1,
+            "name": "Action"
+          },
+          {
+            "id": 2,
+            "name": "Adventure"
+          },
+          {
+            "id": 10,
+            "name": "Fantasy"
+          },
+          {
+            "id": 17,
+            "name": "Martial Arts"
+          },
+          {
+            "id": 27,
+            "name": "Shounen"
+          }
+        ],
+        "num_list_users": 55025,
+        "popularity": 3528,
+        "rank": 483
+      },
+      "ranking": {
+        "rank": 12
+      }
+    },
+    {
+      "node": {
+        "id": 64398,
+        "title": "Guangyin Zhi Wai 2",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1190/158569.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/1190/158569l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Guangyin Zhi Wai 2nd Season",
+            "光阴之外 第二季",
+            "Guangyin Zhi Wai: Nian Fan",
+            "光阴之外 年番",
+            "BTG"
+          ],
+          "en": "Beyond Time's Gaze 2nd Season",
+          "ja": "光阴之外2"
+        },
+        "mean": 8.18,
+        "media_type": "ona",
+        "num_episodes": 52,
+        "status": "currently_airing",
+        "start_date": "2026-06-20",
+        "start_season": {
+          "year": 2026,
+          "season": "spring"
+        },
+        "genres": [
+          {
+            "id": 1,
+            "name": "Action"
+          },
+          {
+            "id": 2,
+            "name": "Adventure"
+          },
+          {
+            "id": 10,
+            "name": "Fantasy"
+          },
+          {
+            "id": 13,
+            "name": "Historical"
+          },
+          {
+            "id": 17,
+            "name": "Martial Arts"
+          }
+        ],
+        "num_list_users": 1439,
+        "popularity": 14165,
+        "rank": 488
+      },
+      "ranking": {
+        "rank": 13
+      }
+    },
+    {
+      "node": {
+        "id": 235,
+        "title": "Meitantei Conan",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/7/75199.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/7/75199l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Detective Conan"
+          ],
+          "en": "Case Closed",
+          "ja": "名探偵コナン"
+        },
+        "mean": 8.18,
+        "media_type": "tv",
+        "num_episodes": 0,
+        "status": "currently_airing",
+        "start_date": "1996-01-08",
+        "start_season": {
+          "year": 1996,
+          "season": "winter"
+        },
+        "genres": [
+          {
+            "id": 2,
+            "name": "Adventure"
+          },
+          {
+            "id": 4,
+            "name": "Comedy"
+          },
+          {
+            "id": 39,
+            "name": "Detective"
+          },
+          {
+            "id": 7,
+            "name": "Mystery"
+          },
+          {
+            "id": 27,
+            "name": "Shounen"
+          }
+        ],
+        "num_list_users": 383539,
+        "popularity": 736,
+        "rank": 495
+      },
+      "ranking": {
+        "rank": 14
+      }
+    },
+    {
+      "node": {
+        "id": 61323,
+        "title": "Ao no Hako Season 2",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1990/160267.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/1990/160267l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [],
+          "en": "Blue Box Season 2",
+          "ja": "アオのハコ Season2"
+        },
+        "mean": 8.15,
+        "media_type": "tv",
+        "num_episodes": 12,
+        "status": "currently_airing",
+        "start_date": "2026-10-04",
+        "start_season": {
+          "year": 2026,
+          "season": "fall"
+        },
+        "genres": [
+          {
+            "id": 64,
+            "name": "Love Polygon"
+          },
+          {
+            "id": 22,
+            "name": "Romance"
+          },
+          {
+            "id": 23,
+            "name": "School"
+          },
+          {
+            "id": 27,
+            "name": "Shounen"
+          },
+          {
+            "id": 30,
+            "name": "Sports"
+          },
+          {
+            "id": 77,
+            "name": "Team Sports"
+          }
+        ],
+        "num_list_users": 107624,
+        "popularity": 2353,
+        "rank": 528
+      },
+      "ranking": {
+        "rank": 15
+      }
+    },
+    {
+      "node": {
+        "id": 44042,
+        "title": "Holo no Graffiti",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1259/110227.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/1259/110227l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Horogura",
+            "HoloGra"
+          ],
+          "en": "Holo Graffiti",
+          "ja": "ホロのぐらふぃてぃ"
+        },
+        "mean": 8.13,
+        "media_type": "ona",
+        "num_episodes": 0,
+        "status": "currently_airing",
+        "start_date": "2019-05-05",
+        "start_season": {
+          "year": 2019,
+          "season": "spring"
+        },
+        "genres": [
+          {
+            "id": 4,
+            "name": "Comedy"
+          }
+        ],
+        "num_list_users": 58796,
+        "popularity": 3397,
+        "rank": 561
+      },
+      "ranking": {
+        "rank": 16
+      }
+    },
+    {
+      "node": {
+        "id": 65004,
+        "title": "Yuanshen: Donghua Duanpian",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1771/160079.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/1771/160079l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [],
+          "en": "Genshin Impact: Animated Shorts",
+          "ja": "《原神》动画短片"
+        },
+        "mean": 8.08,
+        "media_type": "ona",
+        "num_episodes": 0,
+        "status": "currently_airing",
+        "start_date": "2024-04-17",
+        "start_season": {
+          "year": 2024,
+          "season": "spring"
+        },
+        "genres": [
+          {
+            "id": 1,
+            "name": "Action"
+          },
+          {
+            "id": 8,
+            "name": "Drama"
+          },
+          {
+            "id": 10,
+            "name": "Fantasy"
+          },
+          {
+            "id": 62,
+            "name": "Isekai"
+          }
+        ],
+        "num_list_users": 9303,
+        "popularity": 7706,
+        "rank": 653
+      },
+      "ranking": {
+        "rank": 17
+      }
+    },
+    {
+      "node": {
+        "id": 63240,
+        "title": "Fanren Xiu Xian Zhuan: Mulan Zhi Zhan",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1132/158458.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/1132/158458l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "A Mortal's Journey 5th Season",
+            "A Record of a Mortal's Journey to Immortality 5th Season",
+            "Fanren Xiu Xian Zhuan 5th Season",
+            "凡人修仙传 第五季",
+            "Fanren Xiu Xian Chuan",
+            "RMJI"
+          ],
+          "en": "A Record Of Mortal's Journey To Immortality 5th Season",
+          "ja": "凡人修仙传 慕兰之战"
+        },
+        "mean": 8.05,
+        "media_type": "ona",
+        "num_episodes": 52,
+        "status": "currently_airing",
+        "start_date": "2026-06-13",
+        "start_season": {
+          "year": 2026,
+          "season": "spring"
+        },
+        "genres": [
+          {
+            "id": 1,
+            "name": "Action"
+          },
+          {
+            "id": 2,
+            "name": "Adventure"
+          },
+          {
+            "id": 10,
+            "name": "Fantasy"
+          },
+          {
+            "id": 13,
+            "name": "Historical"
+          },
+          {
+            "id": 17,
+            "name": "Martial Arts"
+          }
+        ],
+        "num_list_users": 1935,
+        "popularity": 13082,
+        "rank": 678
+      },
+      "ranking": {
+        "rank": 18
+      }
+    },
+    {
+      "node": {
+        "id": 51836,
+        "title": "Douluo Dalu II: Jueshi Tangmen",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1357/154563.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/1357/154563l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "The Unrivaled Tang Sect",
+            "Combat Continent II",
+            "Soul Land 2: Peerless Tang Sect",
+            "斗罗大陆2绝世唐门"
+          ],
+          "en": "Soul Land 2: The Peerless Tang Clan",
+          "ja": "斗罗大陆Ⅱ绝世唐门"
+        },
+        "mean": 8.02,
+        "media_type": "ona",
+        "num_episodes": 182,
+        "status": "currently_airing",
+        "start_date": "2023-06-24",
+        "start_season": {
+          "year": 2023,
+          "season": "spring"
+        },
+        "genres": [
+          {
+            "id": 1,
+            "name": "Action"
+          },
+          {
+            "id": 2,
+            "name": "Adventure"
+          },
+          {
+            "id": 10,
+            "name": "Fantasy"
+          },
+          {
+            "id": 17,
+            "name": "Martial Arts"
+          }
+        ],
+        "num_list_users": 7773,
+        "popularity": 8262,
+        "rank": 737
+      },
+      "ranking": {
+        "rank": 19
+      }
+    },
+    {
+      "node": {
+        "id": 64505,
+        "title": "Diamond no Ace: Act II Second Season Part 2",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1296/159929.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/1296/159929l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [],
+          "en": "Ace of Diamond Act II Season 2 Part 2",
+          "ja": "ダイヤのA actⅡ Second Season 第2クール"
+        },
+        "mean": 7.89,
+        "media_type": "tv",
+        "num_episodes": 12,
+        "status": "currently_airing",
+        "start_date": "2026-10-11",
+        "start_season": {
+          "year": 2026,
+          "season": "fall"
+        },
+        "genres": [
+          {
+            "id": 23,
+            "name": "School"
+          },
+          {
+            "id": 27,
+            "name": "Shounen"
+          },
+          {
+            "id": 30,
+            "name": "Sports"
+          },
+          {
+            "id": 77,
+            "name": "Team Sports"
+          }
+        ],
+        "num_list_users": 10871,
+        "popularity": 7226,
+        "rank": 960
+      },
+      "ranking": {
+        "rank": 20
+      }
+    }
+  ],
+  "paging": {
+    "next": "https://api.myanimelist.net/v2/anime/ranking?offset=20&ranking_type=airing&limit=20&fields=id%2Ctitle%2Cmain_picture%2Calternative_titles%2Cmean%2Cmedia_type%2Cnum_episodes%2Cstatus%2Cstart_date%2Cstart_season%2Cgenres%2Cnum_list_users%2Cpopularity%2Crank"
+  }
+}

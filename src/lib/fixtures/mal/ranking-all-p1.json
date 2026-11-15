@@ -1,0 +1,1166 @@
+{
+  "data": [
+    {
+      "node": {
+        "id": 52991,
+        "title": "Sousou no Frieren",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1015/138006.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/1015/138006l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Frieren at the Funeral",
+            "Frieren The Slayer"
+          ],
+          "en": "Frieren: Beyond Journey's End",
+          "ja": "葬送のフリーレン"
+        },
+        "mean": 9.24,
+        "media_type": "tv",
+        "num_episodes": 28,
+        "status": "finished_airing",
+        "start_date": "2023-09-29",
+        "start_season": {
+          "year": 2023,
+          "season": "fall"
+        },
+        "genres": [
+          {
+            "id": 2,
+            "name": "Adventure"
+          },
+          {
+            "id": 46,
+            "name": "Award Winning"
+          },
+          {
+            "id": 8,
+            "name": "Drama"
+          },
+          {
+            "id": 10,
+            "name": "Fantasy"
+          },
+          {
+            "id": 27,
+            "name": "Shounen"
+          }
+        ],
+        "num_list_users": 1544796,
+        "popularity": 95,
+        "rank": 1
+      },
+      "ranking": {
+        "rank": 1
+      }
+    },
+    {
+      "node": {
+        "id": 5114,
+        "title": "Fullmetal Alchemist: Brotherhood",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1208/94745.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/1208/94745l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Hagane no Renkinjutsushi: Fullmetal Alchemist",
+            "Fullmetal Alchemist (2009)",
+            "FMA",
+            "FMAB"
+          ],
+          "en": "Fullmetal Alchemist: Brotherhood",
+          "ja": "鋼の錬金術師 FULLMETAL ALCHEMIST"
+        },
+        "mean": 9.11,
+        "media_type": "tv",
+        "num_episodes": 64,
+        "status": "finished_airing",
+        "start_date": "2009-04-05",
+        "start_season": {
+          "year": 2009,
+          "season": "spring"
+        },
+        "genres": [
+          {
+            "id": 1,
+            "name": "Action"
+          },
+          {
+            "id": 2,
+            "name": "Adventure"
+          },
+          {
+            "id": 8,
+            "name": "Drama"
+          },
+          {
+            "id": 10,
+            "name": "Fantasy"
+          },
+          {
+            "id": 38,
+            "name": "Military"
+          },
+          {
+            "id": 27,
+            "name": "Shounen"
+          }
+        ],
+        "num_list_users": 3756526,
+        "popularity": 3,
+        "rank": 2
+      },
+      "ranking": {
+        "rank": 2
+      }
+    },
+    {
+      "node": {
+        "id": 9253,
+        "title": "Steins;Gate",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1935/127974.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/1935/127974l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [],
+          "en": "Steins;Gate",
+          "ja": "STEINS;GATE"
+        },
+        "mean": 9.07,
+        "media_type": "tv",
+        "num_episodes": 24,
+        "status": "finished_airing",
+        "start_date": "2011-04-06",
+        "start_season": {
+          "year": 2011,
+          "season": "spring"
+        },
+        "genres": [
+          {
+            "id": 50,
+            "name": "Adult Cast"
+          },
+          {
+            "id": 8,
+            "name": "Drama"
+          },
+          {
+            "id": 40,
+            "name": "Psychological"
+          },
+          {
+            "id": 24,
+            "name": "Sci-Fi"
+          },
+          {
+            "id": 41,
+            "name": "Suspense"
+          },
+          {
+            "id": 78,
+            "name": "Time Travel"
+          }
+        ],
+        "num_list_users": 2867387,
+        "popularity": 14,
+        "rank": 3
+      },
+      "ranking": {
+        "rank": 3
+      }
+    },
+    {
+      "node": {
+        "id": 61316,
+        "title": "Re:Zero kara Hajimeru Isekai Seikatsu 4th Season",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1540/155824.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/1540/155824l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Re: Life in a different world from zero",
+            "ReZero"
+          ],
+          "en": "Re:ZERO -Starting Life in Another World- Season 4",
+          "ja": "Re:ゼロから始める異世界生活 4th season"
+        },
+        "mean": 9.06,
+        "media_type": "tv",
+        "num_episodes": 19,
+        "status": "finished_airing",
+        "start_date": "2026-04-08",
+        "start_season": {
+          "year": 2026,
+          "season": "spring"
+        },
+        "genres": [
+          {
+            "id": 8,
+            "name": "Drama"
+          },
+          {
+            "id": 10,
+            "name": "Fantasy"
+          },
+          {
+            "id": 62,
+            "name": "Isekai"
+          },
+          {
+            "id": 40,
+            "name": "Psychological"
+          },
+          {
+            "id": 41,
+            "name": "Suspense"
+          },
+          {
+            "id": 78,
+            "name": "Time Travel"
+          }
+        ],
+        "num_list_users": 371882,
+        "popularity": 759,
+        "rank": 4
+      },
+      "ranking": {
+        "rank": 4
+      }
+    },
+    {
+      "node": {
+        "id": 38524,
+        "title": "Shingeki no Kyojin Season 3 Part 2",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1517/100633.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/1517/100633l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [],
+          "en": "Attack on Titan Season 3 Part 2",
+          "ja": "進撃の巨人 Season3 Part.2"
+        },
+        "mean": 9.06,
+        "media_type": "tv",
+        "num_episodes": 10,
+        "status": "finished_airing",
+        "start_date": "2019-04-29",
+        "start_season": {
+          "year": 2019,
+          "season": "spring"
+        },
+        "genres": [
+          {
+            "id": 1,
+            "name": "Action"
+          },
+          {
+            "id": 8,
+            "name": "Drama"
+          },
+          {
+            "id": 58,
+            "name": "Gore"
+          },
+          {
+            "id": 38,
+            "name": "Military"
+          },
+          {
+            "id": 27,
+            "name": "Shounen"
+          },
+          {
+            "id": 76,
+            "name": "Survival"
+          },
+          {
+            "id": 41,
+            "name": "Suspense"
+          }
+        ],
+        "num_list_users": 2658409,
+        "popularity": 20,
+        "rank": 5
+      },
+      "ranking": {
+        "rank": 5
+      }
+    },
+    {
+      "node": {
+        "id": 57555,
+        "title": "Chainsaw Man Movie: Reze-hen",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1763/150638.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/1763/150638l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Gekijouban Chainsaw Man: Reze-hen"
+          ],
+          "en": "Chainsaw Man – The Movie: Reze Arc",
+          "ja": "劇場版 チェンソーマン レゼ篇"
+        },
+        "mean": 9.05,
+        "media_type": "movie",
+        "num_episodes": 1,
+        "status": "finished_airing",
+        "start_date": "2025-09-19",
+        "start_season": {
+          "year": 2025,
+          "season": "summer"
+        },
+        "genres": [
+          {
+            "id": 1,
+            "name": "Action"
+          },
+          {
+            "id": 10,
+            "name": "Fantasy"
+          },
+          {
+            "id": 58,
+            "name": "Gore"
+          },
+          {
+            "id": 27,
+            "name": "Shounen"
+          },
+          {
+            "id": 82,
+            "name": "Urban Fantasy"
+          }
+        ],
+        "num_list_users": 577241,
+        "popularity": 447,
+        "rank": 6
+      },
+      "ranking": {
+        "rank": 6
+      }
+    },
+    {
+      "node": {
+        "id": 39486,
+        "title": "Gintama: The Final",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1245/116760.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/1245/116760l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [],
+          "en": "Gintama: The Very Final",
+          "ja": "銀魂 THE FINAL"
+        },
+        "mean": 9.05,
+        "media_type": "movie",
+        "num_episodes": 1,
+        "status": "finished_airing",
+        "start_date": "2021-01-08",
+        "start_season": {
+          "year": 2021,
+          "season": "winter"
+        },
+        "genres": [
+          {
+            "id": 1,
+            "name": "Action"
+          },
+          {
+            "id": 4,
+            "name": "Comedy"
+          },
+          {
+            "id": 8,
+            "name": "Drama"
+          },
+          {
+            "id": 57,
+            "name": "Gag Humor"
+          },
+          {
+            "id": 13,
+            "name": "Historical"
+          },
+          {
+            "id": 20,
+            "name": "Parody"
+          },
+          {
+            "id": 21,
+            "name": "Samurai"
+          },
+          {
+            "id": 24,
+            "name": "Sci-Fi"
+          },
+          {
+            "id": 27,
+            "name": "Shounen"
+          }
+        ],
+        "num_list_users": 190280,
+        "popularity": 1502,
+        "rank": 7
+      },
+      "ranking": {
+        "rank": 7
+      }
+    },
+    {
+      "node": {
+        "id": 28977,
+        "title": "Gintama°",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/3/72078.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/3/72078l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Gintama' (2015)"
+          ],
+          "en": "Gintama Season 4",
+          "ja": "銀魂°"
+        },
+        "mean": 9.05,
+        "media_type": "tv",
+        "num_episodes": 51,
+        "status": "finished_airing",
+        "start_date": "2015-04-08",
+        "start_season": {
+          "year": 2015,
+          "season": "spring"
+        },
+        "genres": [
+          {
+            "id": 1,
+            "name": "Action"
+          },
+          {
+            "id": 4,
+            "name": "Comedy"
+          },
+          {
+            "id": 57,
+            "name": "Gag Humor"
+          },
+          {
+            "id": 13,
+            "name": "Historical"
+          },
+          {
+            "id": 20,
+            "name": "Parody"
+          },
+          {
+            "id": 21,
+            "name": "Samurai"
+          },
+          {
+            "id": 24,
+            "name": "Sci-Fi"
+          },
+          {
+            "id": 27,
+            "name": "Shounen"
+          }
+        ],
+        "num_list_users": 702356,
+        "popularity": 353,
+        "rank": 8
+      },
+      "ranking": {
+        "rank": 8
+      }
+    },
+    {
+      "node": {
+        "id": 11061,
+        "title": "Hunter x Hunter (2011)",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1337/99013.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/1337/99013l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "HxH (2011)"
+          ],
+          "en": "Hunter x Hunter",
+          "ja": "HUNTER×HUNTER（ハンター×ハンター）"
+        },
+        "mean": 9.03,
+        "media_type": "tv",
+        "num_episodes": 148,
+        "status": "finished_airing",
+        "start_date": "2011-10-02",
+        "start_season": {
+          "year": 2011,
+          "season": "fall"
+        },
+        "genres": [
+          {
+            "id": 1,
+            "name": "Action"
+          },
+          {
+            "id": 2,
+            "name": "Adventure"
+          },
+          {
+            "id": 10,
+            "name": "Fantasy"
+          },
+          {
+            "id": 27,
+            "name": "Shounen"
+          }
+        ],
+        "num_list_users": 3263001,
+        "popularity": 8,
+        "rank": 9
+      },
+      "ranking": {
+        "rank": 9
+      }
+    },
+    {
+      "node": {
+        "id": 61469,
+        "title": "Steel Ball Run: JoJo no Kimyou na Bouken",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1065/158884.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/1065/158884l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "JoJo's Bizarre Adventure Part 7: Steel Ball Run",
+            "JoJo no Kimyou na Bouken Part 7: Steel Ball Run",
+            "SBR"
+          ],
+          "en": "Steel Ball Run: JoJo's Bizarre Adventure",
+          "ja": "スティール・ボール・ラン ジョジョの奇妙な冒険"
+        },
+        "mean": 9.03,
+        "media_type": "ona",
+        "num_episodes": 0,
+        "status": "currently_airing",
+        "start_date": "2026-03-19",
+        "start_season": {
+          "year": 2026,
+          "season": "winter"
+        },
+        "genres": [
+          {
+            "id": 1,
+            "name": "Action"
+          },
+          {
+            "id": 2,
+            "name": "Adventure"
+          },
+          {
+            "id": 13,
+            "name": "Historical"
+          },
+          {
+            "id": 7,
+            "name": "Mystery"
+          },
+          {
+            "id": 3,
+            "name": "Racing"
+          },
+          {
+            "id": 42,
+            "name": "Seinen"
+          },
+          {
+            "id": 27,
+            "name": "Shounen"
+          },
+          {
+            "id": 37,
+            "name": "Supernatural"
+          }
+        ],
+        "num_list_users": 257944,
+        "popularity": 1131,
+        "rank": 10
+      },
+      "ranking": {
+        "rank": 10
+      }
+    },
+    {
+      "node": {
+        "id": 820,
+        "title": "Ginga Eiyuu Densetsu",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1976/142016.webp",
+          "large": "https://cdn.myanimelist.net/images/anime/1976/142016l.webp"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "LoGH",
+            "LotGH",
+            "Gin'eiden",
+            "GinEiDen",
+            "Heldensagen Vom Kosmosinsel"
+          ],
+          "en": "Legend of the Galactic Heroes",
+          "ja": "銀河英雄伝説"
+        },
+        "mean": 9.02,
+        "media_type": "ova",
+        "num_episodes": 110,
+        "status": "finished_airing",
+        "start_date": "1988-01-08",
+        "start_season": {
+          "year": 1988,
+          "season": "winter"
+        },
+        "genres": [
+          {
+            "id": 50,
+            "name": "Adult Cast"
+          },
+          {
+            "id": 8,
+            "name": "Drama"
+          },
+          {
+            "id": 38,
+            "name": "Military"
+          },
+          {
+            "id": 24,
+            "name": "Sci-Fi"
+          },
+          {
+            "id": 29,
+            "name": "Space"
+          }
+        ],
+        "num_list_users": 372485,
+        "popularity": 757,
+        "rank": 11
+      },
+      "ranking": {
+        "rank": 11
+      }
+    },
+    {
+      "node": {
+        "id": 9969,
+        "title": "Gintama'",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/4/50361.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/4/50361l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Gintama (2011)"
+          ],
+          "en": "Gintama Season 2",
+          "ja": "銀魂'"
+        },
+        "mean": 9.02,
+        "media_type": "tv",
+        "num_episodes": 51,
+        "status": "finished_airing",
+        "start_date": "2011-04-04",
+        "start_season": {
+          "year": 2011,
+          "season": "spring"
+        },
+        "genres": [
+          {
+            "id": 1,
+            "name": "Action"
+          },
+          {
+            "id": 4,
+            "name": "Comedy"
+          },
+          {
+            "id": 57,
+            "name": "Gag Humor"
+          },
+          {
+            "id": 13,
+            "name": "Historical"
+          },
+          {
+            "id": 20,
+            "name": "Parody"
+          },
+          {
+            "id": 21,
+            "name": "Samurai"
+          },
+          {
+            "id": 24,
+            "name": "Sci-Fi"
+          },
+          {
+            "id": 27,
+            "name": "Shounen"
+          }
+        ],
+        "num_list_users": 624765,
+        "popularity": 411,
+        "rank": 12
+      },
+      "ranking": {
+        "rank": 12
+      }
+    },
+    {
+      "node": {
+        "id": 15417,
+        "title": "Gintama': Enchousen",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1452/123686.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/1452/123686l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Gintama' (2012)",
+            "Gintama' Overdrive",
+            "Kintama",
+            "Gintama Season 3"
+          ],
+          "en": "Gintama: Enchousen",
+          "ja": "銀魂' 延長戦"
+        },
+        "mean": 9.02,
+        "media_type": "tv",
+        "num_episodes": 13,
+        "status": "finished_airing",
+        "start_date": "2012-10-04",
+        "start_season": {
+          "year": 2012,
+          "season": "fall"
+        },
+        "genres": [
+          {
+            "id": 1,
+            "name": "Action"
+          },
+          {
+            "id": 4,
+            "name": "Comedy"
+          },
+          {
+            "id": 57,
+            "name": "Gag Humor"
+          },
+          {
+            "id": 13,
+            "name": "Historical"
+          },
+          {
+            "id": 20,
+            "name": "Parody"
+          },
+          {
+            "id": 21,
+            "name": "Samurai"
+          },
+          {
+            "id": 24,
+            "name": "Sci-Fi"
+          },
+          {
+            "id": 27,
+            "name": "Shounen"
+          }
+        ],
+        "num_list_users": 364016,
+        "popularity": 778,
+        "rank": 13
+      },
+      "ranking": {
+        "rank": 13
+      }
+    },
+    {
+      "node": {
+        "id": 60022,
+        "title": "One Piece Fan Letter",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1455/146229.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/1455/146229l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [],
+          "en": "",
+          "ja": "ONE PIECE FAN LETTER"
+        },
+        "mean": 8.99,
+        "media_type": "tv_special",
+        "num_episodes": 1,
+        "status": "finished_airing",
+        "start_date": "2024-10-20",
+        "start_season": {
+          "year": 2024,
+          "season": "fall"
+        },
+        "genres": [
+          {
+            "id": 1,
+            "name": "Action"
+          },
+          {
+            "id": 2,
+            "name": "Adventure"
+          },
+          {
+            "id": 10,
+            "name": "Fantasy"
+          },
+          {
+            "id": 27,
+            "name": "Shounen"
+          }
+        ],
+        "num_list_users": 170021,
+        "popularity": 1655,
+        "rank": 14
+      },
+      "ranking": {
+        "rank": 14
+      }
+    },
+    {
+      "node": {
+        "id": 34096,
+        "title": "Gintama.",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/3/83528.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/3/83528l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Gintama (2017)"
+          ],
+          "en": "Gintama Season 5",
+          "ja": "銀魂。"
+        },
+        "mean": 8.98,
+        "media_type": "tv",
+        "num_episodes": 12,
+        "status": "finished_airing",
+        "start_date": "2017-01-09",
+        "start_season": {
+          "year": 2017,
+          "season": "winter"
+        },
+        "genres": [
+          {
+            "id": 1,
+            "name": "Action"
+          },
+          {
+            "id": 4,
+            "name": "Comedy"
+          },
+          {
+            "id": 57,
+            "name": "Gag Humor"
+          },
+          {
+            "id": 13,
+            "name": "Historical"
+          },
+          {
+            "id": 20,
+            "name": "Parody"
+          },
+          {
+            "id": 21,
+            "name": "Samurai"
+          },
+          {
+            "id": 24,
+            "name": "Sci-Fi"
+          },
+          {
+            "id": 27,
+            "name": "Shounen"
+          }
+        ],
+        "num_list_users": 354951,
+        "popularity": 807,
+        "rank": 15
+      },
+      "ranking": {
+        "rank": 15
+      }
+    },
+    {
+      "node": {
+        "id": 41467,
+        "title": "Bleach: Sennen Kessen-hen",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1908/135431.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/1908/135431l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Bleach: Thousand-Year Blood War Arc"
+          ],
+          "en": "Bleach: Thousand-Year Blood War",
+          "ja": "BLEACH 千年血戦篇"
+        },
+        "mean": 8.97,
+        "media_type": "tv",
+        "num_episodes": 13,
+        "status": "finished_airing",
+        "start_date": "2022-10-11",
+        "start_season": {
+          "year": 2022,
+          "season": "fall"
+        },
+        "genres": [
+          {
+            "id": 1,
+            "name": "Action"
+          },
+          {
+            "id": 2,
+            "name": "Adventure"
+          },
+          {
+            "id": 27,
+            "name": "Shounen"
+          },
+          {
+            "id": 37,
+            "name": "Supernatural"
+          }
+        ],
+        "num_list_users": 743088,
+        "popularity": 321,
+        "rank": 16
+      },
+      "ranking": {
+        "rank": 16
+      }
+    },
+    {
+      "node": {
+        "id": 43608,
+        "title": "Kaguya-sama wa Kokurasetai: Ultra Romantic",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1160/122627.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/1160/122627l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Kaguya-sama wa Kokurasetai: Tensai-tachi no Renai Zunousen 3rd Season",
+            "Kaguya-sama: Love is War Season 3rd Season"
+          ],
+          "en": "Kaguya-sama: Love is War -Ultra Romantic-",
+          "ja": "かぐや様は告らせたい-ウルトラロマンティック-"
+        },
+        "mean": 8.94,
+        "media_type": "tv",
+        "num_episodes": 13,
+        "status": "finished_airing",
+        "start_date": "2022-04-09",
+        "start_season": {
+          "year": 2022,
+          "season": "spring"
+        },
+        "genres": [
+          {
+            "id": 4,
+            "name": "Comedy"
+          },
+          {
+            "id": 22,
+            "name": "Romance"
+          },
+          {
+            "id": 23,
+            "name": "School"
+          },
+          {
+            "id": 42,
+            "name": "Seinen"
+          }
+        ],
+        "num_list_users": 1147878,
+        "popularity": 162,
+        "rank": 17
+      },
+      "ranking": {
+        "rank": 17
+      }
+    },
+    {
+      "node": {
+        "id": 4181,
+        "title": "Clannad: After Story",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1299/110774.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/1299/110774l.jpg"
+        },
+        "alternative_titles": {
+          "synonyms": [],
+          "en": "Clannad: After Story",
+          "ja": "CLANNAD〜AFTER STORY〜 クラナド アフターストーリー"
+        },
+        "mean": 8.93,
+        "media_type": "tv",
+        "num_episodes": 24,
+        "status": "finished_airing",
+        "start_date": "2008-10-03",
+        "start_season": {
+          "year": 2008,
+          "season": "fall"
+        },
+        "genres": [
+          {
+            "id": 8,
+            "name": "Drama"
+          },
+          {
+            "id": 22,
+            "name": "Romance"
+          }
+        ],
+        "num_list_users": 1306556,
+        "popularity": 127,
+        "rank": 18
+      },
+      "ranking": {
+        "rank": 18
+      }
+    },
+    {
+      "node": {
+        "id": 918,
+        "title": "Gintama",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/10/73274.webp",
+          "large": "https://cdn.myanimelist.net/images/anime/10/73274l.webp"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "Gin Tama",
+            "Silver Soul",
+            "Yorinuki Gintama-san"
+          ],
+          "en": "Gintama",
+          "ja": "銀魂"
+        },
+        "mean": 8.93,
+        "media_type": "tv",
+        "num_episodes": 201,
+        "status": "finished_airing",
+        "start_date": "2006-04-04",
+        "start_season": {
+          "year": 2006,
+          "season": "spring"
+        },
+        "genres": [
+          {
+            "id": 1,
+            "name": "Action"
+          },
+          {
+            "id": 4,
+            "name": "Comedy"
+          },
+          {
+            "id": 57,
+            "name": "Gag Humor"
+          },
+          {
+            "id": 13,
+            "name": "Historical"
+          },
+          {
+            "id": 20,
+            "name": "Parody"
+          },
+          {
+            "id": 21,
+            "name": "Samurai"
+          },
+          {
+            "id": 24,
+            "name": "Sci-Fi"
+          },
+          {
+            "id": 27,
+            "name": "Shounen"
+          }
+        ],
+        "num_list_users": 1175277,
+        "popularity": 148,
+        "rank": 19
+      },
+      "ranking": {
+        "rank": 19
+      }
+    },
+    {
+      "node": {
+        "id": 28851,
+        "title": "Koe no Katachi",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1122/96435.webp",
+          "large": "https://cdn.myanimelist.net/images/anime/1122/96435l.webp"
+        },
+        "alternative_titles": {
+          "synonyms": [
+            "The Shape of Voice"
+          ],
+          "en": "A Silent Voice",
+          "ja": "聲の形"
+        },
+        "mean": 8.93,
+        "media_type": "movie",
+        "num_episodes": 1,
+        "status": "finished_airing",
+        "start_date": "2016-09-17",
+        "start_season": {
+          "year": 2016,
+          "season": "summer"
+        },
+        "genres": [
+          {
+            "id": 46,
+            "name": "Award Winning"
+          },
+          {
+            "id": 8,
+            "name": "Drama"
+          },
+          {
+            "id": 27,
+            "name": "Shounen"
+          }
+        ],
+        "num_list_users": 2679770,
+        "popularity": 19,
+        "rank": 20
+      },
+      "ranking": {
+        "rank": 20
+      }
+    }
+  ],
+  "paging": {
+    "next": "https://api.myanimelist.net/v2/anime/ranking?offset=20&ranking_type=all&limit=20&fields=id%2Ctitle%2Cmain_picture%2Calternative_titles%2Cmean%2Cmedia_type%2Cnum_episodes%2Cstatus%2Cstart_date%2Cstart_season%2Cgenres%2Cnum_list_users%2Cpopularity%2Crank"
+  }
+}

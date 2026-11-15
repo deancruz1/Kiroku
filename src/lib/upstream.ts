@@ -16,3 +16,28 @@ export const UPSTREAM_LIMITS: RateLimit[] = [
 
 // Tenrai rejects limit above 100 with a 400.
 export const MAX_PAGE_SIZE = 100;
+
+// The official MyAnimeList API v2, kept as a second source. Its rate limit is
+// not published and it sends no rate-limit headers. 96 probe requests at one
+// per 1.1 seconds were not throttled, so that is the fastest pace used here,
+// with a per-minute cap well below it.
+export const MAL_NAME = "MyAnimeList";
+export const MAL_BASE_URL = "https://api.myanimelist.net/v2";
+export const MAL_CLIENT_ID_HEADER = "X-MAL-CLIENT-ID";
+export const MAL_LIMITS: RateLimit[] = [
+  { max: 1, windowMs: 1_100 },
+  { max: 30, windowMs: 60_000 },
+];
+
+// Season and ranking reject limit above 500 with a 400.
+export const MAL_MAX_LIST_LIMIT = 500;
+
+// Search answers 400 for a q shorter than 3 or longer than 64 characters.
+export const MAL_MIN_QUERY_LENGTH = 3;
+export const MAL_MAX_QUERY_LENGTH = 64;
+
+// A 403 after earlier successes may be a block, so requests stop for this long.
+export const MAL_BLOCK_COOLDOWN_MS = 5 * 60 * 1000;
+
+// v2 has no batch endpoint, so a refresh costs one request per show.
+export const MAL_BATCH_BUDGET = 6;

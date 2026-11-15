@@ -1,0 +1,43 @@
+{
+  "data": [
+    {
+      "node": {
+        "id": 184947,
+        "first_name": "Frieren",
+        "last_name": "",
+        "alternative_name": "Frieren the Slayer",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/7/525105.jpg"
+        }
+      },
+      "role": "Main"
+    },
+    {
+      "node": {
+        "id": 186854,
+        "first_name": "Himmel",
+        "last_name": "",
+        "alternative_name": "The Hero",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/16/621925.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 187307,
+        "first_name": "Flamme",
+        "last_name": "",
+        "alternative_name": "The Great Mage",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/10/528177.jpg"
+        }
+      },
+      "role": "Supporting"
+    }
+  ],
+  "paging": {
+    "next": "https://api.myanimelist.net/v2/anime/52991/characters?offset=3&limit=3&fields=id%2Cfirst_name%2Clast_name%2Calternative_name%2Cmain_picture%2Crole%2Cvoice_actors%2Cname"
+  }
+}

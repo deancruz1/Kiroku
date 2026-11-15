@@ -1,0 +1,53 @@
+{
+  "data": [
+    {
+      "node": {
+        "id": 49095,
+        "title": "Kuroinu II The Animation",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1929/115414.jpg",
+          "large": "https://cdn.myanimelist.net/images/anime/1929/115414l.jpg"
+        },
+        "nsfw": "gray",
+        "rating": "rx",
+        "genres": [
+          {
+            "id": 10,
+            "name": "Fantasy"
+          },
+          {
+            "id": 12,
+            "name": "Hentai"
+          }
+        ]
+      }
+    },
+    {
+      "node": {
+        "id": 11827,
+        "title": "Kuroinu: Kedakaki Seijo wa Hakudaku ni Somaru",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/anime/1933/103847.webp",
+          "large": "https://cdn.myanimelist.net/images/anime/1933/103847l.webp"
+        },
+        "nsfw": "gray",
+        "rating": "rx",
+        "genres": [
+          {
+            "id": 1,
+            "name": "Action"
+          },
+          {
+            "id": 10,
+            "name": "Fantasy"
+          },
+          {
+            "id": 12,
+            "name": "Hentai"
+          }
+        ]
+      }
+    }
+  ],
+  "paging": {}
+}

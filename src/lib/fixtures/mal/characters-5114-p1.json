@@ -1,0 +1,1104 @@
+{
+  "data": [
+    {
+      "node": {
+        "id": 11,
+        "first_name": "Edward",
+        "last_name": "Elric",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/9/72533.jpg"
+        }
+      },
+      "role": "Main"
+    },
+    {
+      "node": {
+        "id": 12,
+        "first_name": "Alphonse",
+        "last_name": "Elric",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/5/54265.jpg"
+        }
+      },
+      "role": "Main"
+    },
+    {
+      "node": {
+        "id": 63,
+        "first_name": "Winry",
+        "last_name": "Rockbell",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/15/84336.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 65,
+        "first_name": "Pinako",
+        "last_name": "Rockbell",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/6/81200.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 66,
+        "first_name": "Scar",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/3/31591.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 67,
+        "first_name": "Izumi",
+        "last_name": "Curtis",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/5/85257.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 68,
+        "first_name": "Roy",
+        "last_name": "Mustang",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/11/510227.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 69,
+        "first_name": "Maes",
+        "last_name": "Hughes",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/13/73469.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 70,
+        "first_name": "Riza",
+        "last_name": "Hawkeye",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/3/83615.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 351,
+        "first_name": "Greed",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/10/78721.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 650,
+        "first_name": "Lust",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/13/81112.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 651,
+        "first_name": "Envy",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/14/79027.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 2079,
+        "first_name": "Alex Louis",
+        "last_name": "Armstrong",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/2/71066.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 2439,
+        "first_name": "Basque",
+        "last_name": "Grand",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/7/72500.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 3292,
+        "first_name": "Lan Fan",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/9/59557.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 3293,
+        "first_name": "Ling",
+        "last_name": "Yao",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/15/62602.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 3696,
+        "first_name": "Shou",
+        "last_name": "Tucker",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/14/52232.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 3934,
+        "first_name": "Olivier Mira",
+        "last_name": "Armstrong",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/7/83953.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 4159,
+        "first_name": "Nina",
+        "last_name": "Tucker",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/9/35396.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 4685,
+        "first_name": "Jean",
+        "last_name": "Havoc",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/8/76640.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 5103,
+        "first_name": "King",
+        "last_name": "Bradley",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/11/62053.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 5411,
+        "first_name": "Gluttony",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/2/74580.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 5428,
+        "first_name": "Barry the Chopper",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/3/52723.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 5705,
+        "first_name": "Kain",
+        "last_name": "Fuery",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/10/70276.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 5706,
+        "first_name": "Vato",
+        "last_name": "Falman",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/11/78857.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 5988,
+        "first_name": "Rosé",
+        "last_name": "Tomas",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/13/78727.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 6590,
+        "first_name": "Solf J.",
+        "last_name": "Kimblee",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/13/73900.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 7203,
+        "first_name": "Black Hayate",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/12/81547.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 8452,
+        "first_name": "Sheska",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/9/54925.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 8840,
+        "first_name": "Martel",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/6/56216.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 9319,
+        "first_name": "Maria",
+        "last_name": "Ross",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/7/84105.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 9792,
+        "first_name": "Van",
+        "last_name": "Hohenheim",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/3/80676.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 10085,
+        "first_name": "Trisha",
+        "last_name": "Elric",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/11/59741.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 10944,
+        "first_name": "Cornello",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/4/57099.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 10948,
+        "first_name": "Cray",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/2/62117.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 10954,
+        "first_name": "Gracia",
+        "last_name": "Hughes",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/4/59485.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 10956,
+        "first_name": "Tim",
+        "last_name": "Marcoh",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/8/63841.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 10958,
+        "first_name": "Rick",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/8/63846.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 10960,
+        "first_name": "Old Man",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/2/26773.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 10962,
+        "first_name": "Slicer Brothers",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/9/54388.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 10964,
+        "first_name": "Dolcetto",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/4/81606.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 10966,
+        "first_name": "Roa",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/2/56214.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 10968,
+        "first_name": "Bido",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/3/56215.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 10970,
+        "first_name": "Scar's Master",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/10/81201.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 10972,
+        "first_name": "Sig",
+        "last_name": "Curtis",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/10/55433.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 10974,
+        "first_name": "Paninya",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/15/55106.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 10976,
+        "first_name": "Dominic",
+        "last_name": "LeCoulte",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/7/303013.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 10978,
+        "first_name": "Mason",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/14/63844.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 10982,
+        "first_name": "Selim",
+        "last_name": "Bradley",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/9/71041.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 15531,
+        "first_name": "Grumman",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/11/81604.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 15532,
+        "first_name": "Mei",
+        "last_name": "Chang",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/10/80248.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 15533,
+        "first_name": "Jerso",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/12/303011.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 15534,
+        "first_name": "Zampano",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/6/75701.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 15536,
+        "first_name": "Heinkel",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/15/80244.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 15538,
+        "first_name": "Darius",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/7/79965.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 15540,
+        "first_name": "Miles",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/6/72473.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 15541,
+        "first_name": "Buccaneer",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/7/71767.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 15542,
+        "first_name": "Homunculus",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/13/80675.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 15543,
+        "first_name": "Sloth",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/12/72474.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 16648,
+        "first_name": "Heymans",
+        "last_name": "Breda",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/10/59486.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 17103,
+        "first_name": "Rebecca",
+        "last_name": "Catalina",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/15/92192.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 20592,
+        "first_name": "Kathleen Elle",
+        "last_name": "Armstrong",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/14/80951.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 21005,
+        "first_name": "Isaac",
+        "last_name": "McDougal",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/9/80247.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 21072,
+        "first_name": "Hakuro",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/16/63994.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 21907,
+        "first_name": "Yoki",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/15/58047.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 22474,
+        "first_name": "Elicia",
+        "last_name": "Hughes",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/13/53527.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 23106,
+        "first_name": "Denny",
+        "last_name": "Brosh",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/12/56211.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 23338,
+        "first_name": "Shao",
+        "last_name": "May",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/8/58046.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 23461,
+        "first_name": "Fu",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/4/70274.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 24923,
+        "first_name": "Den",
+        "last_name": "Rockbell",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/16/76638.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 25547,
+        "first_name": "Scar's Brother",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/8/65642.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 27028,
+        "first_name": "Dr. Knox",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/12/69691.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 29798,
+        "first_name": "Madame Christmas",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/8/77665.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 31562,
+        "first_name": "Narrator",
+        "last_name": ""
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 33816,
+        "first_name": "Truth",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/14/93929.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 34689,
+        "first_name": "Mrs.",
+        "last_name": "Bradley",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/12/94407.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 35144,
+        "first_name": "Garfiel",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/14/95776.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 35595,
+        "first_name": "Madame Shan",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/2/120052.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 39241,
+        "first_name": "Raven",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/6/120053.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 41216,
+        "first_name": "Neil",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/15/112283.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 50123,
+        "first_name": "Charlie",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/3/177589.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 52739,
+        "first_name": "Damiano",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/5/303010.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 55287,
+        "first_name": "Philip Gargantos",
+        "last_name": "Armstrong",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/11/177627.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 75268,
+        "first_name": "",
+        "last_name": "Fokker",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/8/222877.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 75922,
+        "first_name": "Berthold",
+        "last_name": "Hawkeye",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/10/402739.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 92915,
+        "first_name": "Karley",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/2/303012.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 105499,
+        "first_name": "Harris",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/16/243921.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 112213,
+        "first_name": "Satella",
+        "last_name": "LeCoulte",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/4/303014.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 135041,
+        "first_name": "Knox&#039;s Son",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/5/348682.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 169503,
+        "first_name": "Giolio",
+        "last_name": "Comanche",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/10/467571.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 183599,
+        "first_name": "Bobby",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/3/473873.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 239348,
+        "first_name": "Halling",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/12/573008.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 246172,
+        "first_name": "Mother",
+        "last_name": "Armstrong",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/8/544379.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 260678,
+        "first_name": "Sarah",
+        "last_name": "Rockbell",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/6/571619.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 260679,
+        "first_name": "Yuriy",
+        "last_name": "Rockbell",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/7/571620.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 260680,
+        "first_name": "Henry",
+        "last_name": "Douglas",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/6/571621.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 260814,
+        "first_name": "Ridel",
+        "last_name": "LeCoulte",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/5/571940.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 261152,
+        "first_name": "Clemin",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/4/572644.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 261202,
+        "first_name": "Edison",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/5/572770.jpg"
+        }
+      },
+      "role": "Supporting"
+    },
+    {
+      "node": {
+        "id": 261230,
+        "first_name": "Fox",
+        "last_name": "",
+        "main_picture": {
+          "medium": "https://cdn.myanimelist.net/images/characters/2/572820.jpg"
+        }
+      },
+      "role": "Supporting"
+    }
+  ],
+  "paging": {
+    "next": "https://api.myanimelist.net/v2/anime/5114/characters?offset=100&limit=100&fields=id%2Cfirst_name%2Clast_name%2Cmain_picture"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "id": 5114,
+  "title": "Fullmetal Alchemist: Brotherhood",
+  "main_picture": {
+    "medium": "https://cdn.myanimelist.net/images/anime/1208/94745.jpg",
+    "large": "https://cdn.myanimelist.net/images/anime/1208/94745l.jpg"
+  },
+  "videos": [
+    {
+      "id": 16209,
+      "title": "PV (Blu-ray Box ver.)",
+      "url": "https://youtu.be/1ac3_YdSSy0",
+      "created_at": 1737103318000,
+      "updated_at": 1737103318000,
+      "thumbnail": "https://i.ytimg.com/vi/1ac3_YdSSy0/mqdefault.jpg"
+    },
+    {
+      "id": 2106,
+      "title": "Announcement",
+      "url": "https://youtu.be/--IcmZkvL0Q",
+      "created_at": 1452100873000,
+      "updated_at": 1542774285000,
+      "thumbnail": "https://i.ytimg.com/vi/--IcmZkvL0Q/mqdefault.jpg"
+    }
+  ],
+  "num_favorites": 247027
+}

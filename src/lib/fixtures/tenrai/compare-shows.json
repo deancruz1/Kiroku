@@ -1,0 +1,523 @@
+{
+  "data": [
+    {
+      "mal_id": 21,
+      "title": "One Piece",
+      "title_english": "One Piece",
+      "title_japanese": "ONE PIECE",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1244/138851.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1244/138851t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1244/138851l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1244/138851.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1244/138851t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1244/138851l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": null,
+      "status": "Currently Airing",
+      "aired": {
+        "from": "1999-10-20T00:00:00+00:00",
+        "to": null,
+        "prop": {
+          "from": {
+            "day": 20,
+            "month": 10,
+            "year": 1999
+          },
+          "to": {
+            "day": null,
+            "month": null,
+            "year": null
+          }
+        },
+        "string": "Oct 20, 1999 to ?"
+      },
+      "duration": "24 min",
+      "rating": "PG-13 - Teens 13 or older",
+      "score": 8.72,
+      "season": "fall",
+      "year": 1999,
+      "broadcast": {
+        "day": "Sundays",
+        "time": "23:15",
+        "timezone": "Asia/Tokyo",
+        "string": "Sundays at 23:15 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 18,
+          "type": "anime",
+          "name": "Toei Animation"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 1,
+          "type": "anime",
+          "name": "Action"
+        },
+        {
+          "mal_id": 2,
+          "type": "anime",
+          "name": "Adventure"
+        },
+        {
+          "mal_id": 10,
+          "type": "anime",
+          "name": "Fantasy"
+        }
+      ],
+      "explicit_genres": [],
+      "themes": [],
+      "demographics": [
+        {
+          "mal_id": 27,
+          "type": "anime",
+          "name": "Shounen"
+        }
+      ],
+      "synopsis": "Barely surviving in a barrel after passing through a terrible whirlpool at sea, carefree Monkey D. Luffy ends up aboard a ship under attack by fearsome pirates. Despite being a naive-looking teenager, he is not to be underestimated. Unmatched in battle, Luffy is a pirate himself who resolutely pursues the coveted One Piece treasure and the King of the Pirates title that comes with it.\n\nThe late King of the Pirates, Gol D. Roger, stirred up the world before his death by disclosing the whereabouts of his hoard of riches and daring everyone to obtain it. Ever since then, countless powerful pirates have sailed dangerous seas for the prized One Piece only to never return. Although Luffy lacks a crew and a proper ship, he is endowed with a superhuman ability and an unbreakable spirit that make him not only a formidable adversary but also an inspiration to many.\n\nAs he faces numerous challenges with a big smile on his face, Luffy gathers one-of-a-kind companions to join him in his ambitious endeavor, together embracing perils and wonders on their once-in-a-lifetime adventure.\n\n[Written by MAL Rewrite]"
+    },
+    {
+      "mal_id": 5114,
+      "title": "Fullmetal Alchemist: Brotherhood",
+      "title_english": "Fullmetal Alchemist: Brotherhood",
+      "title_japanese": "鋼の錬金術師 FULLMETAL ALCHEMIST",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1208/94745.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1208/94745t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1208/94745l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1208/94745.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1208/94745t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1208/94745l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": 64,
+      "status": "Finished Airing",
+      "aired": {
+        "from": "2009-04-05T00:00:00+00:00",
+        "to": "2010-07-04T00:00:00+00:00",
+        "prop": {
+          "from": {
+            "day": 5,
+            "month": 4,
+            "year": 2009
+          },
+          "to": {
+            "day": 4,
+            "month": 7,
+            "year": 2010
+          }
+        },
+        "string": "Apr 5, 2009 to Jul 4, 2010"
+      },
+      "duration": "24 min per ep",
+      "rating": "R - 17+ (violence & profanity)",
+      "score": 9.11,
+      "season": "spring",
+      "year": 2009,
+      "broadcast": {
+        "day": "Sundays",
+        "time": "17:00",
+        "timezone": "Asia/Tokyo",
+        "string": "Sundays at 17:00 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 4,
+          "type": "anime",
+          "name": "Bones"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 1,
+          "type": "anime",
+          "name": "Action"
+        },
+        {
+          "mal_id": 2,
+          "type": "anime",
+          "name": "Adventure"
+        },
+        {
+          "mal_id": 8,
+          "type": "anime",
+          "name": "Drama"
+        },
+        {
+          "mal_id": 10,
+          "type": "anime",
+          "name": "Fantasy"
+        }
+      ],
+      "explicit_genres": [],
+      "themes": [
+        {
+          "mal_id": 38,
+          "type": "anime",
+          "name": "Military"
+        }
+      ],
+      "demographics": [
+        {
+          "mal_id": 27,
+          "type": "anime",
+          "name": "Shounen"
+        }
+      ],
+      "synopsis": "After a horrific alchemy experiment goes wrong in the Elric household, brothers Edward and Alphonse are left in a catastrophic new reality. Ignoring the alchemical principle banning human transmutation, the boys attempted to bring their recently deceased mother back to life. Instead, they suffered brutal personal loss: Alphonse's body disintegrated while Edward lost a leg and then sacrificed an arm to keep Alphonse's soul in the physical realm by binding it to a hulking suit of armor.\n\nThe brothers are rescued by their neighbor Pinako Rockbell and her granddaughter Winry. Known as a bio-mechanical engineering prodigy, Winry creates prosthetic limbs for Edward by utilizing \"automail,\" a tough, versatile metal used in robots and combat armor. After years of training, the Elric brothers set off on a quest to restore their bodies by locating the Philosopher's Stone—a powerful gem that allows an alchemist to defy the traditional laws of Equivalent Exchange.\n\nAs Edward becomes an infamous alchemist and gains the nickname \"Fullmetal,\" the boys' journey embroils them in a growing conspiracy that threatens the fate of the world.\n\n[Written by MAL Rewrite]"
+    },
+    {
+      "mal_id": 32281,
+      "title": "Kimi no Na wa.",
+      "title_english": "Your Name.",
+      "title_japanese": "君の名は。",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/5/87048.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/5/87048t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/5/87048l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/5/87048.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/5/87048t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/5/87048l.webp"
+        }
+      },
+      "type": "Movie",
+      "episodes": 1,
+      "status": "Finished Airing",
+      "aired": {
+        "from": "2016-08-26T00:00:00+00:00",
+        "to": null,
+        "prop": {
+          "from": {
+            "day": 26,
+            "month": 8,
+            "year": 2016
+          },
+          "to": {
+            "day": null,
+            "month": null,
+            "year": null
+          }
+        },
+        "string": "Aug 26, 2016"
+      },
+      "duration": "1 hr 46 min",
+      "rating": "PG-13 - Teens 13 or older",
+      "score": 8.82,
+      "season": "summer",
+      "year": 2016,
+      "broadcast": {
+        "day": null,
+        "time": null,
+        "timezone": null,
+        "string": null
+      },
+      "studios": [
+        {
+          "mal_id": 291,
+          "type": "anime",
+          "name": "CoMix Wave Films"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 46,
+          "type": "anime",
+          "name": "Award Winning"
+        },
+        {
+          "mal_id": 8,
+          "type": "anime",
+          "name": "Drama"
+        }
+      ],
+      "explicit_genres": [],
+      "themes": [],
+      "demographics": [],
+      "synopsis": "Mitsuha Miyamizu, a high school girl, yearns to live the life of a boy in the bustling city of Tokyo—a dream that stands in stark contrast to her present life in the countryside. Meanwhile in the city, Taki Tachibana lives a busy life as a high school student while juggling his part-time job and hopes for a future in architecture.\n\nOne day, Mitsuha awakens in a room that is not her own and suddenly finds herself living the dream life in Tokyo—but in Taki's body! Elsewhere, Taki finds himself living Mitsuha's life in the humble countryside. In pursuit of an answer to this strange phenomenon, they begin to search for one another.\n\nKimi no Na wa. revolves around Mitsuha and Taki's actions, which begin to have a dramatic impact on each other's lives, weaving them into a fabric held together by fate and circumstance.\n\n[Written by MAL Rewrite]"
+    },
+    {
+      "mal_id": 50265,
+      "title": "Spy x Family",
+      "title_english": null,
+      "title_japanese": "SPY×FAMILY",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1441/122795.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1441/122795t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1441/122795l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1441/122795.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1441/122795t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1441/122795l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": 12,
+      "status": "Finished Airing",
+      "aired": {
+        "from": "2022-04-09T00:00:00+00:00",
+        "to": "2022-06-25T00:00:00+00:00",
+        "prop": {
+          "from": {
+            "day": 9,
+            "month": 4,
+            "year": 2022
+          },
+          "to": {
+            "day": 25,
+            "month": 6,
+            "year": 2022
+          }
+        },
+        "string": "Apr 9, 2022 to Jun 25, 2022"
+      },
+      "duration": "24 min per ep",
+      "rating": "PG-13 - Teens 13 or older",
+      "score": 8.4,
+      "season": "spring",
+      "year": 2022,
+      "broadcast": {
+        "day": "Saturdays",
+        "time": "23:00",
+        "timezone": "Asia/Tokyo",
+        "string": "Saturdays at 23:00 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 858,
+          "type": "anime",
+          "name": "Wit Studio"
+        },
+        {
+          "mal_id": 1835,
+          "type": "anime",
+          "name": "CloverWorks"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 1,
+          "type": "anime",
+          "name": "Action"
+        },
+        {
+          "mal_id": 46,
+          "type": "anime",
+          "name": "Award Winning"
+        },
+        {
+          "mal_id": 4,
+          "type": "anime",
+          "name": "Comedy"
+        }
+      ],
+      "explicit_genres": [],
+      "themes": [
+        {
+          "mal_id": 53,
+          "type": "anime",
+          "name": "Childcare"
+        },
+        {
+          "mal_id": 31,
+          "type": "anime",
+          "name": "Super Power"
+        }
+      ],
+      "demographics": [
+        {
+          "mal_id": 27,
+          "type": "anime",
+          "name": "Shounen"
+        }
+      ],
+      "synopsis": "Corrupt politicians, frenzied nationalists, and other warmongering forces constantly jeopardize the thin veneer of peace between neighboring countries Ostania and Westalis. In spite of their plots, renowned spy and master of disguise \"Twilight\" fulfills dangerous missions one after another in the hope that no child will have to experience the horrors of war.\n\nIn the bustling Ostanian city of Berlint, Twilight dons the alias of \"Loid Forger,\" an esteemed psychiatrist. However, his true intention is to gather intelligence on prominent politician Donovan Desmond, who only appears rarely in public at his sons' school: the prestigious Eden Academy. Enlisting the help of unmarried city hall clerk Yor Briar to act as his wife and adopting the curious six-year-old orphan Anya as his daughter, Loid enacts his master plan. He will enroll Anya in Eden Academy, where Loid hopes she will excel and give him the opportunity to meet Donovan without arousing suspicion. \n\nUnfortunately for Loid, even a man of his talents has trouble playing the figure of a loving father and husband. And just like Loid is hiding his true identity, Yor—who is an underground assassin known as \"Thorn Princess\"—and Anya—an esper who can read people's minds—have no plans to disclose their own secrets either. Although this picture-perfect family is founded on deception, the Forgers gradually come to understand that the love they share for one another trumps all else.\n\n[Written by MAL Rewrite]"
+    },
+    {
+      "mal_id": 52991,
+      "title": "Sousou no Frieren",
+      "title_english": "Frieren: Beyond Journey's End",
+      "title_japanese": "葬送のフリーレン",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1015/138006.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1015/138006t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1015/138006l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1015/138006.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1015/138006t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1015/138006l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": 28,
+      "status": "Finished Airing",
+      "aired": {
+        "from": "2023-09-29T00:00:00+00:00",
+        "to": "2024-03-22T00:00:00+00:00",
+        "prop": {
+          "from": {
+            "day": 29,
+            "month": 9,
+            "year": 2023
+          },
+          "to": {
+            "day": 22,
+            "month": 3,
+            "year": 2024
+          }
+        },
+        "string": "Sep 29, 2023 to Mar 22, 2024"
+      },
+      "duration": "24 min per ep",
+      "rating": "PG-13 - Teens 13 or older",
+      "score": 9.24,
+      "season": "fall",
+      "year": 2023,
+      "broadcast": {
+        "day": "Fridays",
+        "time": "23:00",
+        "timezone": "Asia/Tokyo",
+        "string": "Fridays at 23:00 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 11,
+          "type": "anime",
+          "name": "Madhouse"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 2,
+          "type": "anime",
+          "name": "Adventure"
+        },
+        {
+          "mal_id": 46,
+          "type": "anime",
+          "name": "Award Winning"
+        },
+        {
+          "mal_id": 8,
+          "type": "anime",
+          "name": "Drama"
+        },
+        {
+          "mal_id": 10,
+          "type": "anime",
+          "name": "Fantasy"
+        }
+      ],
+      "explicit_genres": [],
+      "themes": [],
+      "demographics": [
+        {
+          "mal_id": 27,
+          "type": "anime",
+          "name": "Shounen"
+        }
+      ],
+      "synopsis": "During their decade-long quest to defeat the Demon King, the members of the hero's party—Himmel himself, the priest Heiter, the dwarf warrior Eisen, and the elven mage Frieren—forge bonds through adventures and battles, creating unforgettable precious memories for most of them.\n\nHowever, the time that Frieren spends with her comrades is equivalent to merely a fraction of her life, which has lasted over a thousand years. When the party disbands after their victory, Frieren casually returns to her \"usual\" routine of collecting spells across the continent. Due to her different sense of time, she seemingly holds no strong feelings toward the experiences she went through.\n\nAs the years pass, Frieren gradually realizes how her days in the hero's party truly impacted her. Witnessing the deaths of two of her former companions, Frieren begins to regret having taken their presence for granted; she vows to better understand humans and create real personal connections. Although the story of that once memorable journey has long ended, a new tale is about to begin.\n\n[Written by MAL Rewrite]"
+    },
+    {
+      "mal_id": 61987,
+      "title": "Kusuriya no Hitorigoto 3rd Season",
+      "title_english": "The Apothecary Diaries Season 3",
+      "title_japanese": "薬屋のひとりごと 第3期",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1028/160277.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1028/160277t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1028/160277l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1028/160277.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1028/160277t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1028/160277l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": 12,
+      "status": "Currently Airing",
+      "aired": {
+        "from": "2026-10-02T00:00:00+00:00",
+        "to": null,
+        "prop": {
+          "from": {
+            "day": 2,
+            "month": 10,
+            "year": 2026
+          },
+          "to": {
+            "day": null,
+            "month": null,
+            "year": null
+          }
+        },
+        "string": "Oct 2, 2026 to ?"
+      },
+      "duration": "24 min per ep",
+      "rating": "PG-13 - Teens 13 or older",
+      "score": 8.6,
+      "season": "fall",
+      "year": 2026,
+      "broadcast": {
+        "day": "Fridays",
+        "time": "23:00",
+        "timezone": "Asia/Tokyo",
+        "string": "Fridays at 23:00 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 28,
+          "type": "anime",
+          "name": "OLM"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 8,
+          "type": "anime",
+          "name": "Drama"
+        },
+        {
+          "mal_id": 7,
+          "type": "anime",
+          "name": "Mystery"
+        }
+      ],
+      "explicit_genres": [],
+      "themes": [
+        {
+          "mal_id": 13,
+          "type": "anime",
+          "name": "Historical"
+        },
+        {
+          "mal_id": 67,
+          "type": "anime",
+          "name": "Medical"
+        }
+      ],
+      "demographics": [],
+      "synopsis": "In the aftermath of the Shi Clan's rebellion, things have finally settled down, and Maomao has returned to her old life as a pharmacist in the pleasure district. One day, triggered by a breakfast served at the Verdigris House, Maomao senses an anomaly and begins investigating its true nature. Meanwhile, Jinshi, who has revealed his true identity as the Imperial brother and begun to face his heavy responsibilities, is deeply troubled by the final message left by Loulan: a warning of an impending \"disaster that will strike the nation.\" To make matters worse, rumors of a mysterious shrine maiden who deceives the people begin to spread, casting a dark shadow over the country of Li once again. From the depths of the inner court to the city streets, and across foreign borders—the world grows wider, and the stakes even higher for Maomao and Jinshi.\n\n(Source: Crunchyroll)"
+    }
+  ]
+}
