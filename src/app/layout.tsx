@@ -5,7 +5,6 @@ import { SessionProvider } from "@/app/providers/session-provider";
 import { Navbar } from "@/components/navbar";
 import { fontVariables } from "@/components/fonts";
 import { themeScript } from "@/components/theme-script";
-// import { Analytics } from "@vercel/analytics/next";
 
 export const viewport: Viewport = {
   colorScheme: "light dark",
