@@ -20,6 +20,7 @@ import { AddButton } from "./add-button";
 import { CollectionButton } from "./collection-button";
 import { ReviewsSection } from "./reviews-section";
 import { BackButton } from "./back-button";
+import { Trailer } from "./trailer";
 import type {
   JikanAnime,
   JikanRecommendation,
@@ -201,14 +202,14 @@ export default async function AnimePage({ params }: AnimePageProps) {
       <div className="mt-14 md:mt-16">
         {trailerId && (
           <Section title="Trailer">
-            <div className="aspect-video max-w-3xl overflow-hidden bg-plate">
-              <iframe
-                src={`https://www.youtube.com/embed/${trailerId}`}
-                title={`${displayTitle} trailer`}
-                allowFullScreen
-                className="size-full"
-              />
-            </div>
+            <Trailer
+              youtubeId={trailerId}
+              thumbnail={
+                videos[0]?.trailer?.images?.large_image_url ||
+                `https://i.ytimg.com/vi/${trailerId}/hqdefault.jpg`
+              }
+              title={displayTitle}
+            />
           </Section>
         )}
 

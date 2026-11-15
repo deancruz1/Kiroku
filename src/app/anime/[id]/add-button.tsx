@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { InlineMessage } from "@/components/inline-message";
+import { Skeleton } from "@/components/skeleton";
 import {
   StatusGlyph,
   StatusMark,
@@ -36,13 +37,9 @@ export function AddButton({ animeId }: { animeId: number }) {
   const addEntry = useAddEntry();
   const updateEntry = useUpdateEntry();
 
-  if (sessionStatus === "loading") {
-    return (
-      <Button size="lg" disabled>
-        <Plus aria-hidden="true" />
-        Add to watch list
-      </Button>
-    );
+  // Until we know whether the show is on the list, show nothing that could be wrong.
+  if (sessionStatus === "loading" || (session && entriesPending)) {
+    return <Skeleton className="h-10 w-44" />;
   }
 
   if (!session) {
