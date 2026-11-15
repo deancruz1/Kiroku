@@ -1,36 +1,34 @@
-"use client";
-
-import { useEntries } from "@/hooks/use-entries";
-import { AnimeCard } from "@/components/anime-card";
-import type { JikanAnime } from "@/types/anime";
+import {
+  SeasonAnimeCard,
+  type TrackedEntry,
+} from "@/components/season-anime-card";
+import { SPREAD_CLASS } from "@/components/season-skeleton";
+import type { SeasonAnime } from "@/lib/season";
 
 interface SeasonGridProps {
-  allAnime: JikanAnime[];
+  allAnime: SeasonAnime[];
+  entries: Map<number, TrackedEntry>;
 }
 
-export function SeasonGrid({ allAnime }: SeasonGridProps) {
-  const { data: entries } = useEntries();
+function describe(anime: SeasonAnime) {
+  const episodes = anime.episodes
+    ? `${anime.episodes} ${anime.episodes === 1 ? "episode" : "episodes"}`
+    : null;
+  return [anime.type, episodes].filter(Boolean).join(", ") || null;
+}
 
-  const trackedMap = new Map<number, { status: string }>();
-  if (entries) {
-    for (const entry of entries) {
-      trackedMap.set(entry.animeId, { status: entry.status });
-    }
-  }
-
+export function SeasonGrid({ allAnime, entries }: SeasonGridProps) {
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-      {allAnime.map((anime) => {
-        const tracked = trackedMap.get(anime.mal_id);
-        return (
-          <AnimeCard
-            key={anime.mal_id}
-            anime={anime}
-            isTracked={!!tracked}
-            trackedStatus={tracked?.status}
-          />
-        );
-      })}
-    </div>
+    <ol className={`border-t border-foreground ${SPREAD_CLASS}`}>
+      {allAnime.map((anime) => (
+        <SeasonAnimeCard
+          key={anime.mal_id}
+          anime={anime}
+          entry={entries.get(anime.mal_id)}
+          note={describe(anime)}
+          className="break-inside-avoid"
+        />
+      ))}
+    </ol>
   );
 }

@@ -1,15 +1,19 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEntries } from "@/hooks/use-entries";
-import { SeasonCalendar } from "@/components/season-calendar";
+import { SeasonCalendar, getViewerTimeZone } from "@/components/season-calendar";
 import { SeasonGrid } from "@/components/season-grid";
+import type { TrackedEntry } from "@/components/season-anime-card";
 import { Pagination } from "@/components/pagination";
+import { PageHeading } from "@/components/page-heading";
+import { EmptyState } from "@/components/empty-state";
+import { InlineMessage } from "@/components/inline-message";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Search, X } from "lucide-react";
+import { NativeSelect } from "@/components/ui/native-select";
+import { Button } from "@/components/ui/button";
 import type { SeasonAnime } from "@/lib/season";
 
 const SEASONS = ["winter", "spring", "summer", "fall"];
@@ -19,6 +23,18 @@ const SEASON_LABELS: Record<string, string> = {
   summer: "Summer",
   fall: "Fall",
 };
+
+function subscribeNever() {
+  return () => {};
+}
+
+function getServerTimeZone() {
+  return null;
+}
+
+function countLabel(n: number) {
+  return `${n} ${n === 1 ? "show" : "shows"}`;
+}
 
 interface SeasonContentProps {
   allAnime: SeasonAnime[];
@@ -37,7 +53,6 @@ export function SeasonContent({
   years,
   year,
   season,
-  isCurrentSeason,
   mode,
   currentPage,
   lastPage,
@@ -49,6 +64,11 @@ export function SeasonContent({
   const [search, setSearch] = useState("");
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [showTrackedOnly, setShowTrackedOnly] = useState(false);
+  const timeZone = useSyncExternalStore(
+    subscribeNever,
+    getViewerTimeZone,
+    getServerTimeZone,
+  );
 
   const signedIn = sessionStatus === "authenticated";
   const trackedOnly = signedIn && showTrackedOnly;
@@ -78,10 +98,13 @@ export function SeasonContent({
     [uniqueAnime],
   );
 
-  const trackedIds = useMemo(
-    () => new Set((entries ?? []).map((e) => e.animeId)),
-    [entries],
-  );
+  const trackedMap = useMemo(() => {
+    const map = new Map<number, TrackedEntry>();
+    for (const e of entries ?? []) {
+      map.set(e.animeId, { status: e.status, episodes: e.episodes });
+    }
+    return map;
+  }, [entries]);
 
   const filteredAnime = useMemo(() => {
     let result = uniqueAnime;
@@ -105,11 +128,11 @@ export function SeasonContent({
     }
 
     if (trackedOnly) {
-      result = result.filter((a) => trackedIds.has(a.mal_id));
+      result = result.filter((a) => trackedMap.has(a.mal_id));
     }
 
     return result;
-  }, [uniqueAnime, search, selectedGenres, trackedOnly, trackedIds]);
+  }, [uniqueAnime, search, selectedGenres, trackedOnly, trackedMap]);
 
   function toggleGenre(genre: string) {
     setSelectedGenres((prev) =>
@@ -126,153 +149,135 @@ export function SeasonContent({
   const hasFilters =
     search.trim() !== "" || selectedGenres.length > 0 || trackedOnly;
 
+  const description = showCalendar
+    ? `${countLabel(uniqueAnime.length)}. Times are in your time zone${
+        timeZone ? `, ${timeZone.replace(/_/g, " ")}` : ""
+      }.`
+    : lastPage > 1
+      ? `Page ${currentPage} of ${lastPage}.`
+      : `${countLabel(uniqueAnime.length)}.`;
+
   return (
-    <main className="min-h-screen bg-background">
-      <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-8">
-        <h1 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2 text-center sm:text-left">
-          Seasonal Anime
-        </h1>
-        <p className="text-muted-foreground text-sm sm:text-base mb-4 sm:mb-6 text-center sm:text-left">
-          {showCalendar
-            ? isCurrentSeason
-              ? "Current season anime schedule. Tracked shows are highlighted."
-              : `${SEASON_LABELS[season]} ${year} anime schedule. Tracked shows are highlighted.`
-            : `${SEASON_LABELS[season]} ${year}`}
-        </p>
+    <main className="page">
+      <PageHeading
+        rule
+        title={`${SEASON_LABELS[season]} ${year}`}
+        description={description}
+      >
+        <NativeSelect
+          aria-label="Season"
+          value={season}
+          onChange={(e) => handleChange(year.toString(), e.target.value)}
+          className="h-10"
+        >
+          {SEASONS.map((s) => (
+            <option key={s} value={s}>
+              {SEASON_LABELS[s]}
+            </option>
+          ))}
+        </NativeSelect>
 
-        {!complete && (
-          <p className="text-xs text-destructive mb-4 text-center sm:text-left">
-            Some shows could not be loaded. Showing the {uniqueAnime.length}{" "}
-            that did.
-          </p>
-        )}
+        <NativeSelect
+          aria-label="Year"
+          value={year}
+          onChange={(e) => handleChange(e.target.value, season)}
+          className="h-10"
+        >
+          {years.map((y) => (
+            <option key={y} value={y}>
+              {y}
+            </option>
+          ))}
+        </NativeSelect>
 
-        <div className="flex items-center gap-2 sm:gap-3 mb-4 flex-wrap">
-          <select
-            aria-label="Year"
-            value={year}
-            onChange={(e) => handleChange(e.target.value, season)}
-            className="px-2 sm:px-3 py-2 rounded-md bg-secondary text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-          >
-            {years.map((y) => (
-              <option key={y} value={y}>
-                {y}
-              </option>
-            ))}
-          </select>
+        <Input
+          type="search"
+          aria-label="Filter this season"
+          placeholder="Filter this season"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="h-10 md:w-[200px]"
+        />
 
-          <select
-            aria-label="Season"
-            value={season}
-            onChange={(e) => handleChange(year.toString(), e.target.value)}
-            className="px-2 sm:px-3 py-2 rounded-md bg-secondary text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-          >
-            {SEASONS.map((s) => (
-              <option key={s} value={s}>
-                {SEASON_LABELS[s]}
-              </option>
-            ))}
-          </select>
-
-          <div className="relative flex-1 min-w-[150px] max-w-xs">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              aria-label="Search anime"
-              placeholder="Search anime..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="pl-8 h-9 text-xs sm:text-sm"
+        {signedIn && (
+          <label className="flex min-h-10 cursor-pointer items-center gap-2 text-base">
+            <input
+              type="checkbox"
+              checked={showTrackedOnly}
+              onChange={(e) => setShowTrackedOnly(e.target.checked)}
+              className="size-4 cursor-pointer accent-vermilion"
             />
-          </div>
-        </div>
+            Only my list
+          </label>
+        )}
+      </PageHeading>
 
-        <div className="space-y-3 mb-6">
-          <div className="flex items-start justify-between gap-3 sm:gap-4">
-            <div
-              role="group"
-              aria-label="Genres"
-              className="flex flex-wrap gap-1 sm:gap-1.5 flex-1"
+      {!complete && (
+        <InlineMessage className="mt-3">
+          Some shows could not be loaded. Showing the {uniqueAnime.length} that
+          did.
+        </InlineMessage>
+      )}
+
+      {allGenres.length > 0 && (
+        <div
+          role="group"
+          aria-label="Genres"
+          className="scrollbar-none -mx-[var(--gutter)] mt-2 flex gap-x-[18px] overflow-x-auto px-[var(--gutter)] py-1 md:mx-0 md:flex-wrap md:overflow-visible md:px-0"
+        >
+          {allGenres.map((genre) => (
+            <button
+              key={genre}
+              type="button"
+              aria-pressed={selectedGenres.includes(genre)}
+              onClick={() => toggleGenre(genre)}
+              className="inline-flex min-h-10 shrink-0 cursor-pointer items-center whitespace-nowrap text-[15px] text-muted-foreground transition-colors hover:text-foreground motion-reduce:transition-none aria-pressed:text-vermilion aria-pressed:underline aria-pressed:decoration-1 aria-pressed:underline-offset-[5px] md:min-h-8"
             >
-              {allGenres.map((genre) => {
-                const selected = selectedGenres.includes(genre);
-                return (
-                  <Badge
-                    key={genre}
-                    asChild
-                    variant={selected ? "default" : "outline"}
-                    className="cursor-pointer text-[10px] sm:text-xs"
-                  >
-                    <button
-                      type="button"
-                      aria-pressed={selected}
-                      onClick={() => toggleGenre(genre)}
-                    >
-                      {genre}
-                    </button>
-                  </Badge>
-                );
-              })}
-            </div>
-
-            {signedIn && (
-              <button
-                type="button"
-                aria-pressed={showTrackedOnly}
-                onClick={() => setShowTrackedOnly(!showTrackedOnly)}
-                className={`shrink-0 px-2 sm:px-3 py-1.5 rounded-md text-[10px] sm:text-xs font-medium transition-colors ${
-                  showTrackedOnly
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-secondary hover:bg-secondary/80"
-                }`}
-              >
-                In Your List
-              </button>
-            )}
-          </div>
-
-          {hasFilters && (
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-muted-foreground" aria-live="polite">
-                {filteredAnime.length} of {uniqueAnime.length} shows
-                {showCalendar ? "" : " on this page"}
-              </span>
-              <button
-                type="button"
-                onClick={clearFilters}
-                className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1"
-              >
-                <X className="h-3 w-3" />
-                Clear filters
-              </button>
-            </div>
-          )}
+              {genre}
+            </button>
+          ))}
         </div>
+      )}
 
+      {hasFilters && (
+        <div className="mt-2 flex flex-wrap items-center gap-x-4">
+          <span className="text-muted-foreground" aria-live="polite">
+            {filteredAnime.length} of {countLabel(uniqueAnime.length)}
+            {showCalendar ? "" : " on this page"}
+          </span>
+          <Button
+            type="button"
+            variant="link"
+            onClick={clearFilters}
+            className="min-h-10"
+          >
+            Clear filters
+          </Button>
+        </div>
+      )}
+
+      <div className="mt-6 md:mt-9">
         {uniqueAnime.length === 0 ? (
-          <p className="text-sm text-muted-foreground text-center py-12">
+          <EmptyState>
             No shows found for {SEASON_LABELS[season]} {year}.
-          </p>
+          </EmptyState>
         ) : filteredAnime.length === 0 ? (
-          <p className="text-sm text-muted-foreground text-center py-12">
-            No shows match your filters.
-          </p>
+          <EmptyState>No shows match your filters.</EmptyState>
         ) : showCalendar ? (
-          <SeasonCalendar allAnime={filteredAnime} />
+          <SeasonCalendar allAnime={filteredAnime} entries={trackedMap} />
         ) : (
-          <SeasonGrid allAnime={filteredAnime} />
-        )}
-
-        {!showCalendar && !hasFilters && lastPage > 1 && (
-          <div className="mt-6 sm:mt-8">
-            <Pagination
-              currentPage={currentPage}
-              lastPage={lastPage}
-              baseUrl={`/season?year=${year}&season=${season}`}
-              paramName="page"
-            />
-          </div>
+          <SeasonGrid allAnime={filteredAnime} entries={trackedMap} />
         )}
       </div>
+
+      {!showCalendar && !hasFilters && lastPage > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          lastPage={lastPage}
+          baseUrl={`/season?year=${year}&season=${season}`}
+          paramName="page"
+        />
+      )}
     </main>
   );
 }
