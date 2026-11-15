@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
+  provider = "postgresql"
 }
 
 // ─── NextAuth.js required models ───
@@ -103,4 +103,24 @@ model ListAnime {
   customListId String
   customList   CustomList @relation(fields: [customListId], references: [id], onDelete: Cascade)
   animeId      Int
+
+  @@unique([customListId, animeId])
+}
+
+// Show details copied from Jikan, keyed by MyAnimeList id. AnimeEntry and
+// ListAnime join to it by animeId in code, without a foreign key.
+model Anime {
+  id              Int      @id
+  title           String
+  titleEnglish    String?
+  titleJapanese   String?
+  imageUrl        String?
+  episodes        Int?
+  genres          String[]
+  score           Float?
+  status          String?
+  durationMinutes Int?
+  season          String?
+  year            Int?
+  fetchedAt       DateTime
 }

@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { INVALID_BODY, parseEntryUpdate } from "@/lib/entry-validation";
+import { readJsonBody } from "@/lib/request-body";
 
 export async function PATCH(
   request: Request,
@@ -13,7 +15,10 @@ export async function PATCH(
   }
 
   const { id } = await params;
-  const body = await request.json();
+  const body = await readJsonBody(request);
+  if (!body) {
+    return NextResponse.json({ error: INVALID_BODY }, { status: 400 });
+  }
 
   const entry = await prisma.animeEntry.findUnique({
     where: { id },
@@ -23,12 +28,21 @@ export async function PATCH(
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
-  const updated = await prisma.animeEntry.update({
-    where: { id },
-    data: body,
+  const anime = await prisma.anime.findUnique({
+    where: { id: entry.animeId },
   });
 
-  return NextResponse.json(updated);
+  const parsed = parseEntryUpdate(body, anime?.episodes ?? null);
+  if (!parsed.ok) {
+    return NextResponse.json({ error: parsed.error }, { status: 400 });
+  }
+
+  const updated = await prisma.animeEntry.update({
+    where: { id },
+    data: parsed.data,
+  });
+
+  return NextResponse.json({ ...updated, anime });
 }
 
 export async function DELETE(

@@ -1,9 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Plus, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,6 +10,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  useAddEntry,
+  useEntries,
+  useUpdateEntry,
+} from "@/hooks/use-entries";
 
 const STATUS_LABELS: Record<string, string> = {
   watching: "Watching",
@@ -21,32 +24,18 @@ const STATUS_LABELS: Record<string, string> = {
 };
 
 export function AddButton({ animeId }: { animeId: number }) {
-  const { data: session } = useSession();
-  const queryClient = useQueryClient();
-  const [loading, setLoading] = useState<string | null>(null);
-  const [added, setAdded] = useState(false);
-  const [existingStatus, setExistingStatus] = useState<string | null>(null);
+  const { data: session, status: sessionStatus } = useSession();
+  const { data: entries, isPending: entriesPending } = useEntries();
+  const addEntry = useAddEntry();
+  const updateEntry = useUpdateEntry();
 
-  const { data: entries } = useQuery({
-    queryKey: ["user-entries"],
-    queryFn: async () => {
-      const res = await fetch("/api/user/entries");
-      if (!res.ok) throw new Error("Failed to fetch");
-      return res.json();
-    },
-    enabled: !!session,
-  });
-
-  if (entries && !added) {
-    const existing = entries.find(
-      (e: { animeId: number; status: string }) => e.animeId === animeId,
+  if (sessionStatus === "loading") {
+    return (
+      <Button disabled>
+        <Plus className="h-4 w-4 mr-2" />
+        Add to List
+      </Button>
     );
-    if (existing && !added) {
-      setTimeout(() => {
-        setAdded(true);
-        setExistingStatus(existing.status);
-      }, 0);
-    }
   }
 
   if (!session) {
@@ -57,56 +46,55 @@ export function AddButton({ animeId }: { animeId: number }) {
     );
   }
 
-  if (added) {
-    return (
-      <Button variant="outline" disabled>
-        <Check className="h-4 w-4 mr-2" />
-        {existingStatus
-          ? `In ${STATUS_LABELS[existingStatus]}`
-          : "Added to list"}
-      </Button>
-    );
-  }
+  const existing = entries?.find((e) => e.animeId === animeId);
+  const error = addEntry.error ?? updateEntry.error;
 
-  async function handleAdd(status: string) {
-    setLoading(status);
-    try {
-      const res = await fetch("/api/anime/entry", {
-        method: "POST",
-        body: JSON.stringify({ animeId, status }),
-        headers: { "Content-Type": "application/json" },
-      });
-      if (res.ok) {
-        setAdded(true);
-        setExistingStatus(status);
-        queryClient.invalidateQueries({ queryKey: ["user-entries"] });
+  function handleSelect(status: string) {
+    addEntry.reset();
+    updateEntry.reset();
+    if (existing) {
+      if (existing.status !== status) {
+        updateEntry.mutate({ id: existing.id, patch: { status } });
       }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(null);
+    } else {
+      addEntry.mutate({ animeId, status });
     }
   }
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button>
-          <Plus className="h-4 w-4 mr-2" />
-          {loading ? "Adding..." : "Add to List"}
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        {Object.entries(STATUS_LABELS).map(([value, label]) => (
-          <DropdownMenuItem
-            key={value}
-            onClick={() => handleAdd(value)}
-            disabled={loading === value}
-          >
-            {label}
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <div className="flex flex-col gap-1">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          {existing ? (
+            <Button variant="outline" disabled={updateEntry.isPending}>
+              <Check className="h-4 w-4 mr-2" />
+              {`In ${STATUS_LABELS[existing.status] ?? "your list"}`}
+            </Button>
+          ) : (
+            <Button disabled={entriesPending || addEntry.isPending}>
+              <Plus className="h-4 w-4 mr-2" />
+              {addEntry.isPending ? "Adding..." : "Add to List"}
+            </Button>
+          )}
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          {Object.entries(STATUS_LABELS).map(([value, label]) => (
+            <DropdownMenuItem
+              key={value}
+              onClick={() => handleSelect(value)}
+              disabled={existing?.status === value}
+            >
+              {existing?.status === value && <Check className="h-4 w-4" />}
+              {label}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+      {error && (
+        <p role="alert" className="text-xs text-destructive">
+          {error.message}
+        </p>
+      )}
+    </div>
   );
 }

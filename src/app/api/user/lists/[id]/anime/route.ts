@@ -1,6 +1,16 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { isUniqueViolation } from "@/lib/db-errors";
+import { INVALID_BODY, parseAnimeId } from "@/lib/entry-validation";
+import { readJsonBody } from "@/lib/request-body";
+import { storeShow } from "@/lib/anime-store";
+
+async function readAnimeId(request: Request) {
+  const body = await readJsonBody(request);
+  if (!body) return { ok: false as const, error: INVALID_BODY };
+  return parseAnimeId(body.animeId);
+}
 
 export async function POST(
   request: Request,
@@ -13,7 +23,10 @@ export async function POST(
   }
 
   const { id } = await params;
-  const { animeId } = await request.json();
+  const animeId = await readAnimeId(request);
+  if (!animeId.ok) {
+    return NextResponse.json({ error: animeId.error }, { status: 400 });
+  }
 
   const list = await prisma.customList.findUnique({ where: { id } });
 
@@ -22,7 +35,7 @@ export async function POST(
   }
 
   const existing = await prisma.listAnime.findFirst({
-    where: { customListId: id, animeId },
+    where: { customListId: id, animeId: animeId.data },
   });
 
   if (existing) {
@@ -32,11 +45,24 @@ export async function POST(
     );
   }
 
-  const entry = await prisma.listAnime.create({
-    data: { customListId: id, animeId },
-  });
+  let entry;
+  try {
+    entry = await prisma.listAnime.create({
+      data: { customListId: id, animeId: animeId.data },
+    });
+  } catch (error) {
+    if (isUniqueViolation(error)) {
+      return NextResponse.json(
+        { error: "Already in this list" },
+        { status: 409 },
+      );
+    }
+    throw error;
+  }
 
-  return NextResponse.json(entry, { status: 201 });
+  const anime = await storeShow(animeId.data);
+
+  return NextResponse.json({ ...entry, anime }, { status: 201 });
 }
 
 export async function DELETE(
@@ -50,7 +76,10 @@ export async function DELETE(
   }
 
   const { id } = await params;
-  const { animeId } = await request.json();
+  const animeId = await readAnimeId(request);
+  if (!animeId.ok) {
+    return NextResponse.json({ error: animeId.error }, { status: 400 });
+  }
 
   const list = await prisma.customList.findUnique({ where: { id } });
 
@@ -59,7 +88,7 @@ export async function DELETE(
   }
 
   await prisma.listAnime.deleteMany({
-    where: { customListId: id, animeId },
+    where: { customListId: id, animeId: animeId.data },
   });
 
   return NextResponse.json({ success: true });

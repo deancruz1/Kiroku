@@ -1,32 +1,42 @@
 import { NextResponse } from "next/server";
+import { unstable_cache } from "next/cache";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { jikanApi } from "@/lib/axios";
+import { ensureShows } from "@/lib/anime-store";
+import {
+  GENRE_IDS,
+  becauseOf,
+  buildRecommendations,
+  pickGenres,
+  scoreGenres,
+  type Candidate,
+} from "@/lib/recommend";
+import type { JikanSearchResponse } from "@/types/anime";
 
-const GENRE_IDS: Record<string, number> = {
-  Action: 1,
-  Adventure: 2,
-  Comedy: 4,
-  Drama: 8,
-  Fantasy: 10,
-  Horror: 14,
-  Mystery: 7,
-  Romance: 22,
-  "Sci-Fi": 24,
-  "Slice of Life": 36,
-  Sports: 30,
-  Supernatural: 37,
-  Thriller: 41,
-  Mecha: 18,
-  Music: 19,
-  School: 23,
-  Shounen: 27,
-  Seinen: 42,
-  Josei: 43,
-  Shoujo: 25,
-  Isekai: 62,
-  Psychological: 40,
-};
+// Shared by every user; a failed request throws, so it is not cached
+const getTopByGenre = unstable_cache(
+  async (genreId: number): Promise<Candidate[]> => {
+    const { data } = await jikanApi.get<JikanSearchResponse>("/anime", {
+      params: {
+        genres: genreId,
+        order_by: "score",
+        sort: "desc",
+        limit: 25,
+        sfw: true,
+      },
+    });
+    return (data.data ?? []).map((anime) => ({
+      mal_id: anime.mal_id,
+      title: anime.title_english || anime.title,
+      image: anime.images.webp.large_image_url,
+      score: anime.score,
+      genres: anime.genres?.map((g) => g.name) || [],
+    }));
+  },
+  ["recommendations-top-by-genre"],
+  { revalidate: 21600 },
+);
 
 export async function GET() {
   const session = await auth();
@@ -36,16 +46,12 @@ export async function GET() {
   }
 
   const entries = await prisma.animeEntry.findMany({
-    where: {
-      userId: session.user.id,
-      rating: { not: null },
-    },
-    select: { animeId: true },
+    where: { userId: session.user.id },
+    orderBy: { updatedAt: "desc" },
+    select: { animeId: true, status: true, rating: true },
   });
 
-  const watchedIds = new Set(entries.map((e) => e.animeId));
-
-  if (watchedIds.size === 0) {
+  if (entries.length === 0) {
     return NextResponse.json({
       recommendations: [],
       basedOn: [],
@@ -53,35 +59,8 @@ export async function GET() {
     });
   }
 
-  const entryGenres: { animeId: number; title: string; genres: string[] }[] =
-    [];
-
-  for (const entry of entries) {
-    try {
-      const { data } = await jikanApi.get(`/anime/${entry.animeId}`);
-      if (data.data?.genres) {
-        entryGenres.push({
-          animeId: entry.animeId,
-          title: data.data.title_english || data.data.title,
-          genres: data.data.genres.map((g: { name: string }) => g.name),
-        });
-      }
-    } catch {
-      // Skip
-    }
-  }
-
-  const genreCounts: Record<string, number> = {};
-  for (const entry of entryGenres) {
-    for (const genre of entry.genres) {
-      genreCounts[genre] = (genreCounts[genre] || 0) + 1;
-    }
-  }
-
-  const topGenres = Object.entries(genreCounts)
-    .filter(([name]) => GENRE_IDS[name])
-    .sort(([, a], [, b]) => b - a)
-    .slice(0, 3);
+  const shows = await ensureShows(entries.map((e) => e.animeId));
+  const topGenres = pickGenres(scoreGenres(entries, shows));
 
   if (topGenres.length === 0) {
     return NextResponse.json({
@@ -91,63 +70,35 @@ export async function GET() {
     });
   }
 
-  const recommendations: {
-    mal_id: number;
-    title: string;
-    image: string;
-    score: number | null;
-    genres: string[];
-    becauseOf: string;
-  }[] = [];
+  // Started together so an outage costs one request budget, not one per genre.
+  // The scheduler inside jikanApi still spaces the requests.
+  const settled = await Promise.allSettled(
+    topGenres.map((genre) => getTopByGenre(GENRE_IDS[genre])),
+  );
+  const results = topGenres.flatMap((genre, i) => {
+    const result = settled[i];
+    return result.status === "fulfilled"
+      ? [{ genre, candidates: result.value }]
+      : [];
+  });
 
-  for (const [genreName] of topGenres) {
-    const genreId = GENRE_IDS[genreName];
-    if (!genreId) continue;
-
-    try {
-      const { data } = await jikanApi.get("/anime", {
-        params: {
-          genres: genreId,
-          order_by: "score",
-          sort: "desc",
-          limit: 5,
-          sfw: true,
-        },
-      });
-
-      if (data.data) {
-        for (const anime of data.data) {
-          if (
-            !watchedIds.has(anime.mal_id) &&
-            !recommendations.find((r) => r.mal_id === anime.mal_id) &&
-            anime.score &&
-            anime.score >= 7
-          ) {
-            const matchingEntry = entryGenres.find((e) =>
-              e.genres.includes(genreName),
-            );
-            const becauseOf = matchingEntry ? matchingEntry.title : genreName;
-
-            recommendations.push({
-              mal_id: anime.mal_id,
-              title: anime.title_english || anime.title,
-              image: anime.images.webp.large_image_url,
-              score: anime.score,
-              genres: anime.genres?.map((g: { name: string }) => g.name) || [],
-              becauseOf,
-            });
-          }
-        }
-      }
-    } catch {
-      // Skip
-    }
-
-    if (recommendations.length >= 10) break;
-  }
+  const reasons = Object.fromEntries(
+    topGenres.map((genre) => [genre, becauseOf(genre, entries, shows)]),
+  );
+  const recommendations = buildRecommendations(
+    results,
+    new Set(entries.map((e) => e.animeId)),
+    reasons,
+  );
 
   return NextResponse.json({
-    recommendations: recommendations.slice(0, 10),
-    basedOn: topGenres.map(([name]) => name),
+    recommendations,
+    basedOn: topGenres,
+    ...(recommendations.length === 0 && {
+      message:
+        results.length === 0
+          ? "Recommendations are unavailable right now. Try again later."
+          : "Not enough data for recommendations.",
+    }),
   });
 }

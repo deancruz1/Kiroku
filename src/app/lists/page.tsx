@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
@@ -8,66 +8,97 @@ import { useState } from "react";
 import { Plus, FolderOpen, Trash2, Edit3, Check, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { jikanApi } from "@/lib/axios";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  LISTS_KEY,
+  useCollections,
+  type CollectionSummary,
+} from "@/hooks/use-lists";
+import { responseError } from "@/lib/fetch-json";
+import { LIST_NAME_MAX } from "@/lib/entry-validation";
 
-interface ListAnime {
-  id: string;
-  animeId: number;
-}
-
-interface CustomList {
-  id: string;
-  name: string;
-  createdAt: string;
-  animes: ListAnime[];
+async function sendJson(url: string, method: string, body?: unknown) {
+  const res = await fetch(url, {
+    method,
+    body: body === undefined ? undefined : JSON.stringify(body),
+    headers: { "Content-Type": "application/json" },
+  });
+  if (!res.ok) throw await responseError(res, "Something went wrong");
+  return res.json();
 }
 
 export default function ListsPage() {
-  const { data: session } = useSession();
+  const { data: session, status: sessionStatus } = useSession();
   const queryClient = useQueryClient();
   const [newName, setNewName] = useState("");
-  const [creating, setCreating] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editName, setEditName] = useState("");
+  const [pendingDelete, setPendingDelete] = useState<CollectionSummary | null>(
+    null,
+  );
 
-  const { data: lists, isLoading } = useQuery({
-    queryKey: ["user-lists"],
-    queryFn: async () => {
-      const res = await fetch("/api/user/lists");
-      if (!res.ok) throw new Error("Failed to fetch");
-      return res.json() as Promise<CustomList[]>;
-    },
-    enabled: !!session,
+  const { data: lists, isLoading, error, refetch, isFetching } =
+    useCollections();
+
+  const createList = useMutation({
+    mutationFn: (name: string) => sendJson("/api/user/lists", "POST", { name }),
+    onSuccess: () => setNewName(""),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: LISTS_KEY }),
   });
 
-  async function handleCreate() {
-    if (!newName.trim()) return;
-    setCreating(true);
-    await fetch("/api/user/lists", {
-      method: "POST",
-      body: JSON.stringify({ name: newName }),
-      headers: { "Content-Type": "application/json" },
-    });
-    queryClient.invalidateQueries({ queryKey: ["user-lists"] });
-    setNewName("");
-    setCreating(false);
+  const renameList = useMutation({
+    mutationFn: ({ id, name }: { id: string; name: string }) =>
+      sendJson(`/api/user/lists/${id}`, "PATCH", { name }),
+    onSuccess: (_data, { id }) => {
+      setEditingId(null);
+      setEditName("");
+      queryClient.invalidateQueries({ queryKey: ["list", id] });
+    },
+    onSettled: () => queryClient.invalidateQueries({ queryKey: LISTS_KEY }),
+  });
+
+  const deleteList = useMutation({
+    mutationFn: (id: string) => sendJson(`/api/user/lists/${id}`, "DELETE"),
+    onSuccess: (_data, id) => {
+      queryClient.removeQueries({ queryKey: ["list", id] });
+    },
+    onSettled: () => queryClient.invalidateQueries({ queryKey: LISTS_KEY }),
+  });
+
+  function handleCreate() {
+    if (!newName.trim() || createList.isPending) return;
+    createList.mutate(newName.trim());
   }
 
-  async function handleRename(id: string) {
-    if (!editName.trim()) return;
-    await fetch(`/api/user/lists/${id}`, {
-      method: "PATCH",
-      body: JSON.stringify({ name: editName }),
-      headers: { "Content-Type": "application/json" },
-    });
-    queryClient.invalidateQueries({ queryKey: ["user-lists"] });
-    setEditingId(null);
-    setEditName("");
+  function handleRename(id: string) {
+    if (!editName.trim() || renameList.isPending) return;
+    renameList.mutate({ id, name: editName.trim() });
   }
 
-  async function handleDelete(id: string) {
-    await fetch(`/api/user/lists/${id}`, { method: "DELETE" });
-    queryClient.invalidateQueries({ queryKey: ["user-lists"] });
+  function confirmDelete() {
+    if (!pendingDelete) return;
+    deleteList.mutate(pendingDelete.id);
+    setPendingDelete(null);
+  }
+
+  if (sessionStatus === "loading") {
+    return (
+      <main className="min-h-screen bg-background">
+        <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-8">
+          <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-center sm:text-left">
+            My Collections
+          </h1>
+          <GridSkeleton />
+        </div>
+      </main>
+    );
   }
 
   if (!session) {
@@ -77,9 +108,9 @@ export default function ListsPage() {
           <p className="text-muted-foreground text-sm sm:text-base">
             Sign in to view your lists.
           </p>
-          <Link href="/auth/signin">
-            <Button>Sign in</Button>
-          </Link>
+          <Button asChild>
+            <Link href="/auth/signin">Sign in</Link>
+          </Button>
         </div>
       </main>
     );
@@ -92,33 +123,62 @@ export default function ListsPage() {
           My Collections
         </h1>
 
-        <div className="flex items-stretch gap-2 mb-6 sm:mb-8 justify-center sm:justify-start">
-          <Input
-            placeholder="New collection name..."
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && handleCreate()}
-            className="max-w-xs text-xs sm:text-sm"
-          />
-          <Button
-            onClick={handleCreate}
-            disabled={creating || !newName.trim()}
-            size="sm"
-            className="text-xs sm:text-sm"
-          >
-            <Plus className="h-4 w-4 mr-1" />
-            Create
-          </Button>
+        <div className="mb-6 sm:mb-8">
+          <div className="flex items-stretch gap-2 justify-center sm:justify-start">
+            <Input
+              placeholder="New collection name..."
+              aria-label="New collection name"
+              value={newName}
+              maxLength={LIST_NAME_MAX}
+              onChange={(e) => {
+                setNewName(e.target.value);
+                if (createList.isError) createList.reset();
+              }}
+              onKeyDown={(e) => e.key === "Enter" && handleCreate()}
+              className="max-w-xs text-xs sm:text-sm"
+            />
+            <Button
+              onClick={handleCreate}
+              disabled={createList.isPending || !newName.trim()}
+              size="sm"
+              className="text-xs sm:text-sm"
+            >
+              <Plus className="h-4 w-4 mr-1" />
+              Create
+            </Button>
+          </div>
+          {createList.isError && (
+            <p
+              role="alert"
+              className="text-xs text-destructive mt-2 text-center sm:text-left"
+            >
+              Could not create the collection: {createList.error.message}
+            </p>
+          )}
+          {deleteList.isError && (
+            <p
+              role="alert"
+              className="text-xs text-destructive mt-2 text-center sm:text-left"
+            >
+              Could not delete the collection: {deleteList.error.message}
+            </p>
+          )}
         </div>
 
-        {isLoading && (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
-            {[...Array(4)].map((_, i) => (
-              <div
-                key={i}
-                className="aspect-3/4 bg-muted animate-pulse rounded-lg"
-              />
-            ))}
+        {isLoading && <GridSkeleton />}
+
+        {error && !lists && (
+          <div className="text-center py-12 sm:py-16 space-y-4">
+            <p className="text-destructive text-sm sm:text-base">
+              Failed to load your collections.
+            </p>
+            <Button
+              variant="outline"
+              onClick={() => refetch()}
+              disabled={isFetching}
+            >
+              {isFetching ? "Retrying..." : "Try again"}
+            </Button>
           </div>
         )}
 
@@ -138,14 +198,20 @@ export default function ListsPage() {
                 key={list.id}
                 className="rounded-lg overflow-hidden bg-card border transition-all hover:ring-2 hover:ring-primary h-full"
               >
-                <Link href={`/lists/${list.id}`}>
+                <Link href={`/lists/${list.id}`} aria-label={list.name}>
                   <div className="relative w-full aspect-3/4 bg-gradient-to-br from-muted/80 to-muted overflow-hidden">
-                    {list.animes.length === 1 ? (
-                      <AnimeCover animeId={list.animes[0].animeId} single />
-                    ) : list.animes.length > 0 ? (
+                    {list.preview.length === 1 ? (
+                      <AnimeCover
+                        image={list.preview[0].anime?.imageUrl ?? null}
+                        single
+                      />
+                    ) : list.preview.length > 0 ? (
                       <div className="grid grid-cols-2 w-full h-full">
-                        {list.animes.slice(0, 4).map((a, i) => (
-                          <AnimeCover key={i} animeId={a.animeId} />
+                        {list.preview.map((a) => (
+                          <AnimeCover
+                            key={a.animeId}
+                            image={a.anime?.imageUrl ?? null}
+                          />
                         ))}
                       </div>
                     ) : (
@@ -157,32 +223,50 @@ export default function ListsPage() {
                 </Link>
                 <div className="p-2 sm:p-3 border-t">
                   {editingId === list.id ? (
-                    <div className="flex gap-1">
-                      <Input
-                        value={editName}
-                        onChange={(e) => setEditName(e.target.value)}
-                        onKeyDown={(e) =>
-                          e.key === "Enter" && handleRename(list.id)
-                        }
-                        className="h-7 text-xs"
-                        autoFocus
-                      />
-                      <Button
-                        size="icon"
-                        className="h-7 w-7 shrink-0"
-                        onClick={() => handleRename(list.id)}
-                      >
-                        <Check className="h-3 w-3" />
-                      </Button>
-                      <Button
-                        size="icon"
-                        variant="ghost"
-                        className="h-7 w-7 shrink-0"
-                        onClick={() => setEditingId(null)}
-                      >
-                        <X className="h-3 w-3" />
-                      </Button>
-                    </div>
+                    <>
+                      <div className="flex gap-1">
+                        <Input
+                          value={editName}
+                          aria-label="Collection name"
+                          maxLength={LIST_NAME_MAX}
+                          onChange={(e) => {
+                            setEditName(e.target.value);
+                            if (renameList.isError) renameList.reset();
+                          }}
+                          onKeyDown={(e) =>
+                            e.key === "Enter" && handleRename(list.id)
+                          }
+                          className="h-7 text-xs"
+                          autoFocus
+                        />
+                        <Button
+                          size="icon"
+                          className="h-7 w-7 shrink-0"
+                          aria-label="Save name"
+                          disabled={renameList.isPending || !editName.trim()}
+                          onClick={() => handleRename(list.id)}
+                        >
+                          <Check className="h-3 w-3" />
+                        </Button>
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          className="h-7 w-7 shrink-0"
+                          aria-label="Cancel renaming"
+                          onClick={() => {
+                            setEditingId(null);
+                            renameList.reset();
+                          }}
+                        >
+                          <X className="h-3 w-3" />
+                        </Button>
+                      </div>
+                      {renameList.isError && (
+                        <p role="alert" className="text-[10px] sm:text-xs text-destructive mt-1">
+                          {renameList.error.message}
+                        </p>
+                      )}
+                    </>
                   ) : (
                     <div className="flex items-center justify-between">
                       <Link
@@ -196,7 +280,9 @@ export default function ListsPage() {
                           size="icon"
                           variant="ghost"
                           className="h-6 w-6"
+                          aria-label={`Rename ${list.name}`}
                           onClick={() => {
+                            renameList.reset();
                             setEditingId(list.id);
                             setEditName(list.name);
                           }}
@@ -207,7 +293,11 @@ export default function ListsPage() {
                           size="icon"
                           variant="ghost"
                           className="h-6 w-6 text-destructive"
-                          onClick={() => handleDelete(list.id)}
+                          aria-label={`Delete ${list.name}`}
+                          onClick={() => {
+                            deleteList.reset();
+                            setPendingDelete(list);
+                          }}
                         >
                           <Trash2 className="h-3 w-3" />
                         </Button>
@@ -215,7 +305,7 @@ export default function ListsPage() {
                     </div>
                   )}
                   <p className="text-[10px] sm:text-xs text-muted-foreground mt-1">
-                    {list.animes.length} anime
+                    {list.count} anime
                   </p>
                 </div>
               </div>
@@ -223,31 +313,58 @@ export default function ListsPage() {
           </div>
         )}
       </div>
+
+      <Dialog
+        open={!!pendingDelete}
+        onOpenChange={(open) => {
+          if (!open) setPendingDelete(null);
+        }}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete this collection?</DialogTitle>
+            <DialogDescription>
+              {pendingDelete
+                ? `"${pendingDelete.name}" and its ${pendingDelete.count} anime will be removed. Your watch list is not affected.`
+                : ""}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setPendingDelete(null)}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={confirmDelete}>
+              Delete
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </main>
   );
 }
 
+function GridSkeleton() {
+  return (
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
+      {[...Array(4)].map((_, i) => (
+        <div key={i} className="aspect-3/4 bg-muted animate-pulse rounded-lg" />
+      ))}
+    </div>
+  );
+}
+
 function AnimeCover({
-  animeId,
+  image,
   single,
 }: {
-  animeId: number;
+  image: string | null;
   single?: boolean;
 }) {
-  const { data } = useQuery({
-    queryKey: ["anime-cover", animeId],
-    queryFn: async () => {
-      const res = await jikanApi.get(`/anime/${animeId}`);
-      return res.data.data?.images?.webp?.large_image_url || null;
-    },
-    staleTime: Infinity,
-  });
-
-  if (!data) return <div className="bg-muted/50 w-full h-full" />;
+  if (!image) return <div className="bg-muted/50 w-full h-full" />;
 
   return (
     <Image
-      src={data}
+      src={image}
       alt=""
       fill={single}
       width={single ? undefined : 100}

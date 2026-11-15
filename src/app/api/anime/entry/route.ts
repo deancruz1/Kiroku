@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { isUniqueViolation } from "@/lib/db-errors";
+import { INVALID_BODY, parseNewEntry } from "@/lib/entry-validation";
+import { readJsonBody } from "@/lib/request-body";
+import { storeShow } from "@/lib/anime-store";
 
 export async function POST(request: Request) {
   const session = await auth();
@@ -9,11 +13,17 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { animeId, status } = await request.json();
-
-  if (!animeId || !status) {
-    return NextResponse.json({ error: "Missing fields" }, { status: 400 });
+  const body = await readJsonBody(request);
+  if (!body) {
+    return NextResponse.json({ error: INVALID_BODY }, { status: 400 });
   }
+
+  const parsed = parseNewEntry(body);
+  if (!parsed.ok) {
+    return NextResponse.json({ error: parsed.error }, { status: 400 });
+  }
+
+  const { animeId, status } = parsed.data;
 
   const existing = await prisma.animeEntry.findUnique({
     where: {
@@ -31,13 +41,26 @@ export async function POST(request: Request) {
     );
   }
 
-  const entry = await prisma.animeEntry.create({
-    data: {
-      animeId,
-      status,
-      userId: session.user.id,
-    },
-  });
+  let entry;
+  try {
+    entry = await prisma.animeEntry.create({
+      data: {
+        animeId,
+        status,
+        userId: session.user.id,
+      },
+    });
+  } catch (error) {
+    if (isUniqueViolation(error)) {
+      return NextResponse.json(
+        { error: "Already in your list" },
+        { status: 409 },
+      );
+    }
+    throw error;
+  }
 
-  return NextResponse.json(entry, { status: 201 });
+  const anime = await storeShow(animeId);
+
+  return NextResponse.json({ ...entry, anime }, { status: 201 });
 }

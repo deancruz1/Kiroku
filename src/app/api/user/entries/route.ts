@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { ensureShows } from "@/lib/anime-store";
 
 export async function GET() {
   const session = await auth();
@@ -15,5 +16,12 @@ export async function GET() {
     include: { review: true },
   });
 
-  return NextResponse.json(entries);
+  const shows = await ensureShows(entries.map((e) => e.animeId));
+
+  return NextResponse.json(
+    entries.map((entry) => ({
+      ...entry,
+      anime: shows.get(entry.animeId) ?? null,
+    })),
+  );
 }

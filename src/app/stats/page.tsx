@@ -44,16 +44,24 @@ interface Stats {
   totalEntries: number;
   totalEpisodesWatched: number;
   totalWatchTimeHours: number;
+  totalWatchTimeMinutes: number;
   watchTimeDays: number;
   watchTimeRemainingHours: number;
+  watchTimeFallbackShows: number;
+  fallbackEpisodeMinutes: number;
   averageRating: number;
+  ratedCount: number;
+  ratingDistribution: { rating: number; count: number }[];
   completionRate: number;
+  genres: TopGenre[];
   topGenres: TopGenre[];
   topGenre: TopGenre | null;
   favoriteShow: FavoriteShow | null;
   mostWatched: MostWatched | null;
   statusCounts: Record<string, number>;
+  episodesByStatus: Record<string, number>;
   heroImage: string | null;
+  unstoredShows: number;
 }
 
 const STATUS_COLORS: Record<string, string> = {
@@ -162,7 +170,13 @@ function getGenreFlavor(genre: string): string {
 export default function StatsPage() {
   const { data: session, status: sessionStatus } = useSession();
 
-  const { data: stats, isLoading } = useQuery({
+  const {
+    data: stats,
+    isLoading,
+    error,
+    refetch,
+    isFetching,
+  } = useQuery({
     queryKey: ["user-stats"],
     queryFn: async () => {
       const res = await fetch("/api/user/stats");
@@ -189,9 +203,28 @@ export default function StatsPage() {
           <p className="text-muted-foreground text-sm sm:text-base">
             Sign in to see your stats. We promise it is worth it.
           </p>
-          <Link href="/auth/signin">
-            <Button>Sign in</Button>
-          </Link>
+          <Button asChild>
+            <Link href="/auth/signin">Sign in</Link>
+          </Button>
+        </div>
+      </main>
+    );
+  }
+
+  if (error && !stats) {
+    return (
+      <main className="min-h-screen bg-background flex items-center justify-center px-4">
+        <div className="text-center space-y-4">
+          <p className="text-destructive text-sm sm:text-base">
+            Could not load your stats.
+          </p>
+          <Button
+            variant="outline"
+            onClick={() => refetch()}
+            disabled={isFetching}
+          >
+            {isFetching ? "Retrying..." : "Try again"}
+          </Button>
         </div>
       </main>
     );
@@ -206,9 +239,9 @@ export default function StatsPage() {
             Your stats page is empty. Like a fresh notebook. Or an unwatched
             Crunchyroll queue.
           </p>
-          <Link href="/search">
-            <Button>Go fix that</Button>
-          </Link>
+          <Button asChild>
+            <Link href="/search">Go fix that</Link>
+          </Button>
         </div>
       </main>
     );

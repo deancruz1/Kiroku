@@ -1,6 +1,5 @@
 "use client";
 
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
@@ -17,18 +16,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { motion, AnimatePresence } from "framer-motion";
-import type { JikanAnime } from "@/types/anime";
 import { Star } from "lucide-react";
-
-interface Entry {
-  id: string;
-  animeId: number;
-  status: string;
-  episodes: number;
-  rating: number | null;
-  notes: string | null;
-}
+import {
+  useDeleteEntry,
+  useEntries,
+  useUpdateEntry,
+  type Entry,
+  type EntryPatch,
+} from "@/hooks/use-entries";
+import { showTitle } from "@/lib/anime-shape";
 
 const STATUS_ORDER = ["watching", "plan_to_watch", "completed", "dropped"];
 
@@ -39,56 +44,34 @@ const STATUS_LABELS: Record<string, string> = {
   dropped: "Dropped",
 };
 
-async function fetchAnimeDetails(animeId: number): Promise<JikanAnime | null> {
-  try {
-    const res = await fetch(`https://api.jikan.moe/v4/anime/${animeId}`);
-    if (!res.ok) return null;
-    const data = await res.json();
-    return data.data;
-  } catch {
-    return null;
-  }
-}
-
-function AnimeEntryCard({ entry }: { entry: Entry }) {
-  const queryClient = useQueryClient();
+function AnimeEntryCard({
+  entry,
+  onSave,
+  onDelete,
+}: {
+  entry: Entry;
+  onSave: (patch: EntryPatch) => void;
+  onDelete: () => void;
+}) {
   const [editing, setEditing] = useState(false);
   const [status, setStatus] = useState(entry.status);
   const [episodes, setEpisodes] = useState(entry.episodes);
-  const [saving, setSaving] = useState(false);
   const [rating, setRating] = useState(entry.rating || 0);
 
-  const { data: anime, isLoading } = useQuery({
-    queryKey: ["anime", entry.animeId],
-    queryFn: () => fetchAnimeDetails(entry.animeId),
-    staleTime: 30 * 60 * 1000,
-  });
-
+  const anime = entry.anime;
+  const title = showTitle(anime, entry.animeId);
   const totalEpisodes = anime?.episodes || 0;
 
-  async function handleSave() {
-    setSaving(true);
-    const res = await fetch(`/api/user/entries/${entry.id}`, {
-      method: "PATCH",
-      body: JSON.stringify({ status, episodes, rating: rating || null }),
-      headers: { "Content-Type": "application/json" },
-    });
-    if (res.ok) {
-      queryClient.setQueryData(["user-entries"], (old: Entry[] | undefined) =>
-        old?.map((e) =>
-          e.id === entry.id
-            ? { ...e, status, episodes, rating: rating || null }
-            : e,
-        ),
-      );
-    }
-    setSaving(false);
-    setEditing(false);
+  function startEditing() {
+    setStatus(entry.status);
+    setEpisodes(entry.episodes);
+    setRating(entry.rating || 0);
+    setEditing(true);
   }
 
-  async function handleDelete() {
-    await fetch(`/api/user/entries/${entry.id}`, { method: "DELETE" });
-    queryClient.invalidateQueries({ queryKey: ["user-entries"] });
+  function handleSave() {
+    onSave({ status, episodes, rating: rating || null });
+    setEditing(false);
   }
 
   return (
@@ -98,13 +81,11 @@ function AnimeEntryCard({ entry }: { entry: Entry }) {
           href={`/anime/${entry.animeId}`}
           className="shrink-0 cursor-pointer"
         >
-          {isLoading ? (
-            <div className="w-20 sm:w-24 h-20 sm:h-24 bg-muted animate-pulse rounded-lg" />
-          ) : anime ? (
+          {anime?.imageUrl ? (
             <div className="relative w-20 sm:w-24 h-20 sm:h-24 rounded-lg overflow-hidden">
               <Image
-                src={anime.images.webp.large_image_url}
-                alt={anime.title}
+                src={anime.imageUrl}
+                alt={title}
                 fill
                 sizes="96px"
                 className="object-cover"
@@ -120,16 +101,17 @@ function AnimeEntryCard({ entry }: { entry: Entry }) {
         <div className="flex-1 min-w-0">
           <Link href={`/anime/${entry.animeId}`} className="cursor-pointer">
             <h3 className="font-semibold text-sm sm:text-base truncate hover:underline">
-              {anime?.title_english ||
-                anime?.title ||
-                `Anime #${entry.animeId}`}
+              {title}
             </h3>
           </Link>
 
           {editing ? (
             <div className="mt-2 space-y-2">
               <Select value={status} onValueChange={setStatus}>
-                <SelectTrigger className="h-7 sm:h-8 text-xs">
+                <SelectTrigger
+                  className="h-7 sm:h-8 text-xs"
+                  aria-label="Status"
+                >
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -145,6 +127,7 @@ function AnimeEntryCard({ entry }: { entry: Entry }) {
                   size="icon"
                   variant="outline"
                   className="h-6 sm:h-7 w-6 sm:w-7"
+                  aria-label="One episode fewer"
                   onClick={() => setEpisodes(Math.max(0, episodes - 1))}
                 >
                   <Minus className="h-3 w-3" />
@@ -156,6 +139,7 @@ function AnimeEntryCard({ entry }: { entry: Entry }) {
                   size="icon"
                   variant="outline"
                   className="h-6 sm:h-7 w-6 sm:w-7"
+                  aria-label="One episode more"
                   onClick={() => {
                     if (totalEpisodes === 0 || episodes < totalEpisodes) {
                       setEpisodes(episodes + 1);
@@ -174,6 +158,8 @@ function AnimeEntryCard({ entry }: { entry: Entry }) {
                   <button
                     key={n}
                     type="button"
+                    aria-label={`Rate ${n} out of 10`}
+                    aria-pressed={n === rating}
                     onClick={() => setRating(n === rating ? 0 : n)}
                     className={`text-xs sm:text-sm cursor-pointer ${
                       n <= rating
@@ -198,7 +184,6 @@ function AnimeEntryCard({ entry }: { entry: Entry }) {
                   size="sm"
                   className="h-6 sm:h-7 text-xs"
                   onClick={handleSave}
-                  disabled={saving}
                 >
                   <Check className="h-3 w-3 mr-1" />
                   Save
@@ -234,9 +219,10 @@ function AnimeEntryCard({ entry }: { entry: Entry }) {
                   size="icon"
                   variant="ghost"
                   className="h-7 sm:h-8 w-7 sm:w-8 cursor-pointer"
+                  aria-label={`Edit ${title}`}
                   onClick={(e) => {
                     e.preventDefault();
-                    setEditing(true);
+                    startEditing();
                   }}
                 >
                   <Edit3 className="h-3.5 sm:h-4 w-3.5 sm:w-4" />
@@ -245,9 +231,10 @@ function AnimeEntryCard({ entry }: { entry: Entry }) {
                   size="icon"
                   variant="ghost"
                   className="h-7 sm:h-8 w-7 sm:w-8 text-destructive cursor-pointer"
+                  aria-label={`Remove ${title} from your list`}
                   onClick={(e) => {
                     e.preventDefault();
-                    handleDelete();
+                    onDelete();
                   }}
                 >
                   <Trash2 className="h-3.5 sm:h-4 w-3.5 sm:w-4" />
@@ -261,23 +248,41 @@ function AnimeEntryCard({ entry }: { entry: Entry }) {
   );
 }
 
-export default function WatchListPage() {
-  const { data: session } = useSession();
-  const [activeTab, setActiveTab] = useState("all");
+function ListSkeleton() {
+  return (
+    <div className="space-y-3">
+      {[...Array(4)].map((_, i) => (
+        <div
+          key={i}
+          className="h-24 sm:h-28 bg-muted animate-pulse rounded-lg"
+        />
+      ))}
+    </div>
+  );
+}
 
-  const {
-    data: entries,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["user-entries"],
-    queryFn: async () => {
-      const res = await fetch("/api/user/entries");
-      if (!res.ok) throw new Error("Failed to fetch");
-      return res.json() as Promise<Entry[]>;
-    },
-    enabled: !!session,
-  });
+export default function WatchListPage() {
+  const { data: session, status: sessionStatus } = useSession();
+  const [activeTab, setActiveTab] = useState("all");
+  const [pendingDelete, setPendingDelete] = useState<Entry | null>(null);
+
+  const { data: entries, isLoading, error, refetch, isFetching } =
+    useEntries();
+  const updateEntry = useUpdateEntry();
+  const deleteEntry = useDeleteEntry();
+
+  if (sessionStatus === "loading") {
+    return (
+      <main className="min-h-screen bg-background">
+        <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-8 max-w-3xl">
+          <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-center sm:text-left">
+            My Watch List
+          </h1>
+          <ListSkeleton />
+        </div>
+      </main>
+    );
+  }
 
   if (!session) {
     return (
@@ -286,9 +291,9 @@ export default function WatchListPage() {
           <p className="text-muted-foreground text-sm sm:text-base">
             Sign in to view your watch list.
           </p>
-          <Link href="/auth/signin">
-            <Button>Sign in</Button>
-          </Link>
+          <Button asChild>
+            <Link href="/auth/signin">Sign in</Link>
+          </Button>
         </div>
       </main>
     );
@@ -299,6 +304,19 @@ export default function WatchListPage() {
       ? entries || []
       : (entries || []).filter((e) => e.status === activeTab);
 
+  const mutationError = updateEntry.isError
+    ? `Your changes were not saved: ${updateEntry.error.message}`
+    : deleteEntry.isError
+      ? `The show was not removed: ${deleteEntry.error.message}`
+      : null;
+
+  function confirmDelete() {
+    if (!pendingDelete) return;
+    updateEntry.reset();
+    deleteEntry.mutate(pendingDelete.id);
+    setPendingDelete(null);
+  }
+
   return (
     <main className="min-h-screen bg-background">
       <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-8 max-w-3xl">
@@ -306,21 +324,41 @@ export default function WatchListPage() {
           My Watch List
         </h1>
 
-        {isLoading && (
-          <div className="space-y-3">
-            {[...Array(4)].map((_, i) => (
-              <div
-                key={i}
-                className="h-24 sm:h-28 bg-muted animate-pulse rounded-lg"
-              />
-            ))}
+        {mutationError && (
+          <div
+            role="alert"
+            className="mb-4 flex items-center justify-between gap-2 rounded-lg border border-destructive/40 bg-destructive/10 px-3 py-2 text-xs sm:text-sm text-destructive"
+          >
+            <span>{mutationError}</span>
+            <Button
+              size="icon-xs"
+              variant="ghost"
+              aria-label="Dismiss"
+              onClick={() => {
+                updateEntry.reset();
+                deleteEntry.reset();
+              }}
+            >
+              <X />
+            </Button>
           </div>
         )}
 
-        {error && (
-          <p className="text-destructive text-sm sm:text-base">
-            Failed to load entries.
-          </p>
+        {isLoading && <ListSkeleton />}
+
+        {error && !entries && (
+          <div className="text-center py-12 sm:py-16 space-y-4">
+            <p className="text-destructive text-sm sm:text-base">
+              Failed to load entries.
+            </p>
+            <Button
+              variant="outline"
+              onClick={() => refetch()}
+              disabled={isFetching}
+            >
+              {isFetching ? "Retrying..." : "Try again"}
+            </Button>
+          </div>
         )}
 
         {entries && entries.length === 0 && (
@@ -328,9 +366,9 @@ export default function WatchListPage() {
             <p className="text-muted-foreground text-sm sm:text-base mb-4">
               Your list is empty.
             </p>
-            <Link href="/search">
-              <Button>Search Anime</Button>
-            </Link>
+            <Button asChild>
+              <Link href="/search">Search Anime</Link>
+            </Button>
           </div>
         )}
 
@@ -369,7 +407,14 @@ export default function WatchListPage() {
                         ease: "easeOut",
                       }}
                     >
-                      <AnimeEntryCard entry={entry} />
+                      <AnimeEntryCard
+                        entry={entry}
+                        onSave={(patch) => {
+                          deleteEntry.reset();
+                          updateEntry.mutate({ id: entry.id, patch });
+                        }}
+                        onDelete={() => setPendingDelete(entry)}
+                      />
                     </motion.div>
                   ))
                 ) : (
@@ -389,6 +434,32 @@ export default function WatchListPage() {
           </Tabs>
         )}
       </div>
+
+      <Dialog
+        open={!!pendingDelete}
+        onOpenChange={(open) => {
+          if (!open) setPendingDelete(null);
+        }}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Remove from your list?</DialogTitle>
+            <DialogDescription>
+              {pendingDelete
+                ? `${showTitle(pendingDelete.anime, pendingDelete.animeId)} will be removed, along with your progress, rating and review.`
+                : ""}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setPendingDelete(null)}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={confirmDelete}>
+              Remove
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </main>
   );
 }

@@ -24,9 +24,9 @@ interface RecommendationsResponse {
 }
 
 export default function RecommendationsPage() {
-  const { data: session } = useSession();
+  const { data: session, status: sessionStatus } = useSession();
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, error, refetch, isFetching } = useQuery({
     queryKey: ["user-recommendations"],
     queryFn: async () => {
       const res = await fetch("/api/user/recommendations");
@@ -36,16 +36,16 @@ export default function RecommendationsPage() {
     enabled: !!session,
   });
 
-  if (!session) {
+  if (sessionStatus !== "loading" && !session) {
     return (
       <main className="min-h-screen bg-background flex items-center justify-center px-4">
         <div className="text-center space-y-4">
           <p className="text-muted-foreground text-sm sm:text-base">
             Sign in to get recommendations.
           </p>
-          <Link href="/auth/signin">
-            <Button>Sign in</Button>
-          </Link>
+          <Button asChild>
+            <Link href="/auth/signin">Sign in</Link>
+          </Button>
         </div>
       </main>
     );
@@ -63,7 +63,7 @@ export default function RecommendationsPage() {
             : "Recommendations based on your watch history"}
         </p>
 
-        {isLoading && (
+        {(sessionStatus === "loading" || isLoading) && (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
             {[...Array(10)].map((_, i) => (
               <div
@@ -74,17 +74,31 @@ export default function RecommendationsPage() {
           </div>
         )}
 
+        {error && !data && (
+          <div className="text-center py-12 sm:py-16 space-y-4">
+            <p className="text-destructive text-sm sm:text-base">
+              Failed to load recommendations.
+            </p>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => refetch()}
+              disabled={isFetching}
+            >
+              {isFetching ? "Retrying..." : "Try again"}
+            </Button>
+          </div>
+        )}
+
         {data?.message && !data.recommendations.length && (
           <div className="text-center py-12 sm:py-16">
             <Sparkles className="h-10 sm:h-12 w-10 sm:w-12 text-muted-foreground mx-auto mb-4" />
             <p className="text-muted-foreground text-sm sm:text-base">
               {data.message}
             </p>
-            <Link href="/search" className="mt-4 inline-block">
-              <Button variant="outline" size="sm">
-                Discover Anime
-              </Button>
-            </Link>
+            <Button variant="outline" size="sm" className="mt-4" asChild>
+              <Link href="/search">Discover Anime</Link>
+            </Button>
           </div>
         )}
 
