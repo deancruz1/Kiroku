@@ -2,9 +2,10 @@ import "server-only";
 import axios from "axios";
 import { applyJikanPolicy } from "@/lib/jikan-client";
 import { ATTEMPT_TIMEOUT_MS } from "@/lib/jikan-policy";
+import { UPSTREAM_BASE_URL } from "@/lib/upstream";
 
 export const jikanApi = axios.create({
-  baseURL: "https://api.jikan.moe/v4",
+  baseURL: UPSTREAM_BASE_URL,
   timeout: ATTEMPT_TIMEOUT_MS,
 });
 

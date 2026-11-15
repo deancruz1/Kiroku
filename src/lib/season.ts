@@ -1,7 +1,8 @@
-import { unstable_cache } from "next/cache";
 import { jikanApi } from "@/lib/axios";
 import { getWeeklySlot } from "@/lib/broadcast";
 import { first } from "@/lib/params";
+import { UPSTREAM_NAME } from "@/lib/upstream";
+import { cacheUpstream } from "@/lib/upstream-cache";
 import type { JikanAnime } from "@/types/anime";
 
 export const SEASONS = ["winter", "spring", "summer", "fall"] as const;
@@ -153,7 +154,13 @@ export function belongsOnCalendar(anime: SeasonAnime): boolean {
   return getWeeklySlot(anime.broadcast) !== null;
 }
 
+function unexpectedPage() {
+  return new Error(`Unexpected season page from ${UPSTREAM_NAME}`);
+}
+
 // Request spacing comes from the rate scheduler inside jikanApi.
+// `continuing` adds shows carried over from earlier seasons (long runners
+// such as One Piece), which still air every week.
 export async function fetchCalendarSeason(
   path: string,
   { maxPages = MAX_SEASON_PAGES } = {},
@@ -169,8 +176,9 @@ export async function fetchCalendarSeason(
     let body: RawPage;
     try {
       ({ data: body } = await jikanApi.get<RawPage>(path, {
-        params: { page, limit: PAGE_SIZE },
+        params: { page, limit: PAGE_SIZE, continuing: true },
       }));
+      if (!Array.isArray(body?.data)) throw unexpectedPage();
     } catch (error) {
       if (page === 1) throw error;
       throw new PartialSeasonError(anime, error);
@@ -190,14 +198,19 @@ export async function fetchCalendarSeason(
 }
 
 // A thrown error is never cached, so a failed or partial load is retried on the next visit.
+// An empty season is returned but not cached either.
 // seasonKey only splits the cache, so /seasons/now is not reused once the season changes.
-const getCachedCalendarSeason = unstable_cache(
+const getCachedCalendarSeason = cacheUpstream(
   async (path: string, seasonKey: string) => {
     void seasonKey;
     return fetchCalendarSeason(path);
   },
   ["season-calendar"],
-  { revalidate: CALENDAR_CACHE_SECONDS, tags: ["season-calendar"] },
+  {
+    revalidate: CALENDAR_CACHE_SECONDS,
+    tags: ["season-calendar"],
+    isEmpty: (anime) => anime.length === 0,
+  },
 );
 
 export async function getCalendarSeason(
@@ -219,21 +232,28 @@ export async function getCalendarSeason(
   }
 }
 
-export const getArchiveSeasonPage = unstable_cache(
+// Pages past the end and seasons with no shows come back empty; they are
+// shown but not cached.
+export const getArchiveSeasonPage = cacheUpstream(
   async (year: number, season: SeasonName, page: number): Promise<SeasonPage> => {
     const { data } = await jikanApi.get<RawPage>(`/seasons/${year}/${season}`, {
       params: { page, limit: PAGE_SIZE },
     });
+    if (!Array.isArray(data?.data)) throw unexpectedPage();
     return {
-      anime: (data.data ?? []).map(toSeasonAnime),
+      anime: data.data.map(toSeasonAnime),
       lastPage: Math.max(1, data.pagination?.last_visible_page ?? 1),
     };
   },
   ["season-archive"],
-  { revalidate: ARCHIVE_CACHE_SECONDS, tags: ["season-archive"] },
+  {
+    revalidate: ARCHIVE_CACHE_SECONDS,
+    tags: ["season-archive"],
+    isEmpty: (result) => result.anime.length === 0,
+  },
 );
 
-export const getSeasonYears = unstable_cache(
+export const getSeasonYears = cacheUpstream(
   async (): Promise<number[]> => {
     const { data } = await jikanApi.get<{ data?: { year: number }[] }>("/seasons");
     const years = [...new Set((data.data ?? []).map((s) => s.year))];

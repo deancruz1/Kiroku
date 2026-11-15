@@ -1,0 +1,359 @@
+{
+  "pagination": {
+    "last_visible_page": 7,
+    "has_next_page": true,
+    "current_page": 2,
+    "items": {
+      "count": 25,
+      "total": 175,
+      "per_page": 25
+    }
+  },
+  "data": [
+    {
+      "mal_id": 57888,
+      "title": "Chichi wa Eiyuu, Haha wa Seirei, Musume no Watashi wa Tenseisha.",
+      "title_english": "Dad is a Hero, Mom is a Spirit, I'm a Reincarnator",
+      "title_japanese": "父は英雄、母は精霊、娘の私は転生者。",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1811/151799.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1811/151799t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1811/151799l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1811/151799.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1811/151799t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1811/151799l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": 12,
+      "status": "Finished Airing",
+      "aired": {
+        "from": "2025-10-05T00:00:00+00:00",
+        "to": "2025-12-21T00:00:00+00:00",
+        "prop": {
+          "from": {
+            "day": 5,
+            "month": 10,
+            "year": 2025
+          },
+          "to": {
+            "day": 21,
+            "month": 12,
+            "year": 2025
+          }
+        },
+        "string": "Oct 5, 2025 to Dec 21, 2025"
+      },
+      "duration": "23 min per ep",
+      "rating": "PG-13 - Teens 13 or older",
+      "score": 6.63,
+      "season": "fall",
+      "year": 2025,
+      "broadcast": {
+        "day": "Sundays",
+        "time": "23:30",
+        "timezone": "Asia/Tokyo",
+        "string": "Sundays at 23:30 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 7,
+          "type": "anime",
+          "name": "J.C.Staff"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 10,
+          "type": "anime",
+          "name": "Fantasy"
+        }
+      ]
+    },
+    {
+      "mal_id": 61200,
+      "title": "Shuumatsu no Walküre III",
+      "title_english": "Record of Ragnarok III",
+      "title_japanese": "終末のワルキューレIII",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1153/153510.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1153/153510t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1153/153510l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1153/153510.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1153/153510t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1153/153510l.webp"
+        }
+      },
+      "type": "ONA",
+      "episodes": 15,
+      "status": "Finished Airing",
+      "aired": {
+        "from": "2025-12-10T00:00:00+00:00",
+        "to": null,
+        "prop": {
+          "from": {
+            "day": 10,
+            "month": 12,
+            "year": 2025
+          },
+          "to": {
+            "day": null,
+            "month": null,
+            "year": null
+          }
+        },
+        "string": "Dec 10, 2025"
+      },
+      "duration": "23 min per ep",
+      "rating": "R - 17+ (violence & profanity)",
+      "score": 7.61,
+      "season": "fall",
+      "year": 2025,
+      "broadcast": {
+        "day": null,
+        "time": null,
+        "timezone": null,
+        "string": null
+      },
+      "studios": [
+        {
+          "mal_id": 96,
+          "type": "anime",
+          "name": "Yumeta Company"
+        },
+        {
+          "mal_id": 3097,
+          "type": "anime",
+          "name": "Maru Animation"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 1,
+          "type": "anime",
+          "name": "Action"
+        },
+        {
+          "mal_id": 8,
+          "type": "anime",
+          "name": "Drama"
+        },
+        {
+          "mal_id": 10,
+          "type": "anime",
+          "name": "Fantasy"
+        }
+      ]
+    },
+    {
+      "mal_id": 60427,
+      "title": "Gnosia",
+      "title_english": "Gnosia",
+      "title_japanese": "グノーシア",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1257/152352.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1257/152352t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1257/152352l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1257/152352.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1257/152352t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1257/152352l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": 21,
+      "status": "Finished Airing",
+      "aired": {
+        "from": "2025-10-12T00:00:00+00:00",
+        "to": "2026-03-15T00:00:00+00:00",
+        "prop": {
+          "from": {
+            "day": 12,
+            "month": 10,
+            "year": 2025
+          },
+          "to": {
+            "day": 15,
+            "month": 3,
+            "year": 2026
+          }
+        },
+        "string": "Oct 12, 2025 to Mar 15, 2026"
+      },
+      "duration": "25 min per ep",
+      "rating": "PG-13 - Teens 13 or older",
+      "score": 7.82,
+      "season": "fall",
+      "year": 2025,
+      "broadcast": {
+        "day": "Sundays",
+        "time": "00:00",
+        "timezone": "Asia/Tokyo",
+        "string": "Sundays at 00:00 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 1380,
+          "type": "anime",
+          "name": "domerica"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 24,
+          "type": "anime",
+          "name": "Sci-Fi"
+        },
+        {
+          "mal_id": 41,
+          "type": "anime",
+          "name": "Suspense"
+        }
+      ]
+    },
+    {
+      "mal_id": 61209,
+      "title": "Kao ni Denai Kashiwada-san to Kao ni Deru Oota-kun",
+      "title_english": "Inexpressive Kashiwada and Expressive Oota",
+      "title_japanese": "顔に出ない柏田さんと顔に出る太田君",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1363/151886.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1363/151886t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1363/151886l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1363/151886.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1363/151886t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1363/151886l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": 12,
+      "status": "Finished Airing",
+      "aired": {
+        "from": "2025-10-04T00:00:00+00:00",
+        "to": "2025-12-20T00:00:00+00:00",
+        "prop": {
+          "from": {
+            "day": 4,
+            "month": 10,
+            "year": 2025
+          },
+          "to": {
+            "day": 20,
+            "month": 12,
+            "year": 2025
+          }
+        },
+        "string": "Oct 4, 2025 to Dec 20, 2025"
+      },
+      "duration": "23 min per ep",
+      "rating": "PG-13 - Teens 13 or older",
+      "score": 7.04,
+      "season": "fall",
+      "year": 2025,
+      "broadcast": {
+        "day": "Saturdays",
+        "time": "21:00",
+        "timezone": "Asia/Tokyo",
+        "string": "Saturdays at 21:00 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 2828,
+          "type": "anime",
+          "name": "Studio Polon"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 4,
+          "type": "anime",
+          "name": "Comedy"
+        },
+        {
+          "mal_id": 22,
+          "type": "anime",
+          "name": "Romance"
+        }
+      ]
+    },
+    {
+      "mal_id": 61851,
+      "title": "Isekai Quartet 3",
+      "title_english": "Isekai Quartet 3",
+      "title_japanese": "異世界かるてっと3",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1044/152103.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1044/152103t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1044/152103l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1044/152103.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1044/152103t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1044/152103l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": 11,
+      "status": "Finished Airing",
+      "aired": {
+        "from": "2025-10-13T00:00:00+00:00",
+        "to": "2025-12-22T00:00:00+00:00",
+        "prop": {
+          "from": {
+            "day": 13,
+            "month": 10,
+            "year": 2025
+          },
+          "to": {
+            "day": 22,
+            "month": 12,
+            "year": 2025
+          }
+        },
+        "string": "Oct 13, 2025 to Dec 22, 2025"
+      },
+      "duration": "12 min per ep",
+      "rating": "PG-13 - Teens 13 or older",
+      "score": 7.43,
+      "season": "fall",
+      "year": 2025,
+      "broadcast": {
+        "day": "Mondays",
+        "time": "22:30",
+        "timezone": "Asia/Tokyo",
+        "string": "Mondays at 22:30 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 443,
+          "type": "anime",
+          "name": "Studio PuYUKAI"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 4,
+          "type": "anime",
+          "name": "Comedy"
+        },
+        {
+          "mal_id": 10,
+          "type": "anime",
+          "name": "Fantasy"
+        }
+      ]
+    }
+  ]
+}

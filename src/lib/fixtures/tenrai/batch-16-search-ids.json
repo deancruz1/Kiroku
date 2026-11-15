@@ -1,0 +1,1157 @@
+{
+  "pagination": {
+    "last_visible_page": 1,
+    "has_next_page": false,
+    "current_page": 1,
+    "items": {
+      "count": 16,
+      "total": 16,
+      "per_page": 25
+    }
+  },
+  "data": [
+    {
+      "mal_id": 1,
+      "title": "Cowboy Bebop",
+      "title_english": "Cowboy Bebop",
+      "title_japanese": "カウボーイビバップ",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/4/19644.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/4/19644t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/4/19644l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/4/19644.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/4/19644t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/4/19644l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": 26,
+      "status": "Finished Airing",
+      "aired": {
+        "from": "1998-04-03T00:00:00+00:00",
+        "to": "1999-04-24T00:00:00+00:00",
+        "prop": {
+          "from": {
+            "day": 3,
+            "month": 4,
+            "year": 1998
+          },
+          "to": {
+            "day": 24,
+            "month": 4,
+            "year": 1999
+          }
+        },
+        "string": "Apr 3, 1998 to Apr 24, 1999"
+      },
+      "duration": "24 min per ep",
+      "rating": "R - 17+ (violence & profanity)",
+      "score": 8.75,
+      "season": "spring",
+      "year": 1998,
+      "broadcast": {
+        "day": "Saturdays",
+        "time": "01:00",
+        "timezone": "Asia/Tokyo",
+        "string": "Saturdays at 01:00 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 14,
+          "type": "anime",
+          "name": "Sunrise"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 1,
+          "type": "anime",
+          "name": "Action"
+        },
+        {
+          "mal_id": 46,
+          "type": "anime",
+          "name": "Award Winning"
+        },
+        {
+          "mal_id": 24,
+          "type": "anime",
+          "name": "Sci-Fi"
+        }
+      ]
+    },
+    {
+      "mal_id": 1535,
+      "title": "Death Note",
+      "title_english": "Death Note",
+      "title_japanese": "デスノート",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1079/138100.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1079/138100t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1079/138100l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1079/138100.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1079/138100t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1079/138100l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": 37,
+      "status": "Finished Airing",
+      "aired": {
+        "from": "2006-10-04T00:00:00+00:00",
+        "to": "2007-06-27T00:00:00+00:00",
+        "prop": {
+          "from": {
+            "day": 4,
+            "month": 10,
+            "year": 2006
+          },
+          "to": {
+            "day": 27,
+            "month": 6,
+            "year": 2007
+          }
+        },
+        "string": "Oct 4, 2006 to Jun 27, 2007"
+      },
+      "duration": "23 min per ep",
+      "rating": "R - 17+ (violence & profanity)",
+      "score": 8.62,
+      "season": "fall",
+      "year": 2006,
+      "broadcast": {
+        "day": "Wednesdays",
+        "time": "00:56",
+        "timezone": "Asia/Tokyo",
+        "string": "Wednesdays at 00:56 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 11,
+          "type": "anime",
+          "name": "Madhouse"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 37,
+          "type": "anime",
+          "name": "Supernatural"
+        },
+        {
+          "mal_id": 41,
+          "type": "anime",
+          "name": "Suspense"
+        }
+      ]
+    },
+    {
+      "mal_id": 5114,
+      "title": "Fullmetal Alchemist: Brotherhood",
+      "title_english": "Fullmetal Alchemist: Brotherhood",
+      "title_japanese": "鋼の錬金術師 FULLMETAL ALCHEMIST",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1208/94745.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1208/94745t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1208/94745l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1208/94745.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1208/94745t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1208/94745l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": 64,
+      "status": "Finished Airing",
+      "aired": {
+        "from": "2009-04-05T00:00:00+00:00",
+        "to": "2010-07-04T00:00:00+00:00",
+        "prop": {
+          "from": {
+            "day": 5,
+            "month": 4,
+            "year": 2009
+          },
+          "to": {
+            "day": 4,
+            "month": 7,
+            "year": 2010
+          }
+        },
+        "string": "Apr 5, 2009 to Jul 4, 2010"
+      },
+      "duration": "24 min per ep",
+      "rating": "R - 17+ (violence & profanity)",
+      "score": 9.11,
+      "season": "spring",
+      "year": 2009,
+      "broadcast": {
+        "day": "Sundays",
+        "time": "17:00",
+        "timezone": "Asia/Tokyo",
+        "string": "Sundays at 17:00 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 4,
+          "type": "anime",
+          "name": "Bones"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 1,
+          "type": "anime",
+          "name": "Action"
+        },
+        {
+          "mal_id": 2,
+          "type": "anime",
+          "name": "Adventure"
+        },
+        {
+          "mal_id": 8,
+          "type": "anime",
+          "name": "Drama"
+        },
+        {
+          "mal_id": 10,
+          "type": "anime",
+          "name": "Fantasy"
+        }
+      ]
+    },
+    {
+      "mal_id": 9253,
+      "title": "Steins;Gate",
+      "title_english": "Steins;Gate",
+      "title_japanese": "STEINS;GATE",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1935/127974.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1935/127974t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1935/127974l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1935/127974.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1935/127974t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1935/127974l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": 24,
+      "status": "Finished Airing",
+      "aired": {
+        "from": "2011-04-06T00:00:00+00:00",
+        "to": "2011-09-14T00:00:00+00:00",
+        "prop": {
+          "from": {
+            "day": 6,
+            "month": 4,
+            "year": 2011
+          },
+          "to": {
+            "day": 14,
+            "month": 9,
+            "year": 2011
+          }
+        },
+        "string": "Apr 6, 2011 to Sep 14, 2011"
+      },
+      "duration": "24 min per ep",
+      "rating": "PG-13 - Teens 13 or older",
+      "score": 9.07,
+      "season": "spring",
+      "year": 2011,
+      "broadcast": {
+        "day": "Wednesdays",
+        "time": "02:05",
+        "timezone": "Asia/Tokyo",
+        "string": "Wednesdays at 02:05 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 314,
+          "type": "anime",
+          "name": "White Fox"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 8,
+          "type": "anime",
+          "name": "Drama"
+        },
+        {
+          "mal_id": 24,
+          "type": "anime",
+          "name": "Sci-Fi"
+        },
+        {
+          "mal_id": 41,
+          "type": "anime",
+          "name": "Suspense"
+        }
+      ]
+    },
+    {
+      "mal_id": 11061,
+      "title": "Hunter x Hunter (2011)",
+      "title_english": "Hunter x Hunter",
+      "title_japanese": "HUNTER×HUNTER（ハンター×ハンター）",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1337/99013.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1337/99013t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1337/99013l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1337/99013.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1337/99013t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1337/99013l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": 148,
+      "status": "Finished Airing",
+      "aired": {
+        "from": "2011-10-02T00:00:00+00:00",
+        "to": "2014-09-24T00:00:00+00:00",
+        "prop": {
+          "from": {
+            "day": 2,
+            "month": 10,
+            "year": 2011
+          },
+          "to": {
+            "day": 24,
+            "month": 9,
+            "year": 2014
+          }
+        },
+        "string": "Oct 2, 2011 to Sep 24, 2014"
+      },
+      "duration": "23 min per ep",
+      "rating": "PG-13 - Teens 13 or older",
+      "score": 9.03,
+      "season": "fall",
+      "year": 2011,
+      "broadcast": {
+        "day": "Sundays",
+        "time": "10:55",
+        "timezone": "Asia/Tokyo",
+        "string": "Sundays at 10:55 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 11,
+          "type": "anime",
+          "name": "Madhouse"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 1,
+          "type": "anime",
+          "name": "Action"
+        },
+        {
+          "mal_id": 2,
+          "type": "anime",
+          "name": "Adventure"
+        },
+        {
+          "mal_id": 10,
+          "type": "anime",
+          "name": "Fantasy"
+        }
+      ]
+    },
+    {
+      "mal_id": 16498,
+      "title": "Shingeki no Kyojin",
+      "title_english": "Attack on Titan",
+      "title_japanese": "進撃の巨人",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/10/47347.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/10/47347t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/10/47347l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/10/47347.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/10/47347t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/10/47347l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": 25,
+      "status": "Finished Airing",
+      "aired": {
+        "from": "2013-04-07T00:00:00+00:00",
+        "to": "2013-09-29T00:00:00+00:00",
+        "prop": {
+          "from": {
+            "day": 7,
+            "month": 4,
+            "year": 2013
+          },
+          "to": {
+            "day": 29,
+            "month": 9,
+            "year": 2013
+          }
+        },
+        "string": "Apr 7, 2013 to Sep 29, 2013"
+      },
+      "duration": "24 min per ep",
+      "rating": "R - 17+ (violence & profanity)",
+      "score": 8.58,
+      "season": "spring",
+      "year": 2013,
+      "broadcast": {
+        "day": "Sundays",
+        "time": "01:58",
+        "timezone": "Asia/Tokyo",
+        "string": "Sundays at 01:58 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 858,
+          "type": "anime",
+          "name": "Wit Studio"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 1,
+          "type": "anime",
+          "name": "Action"
+        },
+        {
+          "mal_id": 46,
+          "type": "anime",
+          "name": "Award Winning"
+        },
+        {
+          "mal_id": 8,
+          "type": "anime",
+          "name": "Drama"
+        },
+        {
+          "mal_id": 41,
+          "type": "anime",
+          "name": "Suspense"
+        }
+      ]
+    },
+    {
+      "mal_id": 20583,
+      "title": "Haikyuu!!",
+      "title_english": "Haikyu!!",
+      "title_japanese": "ハイキュー!!",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/7/76014.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/7/76014t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/7/76014l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/7/76014.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/7/76014t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/7/76014l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": 25,
+      "status": "Finished Airing",
+      "aired": {
+        "from": "2014-04-06T00:00:00+00:00",
+        "to": "2014-09-21T00:00:00+00:00",
+        "prop": {
+          "from": {
+            "day": 6,
+            "month": 4,
+            "year": 2014
+          },
+          "to": {
+            "day": 21,
+            "month": 9,
+            "year": 2014
+          }
+        },
+        "string": "Apr 6, 2014 to Sep 21, 2014"
+      },
+      "duration": "24 min per ep",
+      "rating": "PG-13 - Teens 13 or older",
+      "score": 8.43,
+      "season": "spring",
+      "year": 2014,
+      "broadcast": {
+        "day": "Sundays",
+        "time": "17:00",
+        "timezone": "Asia/Tokyo",
+        "string": "Sundays at 17:00 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 10,
+          "type": "anime",
+          "name": "Production I.G"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 30,
+          "type": "anime",
+          "name": "Sports"
+        }
+      ]
+    },
+    {
+      "mal_id": 30276,
+      "title": "One Punch Man",
+      "title_english": "One-Punch Man",
+      "title_japanese": "ワンパンマン",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/12/76049.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/12/76049t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/12/76049l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/12/76049.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/12/76049t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/12/76049l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": 12,
+      "status": "Finished Airing",
+      "aired": {
+        "from": "2015-10-05T00:00:00+00:00",
+        "to": "2015-12-21T00:00:00+00:00",
+        "prop": {
+          "from": {
+            "day": 5,
+            "month": 10,
+            "year": 2015
+          },
+          "to": {
+            "day": 21,
+            "month": 12,
+            "year": 2015
+          }
+        },
+        "string": "Oct 5, 2015 to Dec 21, 2015"
+      },
+      "duration": "24 min per ep",
+      "rating": "R - 17+ (violence & profanity)",
+      "score": 8.47,
+      "season": "fall",
+      "year": 2015,
+      "broadcast": {
+        "day": "Mondays",
+        "time": "01:05",
+        "timezone": "Asia/Tokyo",
+        "string": "Mondays at 01:05 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 11,
+          "type": "anime",
+          "name": "Madhouse"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 1,
+          "type": "anime",
+          "name": "Action"
+        },
+        {
+          "mal_id": 4,
+          "type": "anime",
+          "name": "Comedy"
+        }
+      ]
+    },
+    {
+      "mal_id": 33352,
+      "title": "Violet Evergarden",
+      "title_english": "Violet Evergarden",
+      "title_japanese": "ヴァイオレット・エヴァーガーデン",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1795/95088.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1795/95088t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1795/95088l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1795/95088.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1795/95088t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1795/95088l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": 13,
+      "status": "Finished Airing",
+      "aired": {
+        "from": "2018-01-11T00:00:00+00:00",
+        "to": "2018-04-05T00:00:00+00:00",
+        "prop": {
+          "from": {
+            "day": 11,
+            "month": 1,
+            "year": 2018
+          },
+          "to": {
+            "day": 5,
+            "month": 4,
+            "year": 2018
+          }
+        },
+        "string": "Jan 11, 2018 to Apr 5, 2018"
+      },
+      "duration": "24 min per ep",
+      "rating": "PG-13 - Teens 13 or older",
+      "score": 8.7,
+      "season": "winter",
+      "year": 2018,
+      "broadcast": {
+        "day": "Thursdays",
+        "time": "00:00",
+        "timezone": "Asia/Tokyo",
+        "string": "Thursdays at 00:00 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 2,
+          "type": "anime",
+          "name": "Kyoto Animation"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 8,
+          "type": "anime",
+          "name": "Drama"
+        }
+      ]
+    },
+    {
+      "mal_id": 38000,
+      "title": "Kimetsu no Yaiba",
+      "title_english": "Demon Slayer: Kimetsu no Yaiba",
+      "title_japanese": "鬼滅の刃",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1286/99889.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1286/99889t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1286/99889l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1286/99889.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1286/99889t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1286/99889l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": 26,
+      "status": "Finished Airing",
+      "aired": {
+        "from": "2019-04-06T00:00:00+00:00",
+        "to": "2019-09-28T00:00:00+00:00",
+        "prop": {
+          "from": {
+            "day": 6,
+            "month": 4,
+            "year": 2019
+          },
+          "to": {
+            "day": 28,
+            "month": 9,
+            "year": 2019
+          }
+        },
+        "string": "Apr 6, 2019 to Sep 28, 2019"
+      },
+      "duration": "23 min per ep",
+      "rating": "R - 17+ (violence & profanity)",
+      "score": 8.39,
+      "season": "spring",
+      "year": 2019,
+      "broadcast": {
+        "day": "Saturdays",
+        "time": "23:30",
+        "timezone": "Asia/Tokyo",
+        "string": "Saturdays at 23:30 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 43,
+          "type": "anime",
+          "name": "ufotable"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 1,
+          "type": "anime",
+          "name": "Action"
+        },
+        {
+          "mal_id": 46,
+          "type": "anime",
+          "name": "Award Winning"
+        },
+        {
+          "mal_id": 37,
+          "type": "anime",
+          "name": "Supernatural"
+        }
+      ]
+    },
+    {
+      "mal_id": 40748,
+      "title": "Jujutsu Kaisen",
+      "title_english": "Jujutsu Kaisen",
+      "title_japanese": "呪術廻戦",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1171/109222.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1171/109222t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1171/109222l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1171/109222.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1171/109222t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1171/109222l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": 24,
+      "status": "Finished Airing",
+      "aired": {
+        "from": "2020-10-03T00:00:00+00:00",
+        "to": "2021-03-27T00:00:00+00:00",
+        "prop": {
+          "from": {
+            "day": 3,
+            "month": 10,
+            "year": 2020
+          },
+          "to": {
+            "day": 27,
+            "month": 3,
+            "year": 2021
+          }
+        },
+        "string": "Oct 3, 2020 to Mar 27, 2021"
+      },
+      "duration": "23 min per ep",
+      "rating": "R - 17+ (violence & profanity)",
+      "score": 8.48,
+      "season": "fall",
+      "year": 2020,
+      "broadcast": {
+        "day": "Saturdays",
+        "time": "01:25",
+        "timezone": "Asia/Tokyo",
+        "string": "Saturdays at 01:25 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 569,
+          "type": "anime",
+          "name": "MAPPA"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 1,
+          "type": "anime",
+          "name": "Action"
+        },
+        {
+          "mal_id": 46,
+          "type": "anime",
+          "name": "Award Winning"
+        },
+        {
+          "mal_id": 37,
+          "type": "anime",
+          "name": "Supernatural"
+        }
+      ]
+    },
+    {
+      "mal_id": 44511,
+      "title": "Chainsaw Man",
+      "title_english": "Chainsaw Man",
+      "title_japanese": "チェンソーマン",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1806/126216.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1806/126216t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1806/126216l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1806/126216.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1806/126216t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1806/126216l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": 12,
+      "status": "Finished Airing",
+      "aired": {
+        "from": "2022-10-12T00:00:00+00:00",
+        "to": "2022-12-28T00:00:00+00:00",
+        "prop": {
+          "from": {
+            "day": 12,
+            "month": 10,
+            "year": 2022
+          },
+          "to": {
+            "day": 28,
+            "month": 12,
+            "year": 2022
+          }
+        },
+        "string": "Oct 12, 2022 to Dec 28, 2022"
+      },
+      "duration": "24 min per ep",
+      "rating": "R - 17+ (violence & profanity)",
+      "score": 8.41,
+      "season": "fall",
+      "year": 2022,
+      "broadcast": {
+        "day": "Wednesdays",
+        "time": "00:00",
+        "timezone": "Asia/Tokyo",
+        "string": "Wednesdays at 00:00 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 569,
+          "type": "anime",
+          "name": "MAPPA"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 1,
+          "type": "anime",
+          "name": "Action"
+        },
+        {
+          "mal_id": 10,
+          "type": "anime",
+          "name": "Fantasy"
+        }
+      ]
+    },
+    {
+      "mal_id": 47917,
+      "title": "Bocchi the Rock!",
+      "title_english": "Bocchi the Rock!",
+      "title_japanese": "ぼっち・ざ・ろっく！",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1448/127956.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1448/127956t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1448/127956l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1448/127956.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1448/127956t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1448/127956l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": 12,
+      "status": "Finished Airing",
+      "aired": {
+        "from": "2022-10-09T00:00:00+00:00",
+        "to": "2022-12-25T00:00:00+00:00",
+        "prop": {
+          "from": {
+            "day": 9,
+            "month": 10,
+            "year": 2022
+          },
+          "to": {
+            "day": 25,
+            "month": 12,
+            "year": 2022
+          }
+        },
+        "string": "Oct 9, 2022 to Dec 25, 2022"
+      },
+      "duration": "23 min per ep",
+      "rating": "PG-13 - Teens 13 or older",
+      "score": 8.72,
+      "season": "fall",
+      "year": 2022,
+      "broadcast": {
+        "day": "Sundays",
+        "time": "00:00",
+        "timezone": "Asia/Tokyo",
+        "string": "Sundays at 00:00 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 1835,
+          "type": "anime",
+          "name": "CloverWorks"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 4,
+          "type": "anime",
+          "name": "Comedy"
+        }
+      ]
+    },
+    {
+      "mal_id": 50265,
+      "title": "Spy x Family",
+      "title_english": null,
+      "title_japanese": "SPY×FAMILY",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1441/122795.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1441/122795t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1441/122795l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1441/122795.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1441/122795t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1441/122795l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": 12,
+      "status": "Finished Airing",
+      "aired": {
+        "from": "2022-04-09T00:00:00+00:00",
+        "to": "2022-06-25T00:00:00+00:00",
+        "prop": {
+          "from": {
+            "day": 9,
+            "month": 4,
+            "year": 2022
+          },
+          "to": {
+            "day": 25,
+            "month": 6,
+            "year": 2022
+          }
+        },
+        "string": "Apr 9, 2022 to Jun 25, 2022"
+      },
+      "duration": "24 min per ep",
+      "rating": "PG-13 - Teens 13 or older",
+      "score": 8.4,
+      "season": "spring",
+      "year": 2022,
+      "broadcast": {
+        "day": "Saturdays",
+        "time": "23:00",
+        "timezone": "Asia/Tokyo",
+        "string": "Saturdays at 23:00 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 858,
+          "type": "anime",
+          "name": "Wit Studio"
+        },
+        {
+          "mal_id": 1835,
+          "type": "anime",
+          "name": "CloverWorks"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 1,
+          "type": "anime",
+          "name": "Action"
+        },
+        {
+          "mal_id": 46,
+          "type": "anime",
+          "name": "Award Winning"
+        },
+        {
+          "mal_id": 4,
+          "type": "anime",
+          "name": "Comedy"
+        }
+      ]
+    },
+    {
+      "mal_id": 52991,
+      "title": "Sousou no Frieren",
+      "title_english": "Frieren: Beyond Journey's End",
+      "title_japanese": "葬送のフリーレン",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1015/138006.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1015/138006t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1015/138006l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1015/138006.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1015/138006t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1015/138006l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": 28,
+      "status": "Finished Airing",
+      "aired": {
+        "from": "2023-09-29T00:00:00+00:00",
+        "to": "2024-03-22T00:00:00+00:00",
+        "prop": {
+          "from": {
+            "day": 29,
+            "month": 9,
+            "year": 2023
+          },
+          "to": {
+            "day": 22,
+            "month": 3,
+            "year": 2024
+          }
+        },
+        "string": "Sep 29, 2023 to Mar 22, 2024"
+      },
+      "duration": "24 min per ep",
+      "rating": "PG-13 - Teens 13 or older",
+      "score": 9.24,
+      "season": "fall",
+      "year": 2023,
+      "broadcast": {
+        "day": "Fridays",
+        "time": "23:00",
+        "timezone": "Asia/Tokyo",
+        "string": "Fridays at 23:00 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 11,
+          "type": "anime",
+          "name": "Madhouse"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 2,
+          "type": "anime",
+          "name": "Adventure"
+        },
+        {
+          "mal_id": 46,
+          "type": "anime",
+          "name": "Award Winning"
+        },
+        {
+          "mal_id": 8,
+          "type": "anime",
+          "name": "Drama"
+        },
+        {
+          "mal_id": 10,
+          "type": "anime",
+          "name": "Fantasy"
+        }
+      ]
+    },
+    {
+      "mal_id": 54492,
+      "title": "Kusuriya no Hitorigoto",
+      "title_english": "The Apothecary Diaries",
+      "title_japanese": "薬屋のひとりごと",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1708/138033.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1708/138033t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1708/138033l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1708/138033.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1708/138033t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1708/138033l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": 24,
+      "status": "Finished Airing",
+      "aired": {
+        "from": "2023-10-22T00:00:00+00:00",
+        "to": "2024-03-24T00:00:00+00:00",
+        "prop": {
+          "from": {
+            "day": 22,
+            "month": 10,
+            "year": 2023
+          },
+          "to": {
+            "day": 24,
+            "month": 3,
+            "year": 2024
+          }
+        },
+        "string": "Oct 22, 2023 to Mar 24, 2024"
+      },
+      "duration": "22 min per ep",
+      "rating": "PG-13 - Teens 13 or older",
+      "score": 8.84,
+      "season": "fall",
+      "year": 2023,
+      "broadcast": {
+        "day": "Sundays",
+        "time": "01:05",
+        "timezone": "Asia/Tokyo",
+        "string": "Sundays at 01:05 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 28,
+          "type": "anime",
+          "name": "OLM"
+        },
+        {
+          "mal_id": 2705,
+          "type": "anime",
+          "name": "TOHO animation STUDIO"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 8,
+          "type": "anime",
+          "name": "Drama"
+        },
+        {
+          "mal_id": 7,
+          "type": "anime",
+          "name": "Mystery"
+        }
+      ]
+    }
+  ]
+}

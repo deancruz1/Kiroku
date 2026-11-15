@@ -68,6 +68,24 @@ describe("createRateScheduler", () => {
     await expect(scheduler.acquire(6000)).resolves.toBe(true);
   });
 
+  it("keeps the default limits under 3 per second and 100 per minute", async () => {
+    const scheduler = createRateScheduler({ now: () => Date.now() });
+    const { startedAt, run } = start(scheduler);
+
+    const all = Promise.all(Array.from({ length: 150 }, run));
+    await vi.advanceTimersByTimeAsync(180_000);
+    await all;
+
+    expect(startedAt).toHaveLength(150);
+    for (let i = 0; i < startedAt.length; i++) {
+      const inSecond = startedAt.filter((t) => t >= startedAt[i] && t < startedAt[i] + 1000);
+      const inMinute = startedAt.filter((t) => t >= startedAt[i] && t < startedAt[i] + 60_000);
+      expect(inSecond.length).toBeLessThanOrEqual(3);
+      expect(inMinute.length).toBeLessThanOrEqual(100);
+    }
+    expect(startedAt[100]).toBeGreaterThanOrEqual(60_000);
+  });
+
   it("holds every caller back after a pause", async () => {
     const scheduler = createRateScheduler({
       limits: perSecond,

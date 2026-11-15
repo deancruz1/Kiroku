@@ -1,0 +1,855 @@
+{
+  "pagination": {
+    "last_visible_page": 6,
+    "has_next_page": true,
+    "current_page": 1,
+    "items": {
+      "count": 25,
+      "total": 127,
+      "per_page": 25
+    }
+  },
+  "data": [
+    {
+      "mal_id": 61469,
+      "title": "Steel Ball Run: JoJo no Kimyou na Bouken",
+      "title_english": "Steel Ball Run: JoJo's Bizarre Adventure",
+      "title_japanese": "スティール・ボール・ラン ジョジョの奇妙な冒険",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1065/158884.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1065/158884t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1065/158884l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1065/158884.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1065/158884t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1065/158884l.webp"
+        }
+      },
+      "type": "ONA",
+      "episodes": null,
+      "status": "Currently Airing",
+      "aired": {
+        "from": "2026-03-19T00:00:00+00:00",
+        "to": null,
+        "prop": {
+          "from": {
+            "day": 19,
+            "month": 3,
+            "year": 2026
+          },
+          "to": {
+            "day": null,
+            "month": null,
+            "year": null
+          }
+        },
+        "string": "Mar 19, 2026 to ?"
+      },
+      "duration": "27 min",
+      "rating": "R - 17+ (violence & profanity)",
+      "score": 9.03,
+      "season": "winter",
+      "year": 2026,
+      "broadcast": {
+        "day": null,
+        "time": null,
+        "timezone": null,
+        "string": null
+      },
+      "studios": [
+        {
+          "mal_id": 287,
+          "type": "anime",
+          "name": "David Production"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 1,
+          "type": "anime",
+          "name": "Action"
+        },
+        {
+          "mal_id": 2,
+          "type": "anime",
+          "name": "Adventure"
+        },
+        {
+          "mal_id": 7,
+          "type": "anime",
+          "name": "Mystery"
+        },
+        {
+          "mal_id": 37,
+          "type": "anime",
+          "name": "Supernatural"
+        }
+      ]
+    },
+    {
+      "mal_id": 61987,
+      "title": "Kusuriya no Hitorigoto 3rd Season",
+      "title_english": "The Apothecary Diaries Season 3",
+      "title_japanese": "薬屋のひとりごと 第3期",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1028/160277.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1028/160277t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1028/160277l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1028/160277.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1028/160277t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1028/160277l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": 12,
+      "status": "Currently Airing",
+      "aired": {
+        "from": "2026-10-02T00:00:00+00:00",
+        "to": null,
+        "prop": {
+          "from": {
+            "day": 2,
+            "month": 10,
+            "year": 2026
+          },
+          "to": {
+            "day": null,
+            "month": null,
+            "year": null
+          }
+        },
+        "string": "Oct 2, 2026 to ?"
+      },
+      "duration": "24 min per ep",
+      "rating": "PG-13 - Teens 13 or older",
+      "score": 8.6,
+      "season": "fall",
+      "year": 2026,
+      "broadcast": {
+        "day": "Fridays",
+        "time": "23:00",
+        "timezone": "Asia/Tokyo",
+        "string": "Fridays at 23:00 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 28,
+          "type": "anime",
+          "name": "OLM"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 8,
+          "type": "anime",
+          "name": "Drama"
+        },
+        {
+          "mal_id": 7,
+          "type": "anime",
+          "name": "Mystery"
+        }
+      ]
+    },
+    {
+      "mal_id": 61990,
+      "title": "Cyberpunk: Edgerunners 2",
+      "title_english": "Cyberpunk: Edgerunners 2",
+      "title_japanese": "サイバーパンク エッジランナーズ2",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1431/160542.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1431/160542t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1431/160542l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1431/160542.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1431/160542t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1431/160542l.webp"
+        }
+      },
+      "type": "ONA",
+      "episodes": 10,
+      "status": "Finished Airing",
+      "aired": {
+        "from": "2026-10-20T00:00:00+00:00",
+        "to": null,
+        "prop": {
+          "from": {
+            "day": 20,
+            "month": 10,
+            "year": 2026
+          },
+          "to": {
+            "day": null,
+            "month": null,
+            "year": null
+          }
+        },
+        "string": "Oct 20, 2026"
+      },
+      "duration": "28 min per ep",
+      "rating": "R - 17+ (violence & profanity)",
+      "score": 8.15,
+      "season": "fall",
+      "year": 2026,
+      "broadcast": {
+        "day": null,
+        "time": null,
+        "timezone": null,
+        "string": null
+      },
+      "studios": [
+        {
+          "mal_id": 803,
+          "type": "anime",
+          "name": "Trigger"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 1,
+          "type": "anime",
+          "name": "Action"
+        },
+        {
+          "mal_id": 24,
+          "type": "anime",
+          "name": "Sci-Fi"
+        }
+      ]
+    },
+    {
+      "mal_id": 61967,
+      "title": "Black Clover 2nd Season",
+      "title_english": "Black Clover Season 2",
+      "title_japanese": "ブラッククローバー 2nd season",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1857/160133.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1857/160133t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1857/160133l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1857/160133.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1857/160133t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1857/160133l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": null,
+      "status": "Currently Airing",
+      "aired": {
+        "from": "2026-10-03T00:00:00+00:00",
+        "to": null,
+        "prop": {
+          "from": {
+            "day": 3,
+            "month": 10,
+            "year": 2026
+          },
+          "to": {
+            "day": null,
+            "month": null,
+            "year": null
+          }
+        },
+        "string": "Oct 3, 2026 to ?"
+      },
+      "duration": "23 min",
+      "rating": "PG-13 - Teens 13 or older",
+      "score": 8.89,
+      "season": "fall",
+      "year": 2026,
+      "broadcast": {
+        "day": "Saturdays",
+        "time": "23:00",
+        "timezone": "Asia/Tokyo",
+        "string": "Saturdays at 23:00 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 1,
+          "type": "anime",
+          "name": "Studio Pierrot"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 1,
+          "type": "anime",
+          "name": "Action"
+        },
+        {
+          "mal_id": 10,
+          "type": "anime",
+          "name": "Fantasy"
+        }
+      ]
+    },
+    {
+      "mal_id": 53913,
+      "title": "Tensei shitara Ken deshita II",
+      "title_english": "Reincarnated as a Sword Season 2",
+      "title_japanese": "転生したら剣でした II",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1725/160874.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1725/160874t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1725/160874l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1725/160874.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1725/160874t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1725/160874l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": 12,
+      "status": "Currently Airing",
+      "aired": {
+        "from": "2026-10-08T00:00:00+00:00",
+        "to": null,
+        "prop": {
+          "from": {
+            "day": 8,
+            "month": 10,
+            "year": 2026
+          },
+          "to": {
+            "day": null,
+            "month": null,
+            "year": null
+          }
+        },
+        "string": "Oct 8, 2026 to ?"
+      },
+      "duration": "23 min per ep",
+      "rating": "PG-13 - Teens 13 or older",
+      "score": 7.51,
+      "season": "fall",
+      "year": 2026,
+      "broadcast": {
+        "day": "Thursdays",
+        "time": "00:00",
+        "timezone": "Asia/Tokyo",
+        "string": "Thursdays at 00:00 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 605,
+          "type": "anime",
+          "name": "C2C"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 1,
+          "type": "anime",
+          "name": "Action"
+        },
+        {
+          "mal_id": 2,
+          "type": "anime",
+          "name": "Adventure"
+        },
+        {
+          "mal_id": 10,
+          "type": "anime",
+          "name": "Fantasy"
+        }
+      ]
+    },
+    {
+      "mal_id": 61323,
+      "title": "Ao no Hako Season 2",
+      "title_english": "Blue Box Season 2",
+      "title_japanese": "アオのハコ Season2",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1990/160267.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1990/160267t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1990/160267l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1990/160267.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1990/160267t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1990/160267l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": 12,
+      "status": "Currently Airing",
+      "aired": {
+        "from": "2026-10-04T00:00:00+00:00",
+        "to": null,
+        "prop": {
+          "from": {
+            "day": 4,
+            "month": 10,
+            "year": 2026
+          },
+          "to": {
+            "day": null,
+            "month": null,
+            "year": null
+          }
+        },
+        "string": "Oct 4, 2026 to ?"
+      },
+      "duration": "23 min per ep",
+      "rating": "PG-13 - Teens 13 or older",
+      "score": 8.15,
+      "season": "fall",
+      "year": 2026,
+      "broadcast": {
+        "day": "Sundays",
+        "time": "16:30",
+        "timezone": "Asia/Tokyo",
+        "string": "Sundays at 16:30 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 3305,
+          "type": "anime",
+          "name": "Electric Circus"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 22,
+          "type": "anime",
+          "name": "Romance"
+        },
+        {
+          "mal_id": 30,
+          "type": "anime",
+          "name": "Sports"
+        }
+      ]
+    },
+    {
+      "mal_id": 63293,
+      "title": "Hotaru no Yomeiri",
+      "title_english": "Firefly Wedding",
+      "title_japanese": "ホタルの嫁入り",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1172/159893.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1172/159893t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1172/159893l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1172/159893.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1172/159893t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1172/159893l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": 12,
+      "status": "Currently Airing",
+      "aired": {
+        "from": "2026-10-09T00:00:00+00:00",
+        "to": null,
+        "prop": {
+          "from": {
+            "day": 9,
+            "month": 10,
+            "year": 2026
+          },
+          "to": {
+            "day": null,
+            "month": null,
+            "year": null
+          }
+        },
+        "string": "Oct 9, 2026 to ?"
+      },
+      "duration": "22 min per ep",
+      "rating": "R - 17+ (violence & profanity)",
+      "score": 7.74,
+      "season": "fall",
+      "year": 2026,
+      "broadcast": {
+        "day": "Fridays",
+        "time": "23:30",
+        "timezone": "Asia/Tokyo",
+        "string": "Fridays at 23:30 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 287,
+          "type": "anime",
+          "name": "David Production"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 22,
+          "type": "anime",
+          "name": "Romance"
+        }
+      ]
+    },
+    {
+      "mal_id": 59088,
+      "title": "Tokyo Revengers: Santen Sensou-hen",
+      "title_english": "Tokyo Revengers: War of the Three Titans Arc",
+      "title_japanese": "東京リベンジャーズ 三天戦争編",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1321/159720.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1321/159720t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1321/159720l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1321/159720.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1321/159720t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1321/159720l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": 13,
+      "status": "Currently Airing",
+      "aired": {
+        "from": "2026-10-03T00:00:00+00:00",
+        "to": null,
+        "prop": {
+          "from": {
+            "day": 3,
+            "month": 10,
+            "year": 2026
+          },
+          "to": {
+            "day": null,
+            "month": null,
+            "year": null
+          }
+        },
+        "string": "Oct 3, 2026 to ?"
+      },
+      "duration": "23 min per ep",
+      "rating": "R - 17+ (violence & profanity)",
+      "score": 7.82,
+      "season": "fall",
+      "year": 2026,
+      "broadcast": {
+        "day": "Saturdays",
+        "time": "01:23",
+        "timezone": "Asia/Tokyo",
+        "string": "Saturdays at 01:23 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 839,
+          "type": "anime",
+          "name": "LIDENFILMS"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 1,
+          "type": "anime",
+          "name": "Action"
+        },
+        {
+          "mal_id": 8,
+          "type": "anime",
+          "name": "Drama"
+        }
+      ]
+    },
+    {
+      "mal_id": 54250,
+      "title": "Made in Abyss: Mezameru Shinpi",
+      "title_english": null,
+      "title_japanese": "メイドインアビス 目覚める神秘",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1444/156382.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1444/156382t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1444/156382l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1444/156382.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1444/156382t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1444/156382l.webp"
+        }
+      },
+      "type": "Movie",
+      "episodes": 1,
+      "status": "Finished Airing",
+      "aired": {
+        "from": "2026-10-23T00:00:00+00:00",
+        "to": null,
+        "prop": {
+          "from": {
+            "day": 23,
+            "month": 10,
+            "year": 2026
+          },
+          "to": {
+            "day": null,
+            "month": null,
+            "year": null
+          }
+        },
+        "string": "Oct 23, 2026"
+      },
+      "duration": "1 hr 11 min",
+      "rating": "R - 17+ (violence & profanity)",
+      "score": 7.4,
+      "season": "fall",
+      "year": 2026,
+      "broadcast": {
+        "day": null,
+        "time": null,
+        "timezone": null,
+        "string": null
+      },
+      "studios": [
+        {
+          "mal_id": 290,
+          "type": "anime",
+          "name": "Kinema Citrus"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 2,
+          "type": "anime",
+          "name": "Adventure"
+        },
+        {
+          "mal_id": 8,
+          "type": "anime",
+          "name": "Drama"
+        },
+        {
+          "mal_id": 10,
+          "type": "anime",
+          "name": "Fantasy"
+        },
+        {
+          "mal_id": 7,
+          "type": "anime",
+          "name": "Mystery"
+        },
+        {
+          "mal_id": 24,
+          "type": "anime",
+          "name": "Sci-Fi"
+        }
+      ]
+    },
+    {
+      "mal_id": 64534,
+      "title": "Koori no Jouheki 2nd Season",
+      "title_english": "The Ramparts of Ice Season 2",
+      "title_japanese": "氷の城壁 第2期",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1963/159754.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1963/159754t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1963/159754l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1963/159754.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1963/159754t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1963/159754l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": 13,
+      "status": "Currently Airing",
+      "aired": {
+        "from": "2026-10-02T00:00:00+00:00",
+        "to": null,
+        "prop": {
+          "from": {
+            "day": 2,
+            "month": 10,
+            "year": 2026
+          },
+          "to": {
+            "day": null,
+            "month": null,
+            "year": null
+          }
+        },
+        "string": "Oct 2, 2026 to ?"
+      },
+      "duration": "23 min per ep",
+      "rating": "PG-13 - Teens 13 or older",
+      "score": 8.33,
+      "season": "fall",
+      "year": 2026,
+      "broadcast": {
+        "day": "Thursdays",
+        "time": "23:56",
+        "timezone": "Asia/Tokyo",
+        "string": "Thursdays at 23:56 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 1997,
+          "type": "anime",
+          "name": "Studio KAI"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 8,
+          "type": "anime",
+          "name": "Drama"
+        },
+        {
+          "mal_id": 22,
+          "type": "anime",
+          "name": "Romance"
+        }
+      ]
+    },
+    {
+      "mal_id": 64340,
+      "title": "Tempal: Item no Chikara",
+      "title_english": "Overgeared",
+      "title_japanese": "テムパル ～アイテムの力～",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1386/160022.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1386/160022t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1386/160022l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1386/160022.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1386/160022t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1386/160022l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": 12,
+      "status": "Currently Airing",
+      "aired": {
+        "from": "2026-10-02T00:00:00+00:00",
+        "to": null,
+        "prop": {
+          "from": {
+            "day": 2,
+            "month": 10,
+            "year": 2026
+          },
+          "to": {
+            "day": null,
+            "month": null,
+            "year": null
+          }
+        },
+        "string": "Oct 2, 2026 to ?"
+      },
+      "duration": "23 min per ep",
+      "rating": "PG-13 - Teens 13 or older",
+      "score": 7.51,
+      "season": "fall",
+      "year": 2026,
+      "broadcast": {
+        "day": "Fridays",
+        "time": "23:30",
+        "timezone": "Asia/Tokyo",
+        "string": "Fridays at 23:30 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 7,
+          "type": "anime",
+          "name": "J.C.Staff"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 1,
+          "type": "anime",
+          "name": "Action"
+        },
+        {
+          "mal_id": 10,
+          "type": "anime",
+          "name": "Fantasy"
+        }
+      ]
+    },
+    {
+      "mal_id": 62844,
+      "title": "Kusuriya no Hitorigoto Movie: Bouhi no Hihou",
+      "title_english": "The Apothecary Diaries Movie",
+      "title_japanese": "劇場版 薬屋のひとりごと 亡妃の秘宝",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1751/160650.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1751/160650t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1751/160650l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1751/160650.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1751/160650t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1751/160650l.webp"
+        }
+      },
+      "type": "Movie",
+      "episodes": 1,
+      "status": "Not yet aired",
+      "aired": {
+        "from": "2026-12-11T00:00:00+00:00",
+        "to": null,
+        "prop": {
+          "from": {
+            "day": 11,
+            "month": 12,
+            "year": 2026
+          },
+          "to": {
+            "day": null,
+            "month": null,
+            "year": null
+          }
+        },
+        "string": "Dec 11, 2026"
+      },
+      "duration": "Unknown",
+      "rating": "PG-13 - Teens 13 or older",
+      "score": null,
+      "season": "fall",
+      "year": 2026,
+      "broadcast": {
+        "day": null,
+        "time": null,
+        "timezone": null,
+        "string": null
+      },
+      "studios": [
+        {
+          "mal_id": 2705,
+          "type": "anime",
+          "name": "TOHO animation STUDIO"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 8,
+          "type": "anime",
+          "name": "Drama"
+        },
+        {
+          "mal_id": 7,
+          "type": "anime",
+          "name": "Mystery"
+        }
+      ]
+    }
+  ]
+}

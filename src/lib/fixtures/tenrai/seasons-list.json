@@ -1,0 +1,48 @@
+{
+  "pagination": {
+    "last_visible_page": 1,
+    "has_next_page": false,
+    "current_page": 1,
+    "items": {
+      "count": 103,
+      "total": 103,
+      "per_page": 103
+    }
+  },
+  "data": [
+    {
+      "year": 2027,
+      "seasons": [
+        "winter",
+        "spring"
+      ]
+    },
+    {
+      "year": 2026,
+      "seasons": [
+        "winter",
+        "spring",
+        "summer",
+        "fall"
+      ]
+    },
+    {
+      "year": 2025,
+      "seasons": [
+        "winter",
+        "spring",
+        "summer",
+        "fall"
+      ]
+    },
+    {
+      "year": 2024,
+      "seasons": [
+        "winter",
+        "spring",
+        "summer",
+        "fall"
+      ]
+    }
+  ]
+}

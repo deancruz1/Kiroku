@@ -1,14 +1,9 @@
+import { UPSTREAM_LIMITS } from "@/lib/upstream";
+
 export interface RateLimit {
   max: number;
   windowMs: number;
 }
-
-// Jikan allows 3 requests/second and 60/minute. The per-second window is
-// padded by 10% so network jitter does not push two bursts into one second.
-export const JIKAN_LIMITS: RateLimit[] = [
-  { max: 3, windowMs: 1_100 },
-  { max: 60, windowMs: 60_000 },
-];
 
 // `history` holds the start times already handed out, oldest first.
 export function nextSlot(
@@ -37,7 +32,7 @@ function defaultSleep(ms: number) {
 }
 
 export function createRateScheduler({
-  limits = JIKAN_LIMITS,
+  limits = UPSTREAM_LIMITS,
   now = Date.now,
   sleep = defaultSleep,
 }: SchedulerOptions = {}) {

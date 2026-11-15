@@ -1,0 +1,58 @@
+{
+  "data": {
+    "promo": [
+      {
+        "title": "PV (Blu-ray Box ver.)",
+        "trailer": {
+          "youtube_id": "1ac3_YdSSy0",
+          "url": "https://www.youtube.com/watch?v=1ac3_YdSSy0",
+          "embed_url": "https://www.youtube.com/embed/1ac3_YdSSy0?enablejsapi=1&wmode=opaque&autoplay=1",
+          "images": {
+            "image_url": "https://img.youtube.com/vi/1ac3_YdSSy0/default.jpg",
+            "small_image_url": "https://img.youtube.com/vi/1ac3_YdSSy0/sddefault.jpg",
+            "medium_image_url": "https://img.youtube.com/vi/1ac3_YdSSy0/mqdefault.jpg",
+            "large_image_url": "https://img.youtube.com/vi/1ac3_YdSSy0/hqdefault.jpg",
+            "maximum_image_url": "https://img.youtube.com/vi/1ac3_YdSSy0/maxresdefault.jpg"
+          },
+          "title": "【2019.4.3発売】鋼の錬金術師 FULLMETAL ALCHEMIST Blu-ray Disc Box",
+          "views": 130976,
+          "likes": 1015,
+          "dislikes": 5,
+          "comment_count": 119,
+          "published_at": "2019-01-12T01:02:05+00:00",
+          "duration": "PT16S",
+          "privacy_status": "public",
+          "region_restriction": null,
+          "embeddable": true
+        }
+      },
+      {
+        "title": "Announcement",
+        "trailer": {
+          "youtube_id": "--IcmZkvL0Q",
+          "url": "https://www.youtube.com/watch?v=--IcmZkvL0Q",
+          "embed_url": "https://www.youtube.com/embed/--IcmZkvL0Q?enablejsapi=1&wmode=opaque&autoplay=1",
+          "images": {
+            "image_url": "https://img.youtube.com/vi/--IcmZkvL0Q/default.jpg",
+            "small_image_url": "https://img.youtube.com/vi/--IcmZkvL0Q/sddefault.jpg",
+            "medium_image_url": "https://img.youtube.com/vi/--IcmZkvL0Q/mqdefault.jpg",
+            "large_image_url": "https://img.youtube.com/vi/--IcmZkvL0Q/hqdefault.jpg",
+            "maximum_image_url": "https://img.youtube.com/vi/--IcmZkvL0Q/maxresdefault.jpg"
+          },
+          "title": "鋼の錬金術師 ２００９",
+          "views": 353057,
+          "likes": 692,
+          "dislikes": 30,
+          "comment_count": 47,
+          "published_at": "2009-03-21T01:53:00+00:00",
+          "duration": "PT15S",
+          "privacy_status": "public",
+          "region_restriction": null,
+          "embeddable": true
+        }
+      }
+    ],
+    "episodes": [],
+    "music_videos": []
+  }
+}

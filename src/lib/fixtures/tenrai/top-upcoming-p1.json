@@ -1,0 +1,873 @@
+{
+  "pagination": {
+    "last_visible_page": 21,
+    "has_next_page": true,
+    "current_page": 1,
+    "items": {
+      "count": 25,
+      "total": 522,
+      "per_page": 25
+    }
+  },
+  "data": [
+    {
+      "mal_id": 62516,
+      "title": "Dandadan 3rd Season",
+      "title_english": "Dan Da Dan Season 3",
+      "title_japanese": "ダンダダン 第3期",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1671/154516.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1671/154516t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1671/154516l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1671/154516.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1671/154516t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1671/154516l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": null,
+      "status": "Not yet aired",
+      "aired": {
+        "from": "2027",
+        "to": null,
+        "prop": {
+          "from": {
+            "day": null,
+            "month": null,
+            "year": 2027
+          },
+          "to": {
+            "day": null,
+            "month": null,
+            "year": null
+          }
+        },
+        "string": "2027 to ?"
+      },
+      "duration": "Unknown",
+      "rating": "R - 17+ (violence & profanity)",
+      "score": null,
+      "season": null,
+      "year": null,
+      "broadcast": {
+        "day": null,
+        "time": null,
+        "timezone": null,
+        "string": null
+      },
+      "studios": [
+        {
+          "mal_id": 1591,
+          "type": "anime",
+          "name": "Science SARU"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 1,
+          "type": "anime",
+          "name": "Action"
+        },
+        {
+          "mal_id": 4,
+          "type": "anime",
+          "name": "Comedy"
+        },
+        {
+          "mal_id": 37,
+          "type": "anime",
+          "name": "Supernatural"
+        }
+      ]
+    },
+    {
+      "mal_id": 59068,
+      "title": "Dungeon Meshi Season 2",
+      "title_english": "Delicious in Dungeon Season 2",
+      "title_japanese": "ダンジョン飯 Season2",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1830/158890.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1830/158890t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1830/158890l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1830/158890.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1830/158890t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1830/158890l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": null,
+      "status": "Not yet aired",
+      "aired": {
+        "from": "2027-10",
+        "to": null,
+        "prop": {
+          "from": {
+            "day": null,
+            "month": 10,
+            "year": 2027
+          },
+          "to": {
+            "day": null,
+            "month": null,
+            "year": null
+          }
+        },
+        "string": "Oct 2027 to ?"
+      },
+      "duration": "Unknown",
+      "rating": "R - 17+ (violence & profanity)",
+      "score": null,
+      "season": "fall",
+      "year": 2027,
+      "broadcast": {
+        "day": null,
+        "time": null,
+        "timezone": null,
+        "string": null
+      },
+      "studios": [
+        {
+          "mal_id": 803,
+          "type": "anime",
+          "name": "Trigger"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 2,
+          "type": "anime",
+          "name": "Adventure"
+        },
+        {
+          "mal_id": 4,
+          "type": "anime",
+          "name": "Comedy"
+        },
+        {
+          "mal_id": 10,
+          "type": "anime",
+          "name": "Fantasy"
+        },
+        {
+          "mal_id": 47,
+          "type": "anime",
+          "name": "Gourmet"
+        }
+      ]
+    },
+    {
+      "mal_id": 57584,
+      "title": "Kage no Jitsuryokusha ni Naritakute! Movie: Zankyou-hen",
+      "title_english": "The Eminence in Shadow: Lost Echoes",
+      "title_japanese": "劇場版 陰の実力者 になりたくて！残響編",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1797/156362.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1797/156362t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1797/156362l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1797/156362.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1797/156362t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1797/156362l.webp"
+        }
+      },
+      "type": "Movie",
+      "episodes": 1,
+      "status": "Not yet aired",
+      "aired": {
+        "from": "2027",
+        "to": null,
+        "prop": {
+          "from": {
+            "day": null,
+            "month": null,
+            "year": 2027
+          },
+          "to": {
+            "day": null,
+            "month": null,
+            "year": null
+          }
+        },
+        "string": "2027"
+      },
+      "duration": "Unknown",
+      "rating": "R - 17+ (violence & profanity)",
+      "score": null,
+      "season": null,
+      "year": null,
+      "broadcast": {
+        "day": null,
+        "time": null,
+        "timezone": null,
+        "string": null
+      },
+      "studios": [
+        {
+          "mal_id": 852,
+          "type": "anime",
+          "name": "Nexus"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 1,
+          "type": "anime",
+          "name": "Action"
+        },
+        {
+          "mal_id": 4,
+          "type": "anime",
+          "name": "Comedy"
+        },
+        {
+          "mal_id": 10,
+          "type": "anime",
+          "name": "Fantasy"
+        }
+      ]
+    },
+    {
+      "mal_id": 61006,
+      "title": "Bocchi the Rock! 2nd Season",
+      "title_english": "Bocchi the Rock! Season 2",
+      "title_japanese": "ぼっち・ざ・ろっく！ 2期",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1142/148003.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1142/148003t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1142/148003l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1142/148003.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1142/148003t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1142/148003l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": null,
+      "status": "Not yet aired",
+      "aired": {
+        "from": null,
+        "to": null,
+        "prop": {
+          "from": {
+            "day": null,
+            "month": null,
+            "year": null
+          },
+          "to": {
+            "day": null,
+            "month": null,
+            "year": null
+          }
+        },
+        "string": null
+      },
+      "duration": "Unknown",
+      "rating": "PG-13 - Teens 13 or older",
+      "score": null,
+      "season": null,
+      "year": null,
+      "broadcast": {
+        "day": null,
+        "time": null,
+        "timezone": null,
+        "string": null
+      },
+      "studios": [
+        {
+          "mal_id": 1835,
+          "type": "anime",
+          "name": "CloverWorks"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 4,
+          "type": "anime",
+          "name": "Comedy"
+        }
+      ]
+    },
+    {
+      "mal_id": 63816,
+      "title": "Sousou no Frieren: Ougonkyou-hen",
+      "title_english": "Frieren: Beyond Journey's End - Golden Land Arc",
+      "title_japanese": "葬送のフリーレン 黄金郷編",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1619/156313.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1619/156313t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1619/156313l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1619/156313.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1619/156313t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1619/156313l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": null,
+      "status": "Not yet aired",
+      "aired": {
+        "from": "2027-10",
+        "to": null,
+        "prop": {
+          "from": {
+            "day": null,
+            "month": 10,
+            "year": 2027
+          },
+          "to": {
+            "day": null,
+            "month": null,
+            "year": null
+          }
+        },
+        "string": "Oct 2027 to ?"
+      },
+      "duration": "Unknown",
+      "rating": "PG-13 - Teens 13 or older",
+      "score": null,
+      "season": "fall",
+      "year": 2027,
+      "broadcast": {
+        "day": null,
+        "time": null,
+        "timezone": null,
+        "string": null
+      },
+      "studios": [
+        {
+          "mal_id": 11,
+          "type": "anime",
+          "name": "Madhouse"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 2,
+          "type": "anime",
+          "name": "Adventure"
+        },
+        {
+          "mal_id": 8,
+          "type": "anime",
+          "name": "Drama"
+        },
+        {
+          "mal_id": 10,
+          "type": "anime",
+          "name": "Fantasy"
+        }
+      ]
+    },
+    {
+      "mal_id": 59873,
+      "title": "Tokidoki Bosotto Russia-go de Dereru Tonari no Alya-san Season 2",
+      "title_english": "Alya Sometimes Hides Her Feelings in Russian Season 2",
+      "title_japanese": "時々ボソッとロシア語でデレる隣のアーリャさん Season 2",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1711/156333.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1711/156333t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1711/156333l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1711/156333.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1711/156333t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1711/156333l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": null,
+      "status": "Not yet aired",
+      "aired": {
+        "from": "2027",
+        "to": null,
+        "prop": {
+          "from": {
+            "day": null,
+            "month": null,
+            "year": 2027
+          },
+          "to": {
+            "day": null,
+            "month": null,
+            "year": null
+          }
+        },
+        "string": "2027 to ?"
+      },
+      "duration": "Unknown",
+      "rating": "PG-13 - Teens 13 or older",
+      "score": null,
+      "season": null,
+      "year": null,
+      "broadcast": {
+        "day": null,
+        "time": null,
+        "timezone": null,
+        "string": null
+      },
+      "studios": [
+        {
+          "mal_id": 95,
+          "type": "anime",
+          "name": "Doga Kobo"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 4,
+          "type": "anime",
+          "name": "Comedy"
+        },
+        {
+          "mal_id": 22,
+          "type": "anime",
+          "name": "Romance"
+        }
+      ]
+    },
+    {
+      "mal_id": 62546,
+      "title": "Kimetsu no Yaiba Movie 2: Mugenjou-hen",
+      "title_english": "Demon Slayer: Kimetsu no Yaiba Infinity Castle II",
+      "title_japanese": "劇場版 鬼滅の刃 無限城編",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1000/152184.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1000/152184t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1000/152184l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1000/152184.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1000/152184t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1000/152184l.webp"
+        }
+      },
+      "type": "Movie",
+      "episodes": 1,
+      "status": "Not yet aired",
+      "aired": {
+        "from": null,
+        "to": null,
+        "prop": {
+          "from": {
+            "day": null,
+            "month": null,
+            "year": null
+          },
+          "to": {
+            "day": null,
+            "month": null,
+            "year": null
+          }
+        },
+        "string": null
+      },
+      "duration": "Unknown",
+      "rating": "R - 17+ (violence & profanity)",
+      "score": null,
+      "season": null,
+      "year": null,
+      "broadcast": {
+        "day": null,
+        "time": null,
+        "timezone": null,
+        "string": null
+      },
+      "studios": [],
+      "genres": [
+        {
+          "mal_id": 1,
+          "type": "anime",
+          "name": "Action"
+        },
+        {
+          "mal_id": 37,
+          "type": "anime",
+          "name": "Supernatural"
+        }
+      ]
+    },
+    {
+      "mal_id": 56732,
+      "title": "Sekai Saikou no Ansatsusha, Isekai Kizoku ni Tensei suru Season 2",
+      "title_english": "The World's Finest Assassin Gets Reincarnated in Another World as an Aristocrat Season 2",
+      "title_japanese": "世界最高の暗殺者、異世界貴族に転生する Season2",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1582/159858.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1582/159858t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1582/159858l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1582/159858.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1582/159858t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1582/159858l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": null,
+      "status": "Not yet aired",
+      "aired": {
+        "from": "2027-01",
+        "to": null,
+        "prop": {
+          "from": {
+            "day": null,
+            "month": 1,
+            "year": 2027
+          },
+          "to": {
+            "day": null,
+            "month": null,
+            "year": null
+          }
+        },
+        "string": "Jan 2027 to ?"
+      },
+      "duration": "Unknown",
+      "rating": "PG-13 - Teens 13 or older",
+      "score": null,
+      "season": "winter",
+      "year": 2027,
+      "broadcast": {
+        "day": null,
+        "time": null,
+        "timezone": null,
+        "string": null
+      },
+      "studios": [
+        {
+          "mal_id": 300,
+          "type": "anime",
+          "name": "SILVER LINK."
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 1,
+          "type": "anime",
+          "name": "Action"
+        },
+        {
+          "mal_id": 8,
+          "type": "anime",
+          "name": "Drama"
+        },
+        {
+          "mal_id": 10,
+          "type": "anime",
+          "name": "Fantasy"
+        },
+        {
+          "mal_id": 7,
+          "type": "anime",
+          "name": "Mystery"
+        },
+        {
+          "mal_id": 22,
+          "type": "anime",
+          "name": "Romance"
+        }
+      ]
+    },
+    {
+      "mal_id": 63143,
+      "title": "Chainsaw Man: Shikaku-hen",
+      "title_english": "Chainsaw Man: Assassins Arc",
+      "title_japanese": "チェンソーマン刺客篇",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1432/154522.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1432/154522t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1432/154522l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1432/154522.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1432/154522t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1432/154522l.webp"
+        }
+      },
+      "type": null,
+      "episodes": null,
+      "status": "Not yet aired",
+      "aired": {
+        "from": null,
+        "to": null,
+        "prop": {
+          "from": {
+            "day": null,
+            "month": null,
+            "year": null
+          },
+          "to": {
+            "day": null,
+            "month": null,
+            "year": null
+          }
+        },
+        "string": null
+      },
+      "duration": "Unknown",
+      "rating": "R - 17+ (violence & profanity)",
+      "score": null,
+      "season": null,
+      "year": null,
+      "broadcast": {
+        "day": null,
+        "time": null,
+        "timezone": null,
+        "string": null
+      },
+      "studios": [
+        {
+          "mal_id": 569,
+          "type": "anime",
+          "name": "MAPPA"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 1,
+          "type": "anime",
+          "name": "Action"
+        },
+        {
+          "mal_id": 10,
+          "type": "anime",
+          "name": "Fantasy"
+        }
+      ]
+    },
+    {
+      "mal_id": 58934,
+      "title": "Mashle: Sanma Taisou Shinkakusha Saishuu Shiken-hen",
+      "title_english": "Mashle: Magic and Muscles - The Tri-Magicathlon Divine Visionary Final Exam Arc",
+      "title_japanese": "マッシュル-MASHLE- 続編 三魔対争神覚者最終試験編",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1346/160994.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1346/160994t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1346/160994l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1346/160994.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1346/160994t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1346/160994l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": null,
+      "status": "Not yet aired",
+      "aired": {
+        "from": "2027-01-10T00:00:00+00:00",
+        "to": null,
+        "prop": {
+          "from": {
+            "day": 10,
+            "month": 1,
+            "year": 2027
+          },
+          "to": {
+            "day": null,
+            "month": null,
+            "year": null
+          }
+        },
+        "string": "Jan 10, 2027 to ?"
+      },
+      "duration": "Unknown",
+      "rating": "PG-13 - Teens 13 or older",
+      "score": null,
+      "season": "winter",
+      "year": 2027,
+      "broadcast": {
+        "day": "Sundays",
+        "time": "00:00",
+        "timezone": "Asia/Tokyo",
+        "string": "Sundays at 00:00 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 56,
+          "type": "anime",
+          "name": "A-1 Pictures"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 1,
+          "type": "anime",
+          "name": "Action"
+        },
+        {
+          "mal_id": 4,
+          "type": "anime",
+          "name": "Comedy"
+        },
+        {
+          "mal_id": 10,
+          "type": "anime",
+          "name": "Fantasy"
+        }
+      ]
+    },
+    {
+      "mal_id": 61338,
+      "title": "Shangri-La Frontier: Kusoge Hunter, Kamige ni Idoman to su 3rd Season",
+      "title_english": "Shangri-La Frontier Season 3",
+      "title_japanese": "シャングリラ・フロンティア～クソゲーハンター、神ゲーに挑まんとす～ 3rd season",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1058/160088.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1058/160088t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1058/160088l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1058/160088.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1058/160088t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1058/160088l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": null,
+      "status": "Not yet aired",
+      "aired": {
+        "from": "2027-01-10T00:00:00+00:00",
+        "to": null,
+        "prop": {
+          "from": {
+            "day": 10,
+            "month": 1,
+            "year": 2027
+          },
+          "to": {
+            "day": null,
+            "month": null,
+            "year": null
+          }
+        },
+        "string": "Jan 10, 2027 to ?"
+      },
+      "duration": "Unknown",
+      "rating": "PG-13 - Teens 13 or older",
+      "score": null,
+      "season": "winter",
+      "year": 2027,
+      "broadcast": {
+        "day": "Sundays",
+        "time": "17:00",
+        "timezone": "Asia/Tokyo",
+        "string": "Sundays at 17:00 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 605,
+          "type": "anime",
+          "name": "C2C"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 1,
+          "type": "anime",
+          "name": "Action"
+        },
+        {
+          "mal_id": 2,
+          "type": "anime",
+          "name": "Adventure"
+        },
+        {
+          "mal_id": 10,
+          "type": "anime",
+          "name": "Fantasy"
+        }
+      ]
+    },
+    {
+      "mal_id": 59139,
+      "title": "Tsuki ga Michibiku Isekai Douchuu 3rd Season",
+      "title_english": "Tsukimichi -Moonlit Fantasy- Season 3",
+      "title_japanese": "月が導く異世界道中 第三幕",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1055/143718.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1055/143718t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1055/143718l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1055/143718.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1055/143718t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1055/143718l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": null,
+      "status": "Not yet aired",
+      "aired": {
+        "from": null,
+        "to": null,
+        "prop": {
+          "from": {
+            "day": null,
+            "month": null,
+            "year": null
+          },
+          "to": {
+            "day": null,
+            "month": null,
+            "year": null
+          }
+        },
+        "string": null
+      },
+      "duration": "Unknown",
+      "rating": "PG-13 - Teens 13 or older",
+      "score": null,
+      "season": null,
+      "year": null,
+      "broadcast": {
+        "day": null,
+        "time": null,
+        "timezone": null,
+        "string": null
+      },
+      "studios": [],
+      "genres": [
+        {
+          "mal_id": 1,
+          "type": "anime",
+          "name": "Action"
+        },
+        {
+          "mal_id": 2,
+          "type": "anime",
+          "name": "Adventure"
+        },
+        {
+          "mal_id": 4,
+          "type": "anime",
+          "name": "Comedy"
+        },
+        {
+          "mal_id": 10,
+          "type": "anime",
+          "name": "Fantasy"
+        }
+      ]
+    }
+  ]
+}

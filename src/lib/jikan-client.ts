@@ -45,7 +45,7 @@ export function applyJikanPolicy(
     const gotSlot = await scheduler.acquire(deadline - MIN_ATTEMPT_MS);
     if (!gotSlot) {
       throw new AxiosError(
-        "Jikan request queue is longer than the time budget",
+        "Upstream request queue is longer than the time budget",
         "ERR_JIKAN_BUDGET",
         config,
       );

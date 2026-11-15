@@ -1,9 +1,27 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const { get } = vi.hoisted(() => ({ get: vi.fn() }));
+import fall2025 from "@/lib/fixtures/tenrai/season-2025-fall-p2.json";
+import seasonNow from "@/lib/fixtures/tenrai/season-now-p1.json";
+import upcoming from "@/lib/fixtures/tenrai/top-upcoming-p1.json";
+import seasonsList from "@/lib/fixtures/tenrai/seasons-list.json";
+import notFoundBody from "@/lib/fixtures/tenrai/not-found-99999999.json";
 
+const { get, store } = vi.hoisted(() => ({
+  get: vi.fn(),
+  store: new Map<string, unknown>(),
+}));
+
+// Stores a result only when the function resolves, like unstable_cache.
 vi.mock("next/cache", () => ({
-  unstable_cache: <T extends (...args: never[]) => unknown>(fn: T) => fn,
+  unstable_cache:
+    <A extends unknown[], R>(fn: (...args: A) => Promise<R>, keyParts: string[]) =>
+    async (...args: A) => {
+      const key = `${keyParts.join(",")}-${JSON.stringify(args)}`;
+      if (store.has(key)) return store.get(key) as R;
+      const result = await fn(...args);
+      store.set(key, result);
+      return result;
+    },
 }));
 vi.mock("@/lib/axios", () => ({ jikanApi: { get } }));
 
@@ -12,8 +30,10 @@ import {
   belongsOnCalendar,
   compareSeasons,
   fetchCalendarSeason,
+  getArchiveSeasonPage,
   getCalendarSeason,
   getSeasonAt,
+  getSeasonYears,
   parseSeasonQuery,
   toSeasonAnime,
   type SeasonAnime,
@@ -54,6 +74,7 @@ function page(items: SeasonAnime[], hasNext: boolean) {
 
 beforeEach(() => {
   get.mockReset();
+  store.clear();
 });
 
 describe("parseSeasonQuery", () => {
@@ -133,7 +154,9 @@ describe("fetchCalendarSeason", () => {
     const result = await fetchCalendarSeason("/seasons/now");
     expect(result.map((a) => a.mal_id)).toEqual([1, 3, 4]);
     expect(get).toHaveBeenCalledTimes(3);
-    expect(get).toHaveBeenLastCalledWith("/seasons/now", { params: { page: 3, limit: 25 } });
+    expect(get).toHaveBeenLastCalledWith("/seasons/now", {
+      params: { page: 3, limit: 25, continuing: true },
+    });
   });
 
   it("stops at the page limit", async () => {
@@ -183,13 +206,92 @@ describe("fetchCalendarSeason", () => {
     vi.useRealTimers();
     expect(result.complete).toBe(false);
     expect(result.anime).toHaveLength(1);
-    expect(get).toHaveBeenCalledWith("/seasons/now", { params: { page: 1, limit: 25 } });
+    expect(get).toHaveBeenCalledWith("/seasons/now", {
+      params: { page: 1, limit: 25, continuing: true },
+    });
   });
 
   it("uses the season endpoint for a future season", async () => {
     get.mockResolvedValueOnce(page([anime(1)], false));
     const result = await getCalendarSeason(2027, "winter", false);
     expect(result).toEqual({ anime: [toSeasonAnime(anime(1))], complete: true });
-    expect(get).toHaveBeenCalledWith("/seasons/2027/winter", { params: { page: 1, limit: 25 } });
+    expect(get).toHaveBeenCalledWith("/seasons/2027/winter", {
+      params: { page: 1, limit: 25, continuing: true },
+    });
+  });
+
+  it("fails instead of treating an error body as an empty season", async () => {
+    get.mockResolvedValueOnce({ data: notFoundBody });
+    await expect(fetchCalendarSeason("/seasons/now")).rejects.toThrow(
+      "Unexpected season page from Tenrai",
+    );
+  });
+
+  it("returns an empty season without caching it", async () => {
+    get
+      .mockResolvedValueOnce({ data: { data: [], pagination: { has_next_page: false } } })
+      .mockResolvedValueOnce(page([anime(1)], false));
+
+    expect(await getCalendarSeason(2027, "spring", false)).toEqual({ anime: [], complete: true });
+    expect((await getCalendarSeason(2027, "spring", false)).anime).toHaveLength(1);
+    expect((await getCalendarSeason(2027, "spring", false)).anime).toHaveLength(1);
+    expect(get).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe("getArchiveSeasonPage", () => {
+  it("maps a real Tenrai season page", async () => {
+    get.mockResolvedValueOnce({ data: fall2025 });
+    const result = await getArchiveSeasonPage(2025, "fall", 2);
+
+    expect(get).toHaveBeenCalledWith("/seasons/2025/fall", { params: { page: 2, limit: 25 } });
+    expect(result.lastPage).toBe(7);
+    expect(result.anime.map((a) => a.mal_id)).toEqual(fall2025.data.map((a) => a.mal_id));
+    expect(result.anime.every((a) => a.synopsis === null)).toBe(true);
+  });
+
+  it("returns an empty page without caching it", async () => {
+    const empty = { data: [], pagination: { last_visible_page: 8, has_next_page: false } };
+    get.mockResolvedValueOnce({ data: empty }).mockResolvedValueOnce({ data: fall2025 });
+
+    expect(await getArchiveSeasonPage(2025, "fall", 50)).toEqual({ anime: [], lastPage: 8 });
+    expect((await getArchiveSeasonPage(2025, "fall", 50)).anime).toHaveLength(5);
+    expect((await getArchiveSeasonPage(2025, "fall", 50)).anime).toHaveLength(5);
+    expect(get).toHaveBeenCalledTimes(2);
+  });
+
+  it("throws on an error body so it is not cached", async () => {
+    get.mockResolvedValueOnce({ data: notFoundBody });
+    await expect(getArchiveSeasonPage(2025, "fall", 1)).rejects.toThrow("Unexpected season page");
+  });
+});
+
+describe("getSeasonYears", () => {
+  it("lists the years newest first", async () => {
+    get.mockResolvedValueOnce({ data: seasonsList });
+    expect(await getSeasonYears()).toEqual([2027, 2026, 2025, 2024]);
+  });
+});
+
+describe("Tenrai season replies", () => {
+  it("keeps the fields the calendar needs, including partial dates", () => {
+    const slim = upcoming.data.map((a) => toSeasonAnime({ ...a, synopsis: null } as SeasonAnime));
+    const partial = slim.find((a) => a.aired.from === "2027-10")!;
+    expect(partial.aired.prop?.from).toEqual({ day: null, month: 10, year: 2027 });
+    expect(slim.find((a) => a.mal_id === 61006)!.aired.from).toBeNull();
+  });
+
+  it("puts weekly shows from the current season on the calendar", () => {
+    const slim = seasonNow.data.map((a) => toSeasonAnime({ ...a, synopsis: null } as SeasonAnime));
+    const onCalendar = slim.filter(belongsOnCalendar);
+    expect(onCalendar.length).toBeGreaterThan(0);
+    const apothecary = slim.find((a) => a.mal_id === 61987)!;
+    expect(belongsOnCalendar(apothecary)).toBe(true);
+    expect(apothecary.broadcast).toEqual({
+      day: "Fridays",
+      time: "23:00",
+      timezone: "Asia/Tokyo",
+      string: "Fridays at 23:00 (JST)",
+    });
   });
 });

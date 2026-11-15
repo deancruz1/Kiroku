@@ -1,42 +1,19 @@
 import { NextResponse } from "next/server";
-import { unstable_cache } from "next/cache";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { jikanApi } from "@/lib/axios";
 import { ensureShows } from "@/lib/anime-store";
+import { getTopByGenre } from "@/lib/jikan";
 import {
   GENRE_IDS,
   becauseOf,
   buildRecommendations,
   pickGenres,
   scoreGenres,
-  type Candidate,
 } from "@/lib/recommend";
-import type { JikanSearchResponse } from "@/types/anime";
 
-// Shared by every user; a failed request throws, so it is not cached
-const getTopByGenre = unstable_cache(
-  async (genreId: number): Promise<Candidate[]> => {
-    const { data } = await jikanApi.get<JikanSearchResponse>("/anime", {
-      params: {
-        genres: genreId,
-        order_by: "score",
-        sort: "desc",
-        limit: 25,
-        sfw: true,
-      },
-    });
-    return (data.data ?? []).map((anime) => ({
-      mal_id: anime.mal_id,
-      title: anime.title_english || anime.title,
-      image: anime.images.webp.large_image_url,
-      score: anime.score,
-      genres: anime.genres?.map((g) => g.name) || [],
-    }));
-  },
-  ["recommendations-top-by-genre"],
-  { revalidate: 21600 },
-);
+// The stored-show backfill and the genre lists each have a 10 second request
+// budget and run one after the other.
+export const maxDuration = 30;
 
 export async function GET() {
   const session = await auth();
@@ -71,7 +48,7 @@ export async function GET() {
   }
 
   // Started together so an outage costs one request budget, not one per genre.
-  // The scheduler inside jikanApi still spaces the requests.
+  // The scheduler inside the upstream client still spaces the requests.
   const settled = await Promise.allSettled(
     topGenres.map((genre) => getTopByGenre(GENRE_IDS[genre])),
   );

@@ -1,0 +1,306 @@
+{
+  "pagination": {
+    "last_visible_page": 1,
+    "has_next_page": false,
+    "current_page": 1,
+    "items": {
+      "count": 4,
+      "total": 4,
+      "per_page": 20
+    }
+  },
+  "data": [
+    {
+      "mal_id": 52991,
+      "title": "Sousou no Frieren",
+      "title_english": "Frieren: Beyond Journey's End",
+      "title_japanese": "葬送のフリーレン",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1015/138006.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1015/138006t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1015/138006l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1015/138006.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1015/138006t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1015/138006l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": 28,
+      "status": "Finished Airing",
+      "aired": {
+        "from": "2023-09-29T00:00:00+00:00",
+        "to": "2024-03-22T00:00:00+00:00",
+        "prop": {
+          "from": {
+            "day": 29,
+            "month": 9,
+            "year": 2023
+          },
+          "to": {
+            "day": 22,
+            "month": 3,
+            "year": 2024
+          }
+        },
+        "string": "Sep 29, 2023 to Mar 22, 2024"
+      },
+      "duration": "24 min per ep",
+      "rating": "PG-13 - Teens 13 or older",
+      "score": 9.24,
+      "season": "fall",
+      "year": 2023,
+      "broadcast": {
+        "day": "Fridays",
+        "time": "23:00",
+        "timezone": "Asia/Tokyo",
+        "string": "Fridays at 23:00 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 11,
+          "type": "anime",
+          "name": "Madhouse"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 2,
+          "type": "anime",
+          "name": "Adventure"
+        },
+        {
+          "mal_id": 46,
+          "type": "anime",
+          "name": "Award Winning"
+        },
+        {
+          "mal_id": 8,
+          "type": "anime",
+          "name": "Drama"
+        },
+        {
+          "mal_id": 10,
+          "type": "anime",
+          "name": "Fantasy"
+        }
+      ]
+    },
+    {
+      "mal_id": 59978,
+      "title": "Sousou no Frieren 2nd Season",
+      "title_english": "Frieren: Beyond Journey's End Season 2",
+      "title_japanese": "葬送のフリーレン 第2期",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1921/154528.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1921/154528t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1921/154528l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1921/154528.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1921/154528t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1921/154528l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": 10,
+      "status": "Finished Airing",
+      "aired": {
+        "from": "2026-01-16T00:00:00+00:00",
+        "to": "2026-03-27T00:00:00+00:00",
+        "prop": {
+          "from": {
+            "day": 16,
+            "month": 1,
+            "year": 2026
+          },
+          "to": {
+            "day": 27,
+            "month": 3,
+            "year": 2026
+          }
+        },
+        "string": "Jan 16, 2026 to Mar 27, 2026"
+      },
+      "duration": "24 min per ep",
+      "rating": "PG-13 - Teens 13 or older",
+      "score": 8.83,
+      "season": "winter",
+      "year": 2026,
+      "broadcast": {
+        "day": "Fridays",
+        "time": "23:00",
+        "timezone": "Asia/Tokyo",
+        "string": "Fridays at 23:00 (JST)"
+      },
+      "studios": [
+        {
+          "mal_id": 11,
+          "type": "anime",
+          "name": "Madhouse"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 2,
+          "type": "anime",
+          "name": "Adventure"
+        },
+        {
+          "mal_id": 8,
+          "type": "anime",
+          "name": "Drama"
+        },
+        {
+          "mal_id": 10,
+          "type": "anime",
+          "name": "Fantasy"
+        }
+      ]
+    },
+    {
+      "mal_id": 63816,
+      "title": "Sousou no Frieren: Ougonkyou-hen",
+      "title_english": "Frieren: Beyond Journey's End - Golden Land Arc",
+      "title_japanese": "葬送のフリーレン 黄金郷編",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1619/156313.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1619/156313t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1619/156313l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1619/156313.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1619/156313t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1619/156313l.webp"
+        }
+      },
+      "type": "TV",
+      "episodes": null,
+      "status": "Not yet aired",
+      "aired": {
+        "from": "2027-10",
+        "to": null,
+        "prop": {
+          "from": {
+            "day": null,
+            "month": 10,
+            "year": 2027
+          },
+          "to": {
+            "day": null,
+            "month": null,
+            "year": null
+          }
+        },
+        "string": "Oct 2027 to ?"
+      },
+      "duration": "Unknown",
+      "rating": "PG-13 - Teens 13 or older",
+      "score": null,
+      "season": "fall",
+      "year": 2027,
+      "broadcast": {
+        "day": null,
+        "time": null,
+        "timezone": null,
+        "string": null
+      },
+      "studios": [
+        {
+          "mal_id": 11,
+          "type": "anime",
+          "name": "Madhouse"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 2,
+          "type": "anime",
+          "name": "Adventure"
+        },
+        {
+          "mal_id": 8,
+          "type": "anime",
+          "name": "Drama"
+        },
+        {
+          "mal_id": 10,
+          "type": "anime",
+          "name": "Fantasy"
+        }
+      ]
+    },
+    {
+      "mal_id": 56885,
+      "title": "Sousou no Frieren: ●● no Mahou",
+      "title_english": "Frieren: Beyond Journey's End Mini Anime",
+      "title_japanese": "葬送のフリーレン ～●●の魔法～",
+      "images": {
+        "jpg": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1045/150038.jpg",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1045/150038t.jpg",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1045/150038l.jpg"
+        },
+        "webp": {
+          "image_url": "https://cdn.myanimelist.net/images/anime/1045/150038.webp",
+          "small_image_url": "https://cdn.myanimelist.net/images/anime/1045/150038t.webp",
+          "large_image_url": "https://cdn.myanimelist.net/images/anime/1045/150038l.webp"
+        }
+      },
+      "type": "ONA",
+      "episodes": 24,
+      "status": "Finished Airing",
+      "aired": {
+        "from": "2023-10-11T00:00:00+00:00",
+        "to": "2026-05-22T00:00:00+00:00",
+        "prop": {
+          "from": {
+            "day": 11,
+            "month": 10,
+            "year": 2023
+          },
+          "to": {
+            "day": 22,
+            "month": 5,
+            "year": 2026
+          }
+        },
+        "string": "Oct 11, 2023 to May 22, 2026"
+      },
+      "duration": "1 min per ep",
+      "rating": "PG-13 - Teens 13 or older",
+      "score": 7.36,
+      "season": "fall",
+      "year": 2023,
+      "broadcast": {
+        "day": null,
+        "time": null,
+        "timezone": null,
+        "string": null
+      },
+      "studios": [
+        {
+          "mal_id": 2705,
+          "type": "anime",
+          "name": "TOHO animation STUDIO"
+        }
+      ],
+      "genres": [
+        {
+          "mal_id": 4,
+          "type": "anime",
+          "name": "Comedy"
+        },
+        {
+          "mal_id": 10,
+          "type": "anime",
+          "name": "Fantasy"
+        }
+      ]
+    }
+  ]
+}

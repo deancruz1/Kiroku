@@ -7,6 +7,11 @@ import {
   showTitle,
   toJikanAnime,
 } from "@/lib/anime-shape";
+import batch from "@/lib/fixtures/tenrai/batch-16-search-ids.json";
+import fmab from "@/lib/fixtures/tenrai/fmab-5114-full.json";
+import airing from "@/lib/fixtures/tenrai/airing-61987-full.json";
+import yourName from "@/lib/fixtures/tenrai/your-name-32281-full.json";
+import upcoming from "@/lib/fixtures/tenrai/top-upcoming-p1.json";
 
 const now = new Date("2026-11-15T12:00:00Z");
 const hoursAgo = (h: number) => new Date(now.getTime() - h * 60 * 60 * 1000);
@@ -125,6 +130,54 @@ describe("mapJikanAnime", () => {
     expect(mapJikanAnime({ mal_id: 3, title: "" }, now).title).toBe(
       "Anime #3",
     );
+  });
+});
+
+describe("mapJikanAnime with Tenrai replies", () => {
+  it("maps every show in the 16-id batch", () => {
+    const rows = batch.data.map((anime) => mapJikanAnime(anime, now));
+    expect(rows).toHaveLength(16);
+    for (const row of rows) {
+      expect(row.title).not.toBe("");
+      expect(row.imageUrl).toMatch(/^https:\/\/cdn\.myanimelist\.net\/images\/anime\/.+l\.webp$/);
+      expect(row.durationMinutes).toBeGreaterThan(0);
+      expect(row.genres.length).toBeGreaterThan(0);
+    }
+  });
+
+  it("keeps a null English title for Spy x Family", () => {
+    const spy = batch.data.find((a) => a.mal_id === 50265)!;
+    const row = mapJikanAnime(spy, now);
+    expect(row.title).toBe("Spy x Family");
+    expect(row.titleEnglish).toBeNull();
+    expect(showTitle({ ...row, fetchedAt: now }, 50265)).toBe("Spy x Family");
+  });
+
+  it("maps full records", () => {
+    expect(mapJikanAnime(fmab.data, now)).toMatchObject({
+      id: 5114,
+      title: "Fullmetal Alchemist: Brotherhood",
+      episodes: 64,
+      status: "Finished Airing",
+      durationMinutes: 24,
+      season: "spring",
+      year: 2009,
+    });
+    expect(mapJikanAnime(airing.data, now)).toMatchObject({
+      id: 61987,
+      status: "Currently Airing",
+      season: "fall",
+      year: 2026,
+    });
+    expect(mapJikanAnime(yourName.data, now).durationMinutes).toBe(106);
+  });
+
+  it("handles upcoming shows with partial or missing dates", () => {
+    const rows = upcoming.data.map((anime) => mapJikanAnime(anime, now));
+    const noYear = rows.filter((r) => r.year === null);
+    expect(noYear.length).toBeGreaterThan(0);
+    expect(rows.every((r) => r.status === "Not yet aired")).toBe(true);
+    expect(rows.every((r) => r.episodes === null || r.episodes > 0)).toBe(true);
   });
 });
 

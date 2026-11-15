@@ -1,0 +1,7 @@
+{
+  "status": 400,
+  "type": "BadRequestException",
+  "message": "querystring/limit must be <= 100",
+  "error": "Check the request parameters against the documentation and try again.",
+  "path": "/v1/anime?q=frieren&limit=101"
+}

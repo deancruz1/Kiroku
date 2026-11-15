@@ -1,0 +1,71 @@
+{
+  "data": {
+    "mal_id": 32281,
+    "title": "Kimi no Na wa.",
+    "title_english": "Your Name.",
+    "title_japanese": "君の名は。",
+    "images": {
+      "jpg": {
+        "image_url": "https://cdn.myanimelist.net/images/anime/5/87048.jpg",
+        "small_image_url": "https://cdn.myanimelist.net/images/anime/5/87048t.jpg",
+        "large_image_url": "https://cdn.myanimelist.net/images/anime/5/87048l.jpg"
+      },
+      "webp": {
+        "image_url": "https://cdn.myanimelist.net/images/anime/5/87048.webp",
+        "small_image_url": "https://cdn.myanimelist.net/images/anime/5/87048t.webp",
+        "large_image_url": "https://cdn.myanimelist.net/images/anime/5/87048l.webp"
+      }
+    },
+    "type": "Movie",
+    "episodes": 1,
+    "status": "Finished Airing",
+    "aired": {
+      "from": "2016-08-26T00:00:00+00:00",
+      "to": null,
+      "prop": {
+        "from": {
+          "day": 26,
+          "month": 8,
+          "year": 2016
+        },
+        "to": {
+          "day": null,
+          "month": null,
+          "year": null
+        }
+      },
+      "string": "Aug 26, 2016"
+    },
+    "duration": "1 hr 46 min",
+    "rating": "PG-13 - Teens 13 or older",
+    "score": 8.82,
+    "season": "summer",
+    "year": 2016,
+    "broadcast": {
+      "day": null,
+      "time": null,
+      "timezone": null,
+      "string": null
+    },
+    "studios": [
+      {
+        "mal_id": 291,
+        "type": "anime",
+        "name": "CoMix Wave Films"
+      }
+    ],
+    "genres": [
+      {
+        "mal_id": 46,
+        "type": "anime",
+        "name": "Award Winning"
+      },
+      {
+        "mal_id": 8,
+        "type": "anime",
+        "name": "Drama"
+      }
+    ],
+    "synopsis": "Mitsuha Miyamizu, a high school girl, yearns to live the life of a boy in the bustling city of Tokyo—a dream that stands in stark contrast to her present life in the countryside. Meanwhile in the city, Taki Tachibana lives a busy life as a high school student while juggling his part-time job and hopes for a future in architecture.\n\nOne day, Mitsuha awakens in a room that is not her own and suddenly finds herself living the dream life in Tokyo—but in Taki's body! Elsewhere, Taki finds himself living Mitsuha's life in the humble countryside. In pursuit of an answer to this strange phenomenon, they begin to search for one another.\n\nKimi no Na wa. revolves around Mitsuha and Taki's actions, which begin to have a dramatic impact on each other's lives, weaving them into a fabric held together by fate and circumstance.\n\n[Written by MAL Rewrite]"
+  }
+}
