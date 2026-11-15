@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { getTopAnime } from "@/lib/jikan";
+import { parsePage, parseTopFilter, uniqueByMalId } from "@/lib/params";
 import { AnimeCard } from "@/components/anime-card";
 import { Badge } from "@/components/ui/badge";
 import { Pagination } from "@/components/pagination";
-import type { JikanAnime } from "@/types/anime";
+import type { JikanTopResponse } from "@/types/anime";
 
 const FILTERS = [
   { value: "bypopularity", label: "Most Popular" },
@@ -15,27 +16,20 @@ const FILTERS = [
 export default async function TopPage({
   searchParams,
 }: {
-  searchParams: Promise<{ filter?: string; page?: string }>;
+  searchParams: Promise<{ filter?: string | string[]; page?: string | string[] }>;
 }) {
   const { filter, page } = await searchParams;
-  const activeFilter = filter || "bypopularity";
-  const currentPage = parseInt(page || "1", 10);
+  const activeFilter = parseTopFilter(filter);
+  const currentPage = parsePage(page);
 
-  let anime: JikanAnime[] = [];
-  let pagination = null;
-  let error = null;
-
-  try {
-    const response = await getTopAnime(
-      currentPage,
-      activeFilter as "airing" | "upcoming" | "bypopularity" | "favorite",
-    );
-    anime = response.data || [];
-    pagination = response.pagination;
-  } catch {
-    error = "Failed to load top anime.";
-    anime = [];
-  }
+  // Failures are thrown to top/error.tsx, which offers a retry.
+  const response: JikanTopResponse = await getTopAnime(
+    currentPage,
+    activeFilter,
+  );
+  // Jikan lists are scraped from MAL and can repeat an entry; cards are keyed by id.
+  const anime = uniqueByMalId(response.data || []);
+  const pagination = response.pagination;
 
   const activeLabel = FILTERS.find((f) => f.value === activeFilter)?.label;
 
@@ -51,7 +45,11 @@ export default async function TopPage({
 
         <div className="flex gap-1.5 sm:gap-2 mb-6 sm:mb-8 flex-wrap justify-center sm:justify-start">
           {FILTERS.map((f) => (
-            <Link key={f.value} href={`/top?filter=${f.value}`}>
+            <Link
+              key={f.value}
+              href={`/top?filter=${f.value}`}
+              aria-current={activeFilter === f.value ? "page" : undefined}
+            >
               <Badge
                 variant={activeFilter === f.value ? "default" : "secondary"}
                 className="cursor-pointer text-xs sm:text-sm"
@@ -62,8 +60,10 @@ export default async function TopPage({
           ))}
         </div>
 
-        {error && (
-          <p className="text-destructive text-sm sm:text-base">{error}</p>
+        {anime.length === 0 && (
+          <p className="text-muted-foreground text-sm sm:text-base">
+            No anime on this page.
+          </p>
         )}
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">

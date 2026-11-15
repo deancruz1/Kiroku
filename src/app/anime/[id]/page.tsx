@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { Star, Tv, Clock, Calendar, ThumbsUp } from "lucide-react";
 import {
   getAnimeById,
@@ -7,8 +8,10 @@ import {
   getAnimeReviews,
   getAnimeVideos,
   getAnimeRelations,
-  getAnimeCharacters,
+  getAnimeCharacterPreview,
+  isJikanNotFound,
 } from "@/lib/jikan";
+import { parseAnimeId } from "@/lib/params";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { AddButton } from "./add-button";
@@ -17,56 +20,50 @@ import { ReviewsSection } from "./reviews-section";
 import type { JikanRecommendation, JikanCharacter } from "@/types/anime";
 import { BackButton } from "./back-button";
 
+const MAX_REVIEWS = 10;
+
 interface AnimePageProps {
   params: Promise<{ id: string }>;
 }
 
+function settledValue<T>(result: PromiseSettledResult<T>) {
+  return result.status === "fulfilled" ? result.value : null;
+}
+
 export default async function AnimePage({ params }: AnimePageProps) {
   const { id } = await params;
-  const malId = parseInt(id, 10);
+  const malId = parseAnimeId(id);
+  if (malId === null) notFound();
 
-  if (isNaN(malId)) {
-    return (
-      <main className="min-h-screen bg-background flex items-center justify-center px-4">
-        <p className="text-muted-foreground text-sm sm:text-base">
-          Invalid anime ID.
-        </p>
-      </main>
-    );
-  }
+  // The show is requested first so it takes the first rate-limit slot. The
+  // other sections are optional: a failure there only hides that section.
+  const animeRequest = getAnimeById(malId);
+  const secondary = Promise.allSettled([
+    getAnimeRecommendations(malId),
+    getAnimeReviews(malId),
+    getAnimeVideos(malId),
+    getAnimeRelations(malId),
+    getAnimeCharacterPreview(malId, 12),
+  ]);
 
-  let anime, recommendations, reviews, videos, relations, characters;
-  try {
-    const [
-      animeRes,
-      recsRes,
-      reviewsRes,
-      videosRes,
-      relationsRes,
-      charactersRes,
-    ] = await Promise.all([
-      getAnimeById(malId),
-      getAnimeRecommendations(malId),
-      getAnimeReviews(malId),
-      getAnimeVideos(malId),
-      getAnimeRelations(malId),
-      getAnimeCharacters(malId),
-    ]);
-    anime = animeRes.data;
-    recommendations = recsRes.data?.slice(0, 6) || [];
-    reviews = reviewsRes.data || [];
-    videos = videosRes.data?.promo || [];
-    relations = relationsRes.data || [];
-    characters = charactersRes.data?.slice(0, 12) || [];
-  } catch {
-    return (
-      <main className="min-h-screen bg-background flex items-center justify-center px-4">
-        <p className="text-muted-foreground text-sm sm:text-base">
-          Anime not found.
-        </p>
-      </main>
-    );
-  }
+  // Only a 404 means the show does not exist. Any other failure is thrown to
+  // error.tsx so the visitor gets a retry instead of a false "not found".
+  const animeRes = await animeRequest.catch((error) => {
+    if (isJikanNotFound(error)) return null;
+    throw error;
+  });
+  if (!animeRes?.data) notFound();
+  const anime = animeRes.data;
+
+  const [recsRes, reviewsRes, videosRes, relationsRes, charactersRes] = (
+    await secondary
+  ).map(settledValue);
+  const recommendations = recsRes?.data?.slice(0, 6) || [];
+  const reviews = reviewsRes?.data?.slice(0, MAX_REVIEWS) || [];
+  const videos = videosRes?.data?.promo || [];
+  const relations = relationsRes?.data || [];
+  const characters = charactersRes?.data || [];
+  const displayTitle = anime.title_english || anime.title;
 
   return (
     <main className="min-h-screen bg-background">
@@ -77,7 +74,7 @@ export default async function AnimePage({ params }: AnimePageProps) {
           <div className="relative w-full max-w-64 sm:w-75 sm:h-112.5 aspect-[3/4] sm:aspect-auto shrink-0 mx-auto md:mx-0">
             <Image
               src={anime.images.webp.large_image_url}
-              alt={anime.title}
+              alt={`${displayTitle} poster`}
               fill
               sizes="(max-width: 640px) 256px, 300px"
               className="rounded-lg object-cover shadow-lg"
@@ -118,6 +115,7 @@ export default async function AnimePage({ params }: AnimePageProps) {
               {anime.score && (
                 <span className="flex items-center gap-1">
                   <Star className="h-4 w-4 text-yellow-500" />
+                  <span className="sr-only">Score:</span>
                   {anime.score.toFixed(1)}
                 </span>
               )}
@@ -168,7 +166,7 @@ export default async function AnimePage({ params }: AnimePageProps) {
                 <div className="aspect-video rounded-lg overflow-hidden">
                   <iframe
                     src={`https://www.youtube.com/embed/${videos[0].trailer.youtube_id}`}
-                    title="Trailer"
+                    title={`${displayTitle} trailer`}
                     allowFullScreen
                     className="w-full h-full"
                   />
@@ -196,7 +194,7 @@ export default async function AnimePage({ params }: AnimePageProps) {
                     <div className="relative w-full aspect-3/4">
                       <Image
                         src={rec.entry.images.webp.large_image_url}
-                        alt={rec.entry.title}
+                        alt=""
                         fill
                         sizes="144px"
                         className="object-cover"
@@ -209,6 +207,7 @@ export default async function AnimePage({ params }: AnimePageProps) {
                       <p className="text-xs text-muted-foreground mt-0.5">
                         <ThumbsUp className="h-3 w-3 inline mr-0.5" />
                         {rec.votes}
+                        <span className="sr-only"> votes</span>
                       </p>
                     </div>
                   </div>
@@ -227,7 +226,7 @@ export default async function AnimePage({ params }: AnimePageProps) {
                     <div className="relative w-full aspect-3/4">
                       <Image
                         src={rec.entry.images.webp.large_image_url}
-                        alt={rec.entry.title}
+                        alt=""
                         fill
                         sizes="16vw"
                         className="object-cover"
@@ -240,6 +239,7 @@ export default async function AnimePage({ params }: AnimePageProps) {
                       <p className="text-xs text-muted-foreground mt-0.5">
                         <ThumbsUp className="h-3 w-3 inline mr-0.5" />
                         {rec.votes}
+                        <span className="sr-only"> votes</span>
                       </p>
                     </div>
                   </div>
@@ -272,7 +272,7 @@ export default async function AnimePage({ params }: AnimePageProps) {
                               char.character.images.webp.image_url ||
                               char.character.images.jpg.image_url
                             }
-                            alt={char.character.name}
+                            alt=""
                             fill
                             sizes="144px"
                             className="object-cover"
@@ -310,7 +310,7 @@ export default async function AnimePage({ params }: AnimePageProps) {
                               char.character.images.webp.image_url ||
                               char.character.images.jpg.image_url
                             }
-                            alt={char.character.name}
+                            alt=""
                             fill
                             sizes="144px"
                             className="object-cover"
@@ -347,7 +347,7 @@ export default async function AnimePage({ params }: AnimePageProps) {
                         char.character.images.webp.image_url ||
                         char.character.images.jpg.image_url
                       }
-                      alt={char.character.name}
+                      alt=""
                       fill
                       sizes="16vw"
                       className="object-cover"

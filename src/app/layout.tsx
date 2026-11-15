@@ -9,6 +9,7 @@ import { Navbar } from "@/components/navbar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://kiroku-nyaa.vercel.app"),
   title: {
     default: "Kiroku | Anime Watch Tracker",
     template: "%s | Kiroku",

@@ -2,12 +2,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 
-export function SearchBar() {
-  const [query, setQuery] = useState("");
+export function SearchBar({ defaultQuery = "" }: { defaultQuery?: string }) {
+  const [query, setQuery] = useState(defaultQuery);
   const router = useRouter();
 
   function handleSubmit(e: React.FormEvent) {
@@ -19,11 +17,14 @@ export function SearchBar() {
 
   return (
     <form
+      role="search"
       onSubmit={handleSubmit}
       className="flex items-stretch gap-2 w-full h-14"
     >
       <div className="flex-1">
         <Input
+          name="q"
+          aria-label="Search anime"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search for an anime..."

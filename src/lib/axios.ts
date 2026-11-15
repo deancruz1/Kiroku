@@ -1,29 +1,14 @@
+import "server-only";
 import axios from "axios";
+import { applyJikanPolicy } from "@/lib/jikan-client";
+import { ATTEMPT_TIMEOUT_MS } from "@/lib/jikan-policy";
 
 export const jikanApi = axios.create({
   baseURL: "https://api.jikan.moe/v4",
-  timeout: 15000,
+  timeout: ATTEMPT_TIMEOUT_MS,
 });
 
-// Rate limiting + timeout retries
-jikanApi.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const config = error.config;
-    config.retryCount = config.retryCount || 0;
-
-    const shouldRetry =
-      error.response?.status === 429 ||
-      error.response?.status === 504 ||
-      error.code === "ECONNABORTED";
-
-    if (shouldRetry && config.retryCount < 3) {
-      config.retryCount++;
-      const delay = 1000 * config.retryCount;
-      await new Promise((resolve) => setTimeout(resolve, delay));
-      return jikanApi.request(config);
-    }
-
-    return Promise.reject(error);
-  },
-);
+// Time budget, retries and request spacing. The scheduler is per server
+// instance (or browser tab), so it cuts self-inflicted 429s but cannot
+// coordinate separate serverless instances.
+applyJikanPolicy(jikanApi);

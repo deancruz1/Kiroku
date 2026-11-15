@@ -1,33 +1,27 @@
 import { searchAnime } from "@/lib/jikan";
+import { getSearchQuery, parsePage, uniqueByMalId } from "@/lib/params";
 import { AnimeCard } from "@/components/anime-card";
 import { SearchBar } from "@/components/search-bar";
 import { Pagination } from "@/components/pagination";
 
 interface SearchPageProps {
-  searchParams: Promise<{ q?: string; page?: string }>;
+  searchParams: Promise<{ q?: string | string[]; page?: string | string[] }>;
 }
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
   const { q, page } = await searchParams;
-  const query = q || "";
-  const currentPage = parseInt(page || "1", 10);
+  const query = getSearchQuery(q);
+  const currentPage = parsePage(page);
 
-  let results = null;
-  let error = null;
-
-  if (query) {
-    try {
-      results = await searchAnime(query, currentPage);
-    } catch {
-      error = "Failed to fetch results. Please try again.";
-    }
-  }
+  // Failures are thrown to search/error.tsx, which offers a retry.
+  const results = query ? await searchAnime(query, currentPage) : null;
+  const anime = results ? uniqueByMalId(results.data) : [];
 
   return (
     <main className="min-h-screen bg-background">
       <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-8">
         <div className="max-w-xl mx-auto mb-6 sm:mb-8">
-          <SearchBar />
+          <SearchBar key={query} defaultQuery={query} />
         </div>
 
         {!query && (
@@ -36,29 +30,18 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           </p>
         )}
 
-        {error && (
-          <p className="text-center text-destructive text-sm sm:text-base">
-            {error}
-          </p>
-        )}
-
-        {results && results.data.length === 0 && (
+        {results && anime.length === 0 && (
           <p className="text-center text-muted-foreground text-sm sm:text-base">
             No results found for &ldquo;{query}&rdquo;
           </p>
         )}
 
-        {results && results.data.length > 0 && (
+        {results && anime.length > 0 && (
           <>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
-              {results.data
-                .filter(
-                  (anime, index, self) =>
-                    self.findIndex((a) => a.mal_id === anime.mal_id) === index,
-                )
-                .map((anime) => (
-                  <AnimeCard key={anime.mal_id} anime={anime} />
-                ))}
+              {anime.map((show) => (
+                <AnimeCard key={show.mal_id} anime={show} />
+              ))}
             </div>
 
             <div className="mt-6 sm:mt-8">

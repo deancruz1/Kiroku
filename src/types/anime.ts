@@ -46,32 +46,6 @@ export interface JikanSearchResponse {
   };
 }
 
-export interface JikanSeasonResponse {
-  data: JikanAnime[];
-  pagination: {
-    last_visible_page: number;
-    has_next_page: boolean;
-    items: {
-      count: number;
-      total: number;
-      per_page: number;
-    };
-  };
-}
-
-export interface JikanScheduleResponse {
-  data: JikanAnime[];
-  pagination: {
-    last_visible_page: number;
-    has_next_page: boolean;
-    items: {
-      count: number;
-      total: number;
-      per_page: number;
-    };
-  };
-}
-
 export interface JikanRecommendation {
   entry: {
     mal_id: number;
@@ -102,6 +76,9 @@ export interface JikanReview {
   review: string;
   date: string;
   tags: string[];
+  url?: string;
+  is_spoiler?: boolean;
+  is_preliminary?: boolean;
 }
 export interface JikanCharacter {
   character: {
