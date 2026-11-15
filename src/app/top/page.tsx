@@ -1,17 +1,18 @@
-import Link from "next/link";
 import { getTopAnime } from "@/lib/jikan";
 import { parsePage, parseTopFilter, uniqueByMalId } from "@/lib/params";
-import { AnimeCard } from "@/components/anime-card";
-import { Badge } from "@/components/ui/badge";
+import { AnimeRow, AnimeRowHeader, type AnimeRowShow } from "@/components/anime-row";
+import { EmptyState } from "@/components/empty-state";
+import { PageHeading } from "@/components/page-heading";
 import { Pagination } from "@/components/pagination";
+import { RankingTabs } from "./ranking-tabs";
 import type { JikanTopResponse } from "@/types/anime";
 
-const FILTERS = [
-  { value: "bypopularity", label: "Most Popular" },
-  { value: "airing", label: "Airing" },
-  { value: "upcoming", label: "Upcoming" },
-  { value: "favorite", label: "Most Favorited" },
-];
+const PAGE_SIZE = 20;
+
+type TopResponse = JikanTopResponse & {
+  data: AnimeRowShow[];
+  pagination?: { items?: { per_page?: number } };
+};
 
 export default async function TopPage({
   searchParams,
@@ -23,66 +24,44 @@ export default async function TopPage({
   const currentPage = parsePage(page);
 
   // Failures are thrown to top/error.tsx, which offers a retry.
-  const response: JikanTopResponse = await getTopAnime(
-    currentPage,
-    activeFilter,
-  );
-  // Jikan lists are scraped from MAL and can repeat an entry; cards are keyed by id.
-  const anime = uniqueByMalId(response.data || []);
+  const response: TopResponse = await getTopAnime(currentPage, activeFilter);
+  const rows = response.data || [];
+  // Jikan lists are scraped from MAL and can repeat an entry; rows are keyed by id.
+  const anime = uniqueByMalId(rows);
   const pagination = response.pagination;
-
-  const activeLabel = FILTERS.find((f) => f.value === activeFilter)?.label;
+  const perPage = pagination?.items?.per_page || PAGE_SIZE;
+  const firstRank = (currentPage - 1) * perPage + 1;
 
   return (
-    <main className="min-h-screen bg-background">
-      <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-8">
-        <h1 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2 text-center sm:text-left">
-          Top Anime
-        </h1>
-        <p className="text-muted-foreground text-sm sm:text-base mb-4 sm:mb-6 text-center sm:text-left">
-          {activeLabel}
-        </p>
+    <main className="page">
+      <PageHeading title="Top shows" />
+      <RankingTabs active={activeFilter} />
 
-        <div className="flex gap-1.5 sm:gap-2 mb-6 sm:mb-8 flex-wrap justify-center sm:justify-start">
-          {FILTERS.map((f) => (
-            <Link
-              key={f.value}
-              href={`/top?filter=${f.value}`}
-              aria-current={activeFilter === f.value ? "page" : undefined}
-            >
-              <Badge
-                variant={activeFilter === f.value ? "default" : "secondary"}
-                className="cursor-pointer text-xs sm:text-sm"
-              >
-                {f.label}
-              </Badge>
-            </Link>
-          ))}
+      {anime.length === 0 ? (
+        <EmptyState className="mt-6">No shows on this page.</EmptyState>
+      ) : (
+        <div className="mt-6 md:mt-8">
+          <AnimeRowHeader ranked />
+          <ol>
+            {anime.map((show) => (
+              <AnimeRow
+                key={show.mal_id}
+                anime={show}
+                rank={firstRank + rows.indexOf(show)}
+              />
+            ))}
+          </ol>
         </div>
+      )}
 
-        {anime.length === 0 && (
-          <p className="text-muted-foreground text-sm sm:text-base">
-            No anime on this page.
-          </p>
-        )}
-
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
-          {anime.map((show) => (
-            <AnimeCard key={show.mal_id} anime={show} />
-          ))}
-        </div>
-
-        {pagination && (
-          <div className="mt-6 sm:mt-8">
-            <Pagination
-              currentPage={currentPage}
-              lastPage={pagination.last_visible_page}
-              baseUrl={`/top?filter=${activeFilter}`}
-              paramName="page"
-            />
-          </div>
-        )}
-      </div>
+      {pagination && (
+        <Pagination
+          currentPage={currentPage}
+          lastPage={pagination.last_visible_page}
+          baseUrl={`/top?filter=${activeFilter}`}
+          paramName="page"
+        />
+      )}
     </main>
   );
 }

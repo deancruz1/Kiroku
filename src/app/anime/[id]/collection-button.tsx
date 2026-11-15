@@ -6,6 +6,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { FolderPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { InlineMessage } from "@/components/inline-message";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -96,15 +97,15 @@ export function CollectionButton({ animeId }: { animeId: number }) {
   }
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-1.5">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline">
-            <FolderPlus className="h-4 w-4 mr-2" />
-            {addedList ? "Added" : "Add to Collection"}
+          <Button size="lg" variant="outline">
+            <FolderPlus aria-hidden="true" />
+            {addedList ? "Added to collection" : "Add to collection"}
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-56">
+        <DropdownMenuContent align="start" className="w-64">
           {isError && !lists && (
             <>
               <DropdownMenuItem disabled>
@@ -122,12 +123,12 @@ export function CollectionButton({ animeId }: { animeId: number }) {
                     key={list.id}
                     onClick={() => !alreadyIn && handleAdd(list.id, list.name)}
                     disabled={adding === list.id || alreadyIn}
-                    className="flex items-center justify-between"
+                    className="flex min-h-10 items-center justify-between gap-3"
                   >
-                    <span>{list.name}</span>
+                    <span className="min-w-0 truncate">{list.name}</span>
                     {alreadyIn && (
-                      <span className="text-xs text-muted-foreground">
-                        In list
+                      <span className="shrink-0 text-[15px] text-muted-foreground">
+                        Added
                       </span>
                     )}
                   </DropdownMenuItem>
@@ -136,20 +137,21 @@ export function CollectionButton({ animeId }: { animeId: number }) {
               <DropdownMenuSeparator />
             </>
           )}
-          <div className="px-2 py-1.5 flex gap-1">
+          <div className="flex items-end gap-2 px-2 py-1.5">
             <Input
-              placeholder="New collection..."
+              placeholder="New collection"
               aria-label="New collection name"
               value={newName}
               maxLength={LIST_NAME_MAX}
               onChange={(e) => setNewName(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleCreateAndAdd()}
-              className="h-7 text-xs"
+              className="h-10"
               onClick={(e) => e.stopPropagation()}
             />
             <Button
-              size="sm"
-              className="h-7 text-xs shrink-0"
+              size="lg"
+              variant="outline"
+              className="shrink-0 px-3"
               onClick={handleCreateAndAdd}
               disabled={adding === "__new__" || !newName.trim()}
             >
@@ -158,16 +160,8 @@ export function CollectionButton({ animeId }: { animeId: number }) {
           </div>
         </DropdownMenuContent>
       </DropdownMenu>
-      {message && (
-        <p role="status" className="text-xs text-muted-foreground">
-          {message}
-        </p>
-      )}
-      {error && (
-        <p role="alert" className="text-xs text-destructive">
-          {error}
-        </p>
-      )}
+      {message && <InlineMessage tone="success">{message}</InlineMessage>}
+      {error && <InlineMessage>{error}</InlineMessage>}
     </div>
   );
 }

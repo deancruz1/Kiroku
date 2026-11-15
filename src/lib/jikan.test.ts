@@ -171,7 +171,7 @@ describe("getTopAnime", () => {
     expect((await getTopAnime(9999)).data).toHaveLength(5);
     expect(get).toHaveBeenCalledTimes(2);
     expect(get).toHaveBeenCalledWith("/top/anime", {
-      params: { page: 9999, limit: 20, filter: "bypopularity" },
+      params: { page: 9999, limit: 20, filter: "bypopularity", sfw: true },
     });
   });
 });
@@ -210,7 +210,7 @@ describe("searchAnime", () => {
     get.mockResolvedValueOnce(reply({ data: [], pagination: {} }));
     await searchAnime("  Frieren  ", 1);
     expect(get).toHaveBeenCalledWith("/anime", {
-      params: { q: "frieren", page: 1, limit: 20 },
+      params: { q: "frieren", page: 1, limit: 20, sfw: true },
     });
   });
 });

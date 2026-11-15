@@ -1,7 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Star, Tv, Clock, Calendar, ThumbsUp } from "lucide-react";
 import {
   getAnimeById,
   getAnimeRecommendations,
@@ -12,15 +10,29 @@ import {
   isJikanNotFound,
 } from "@/lib/jikan";
 import { parseAnimeId } from "@/lib/params";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
+import { Poster } from "@/components/poster";
+import { Section } from "@/components/section-heading";
+import { LeaderList, LeaderRow } from "@/components/leader-row";
 import { AddButton } from "./add-button";
 import { CollectionButton } from "./collection-button";
 import { ReviewsSection } from "./reviews-section";
-import type { JikanRecommendation, JikanCharacter } from "@/types/anime";
 import { BackButton } from "./back-button";
+import type {
+  JikanAnime,
+  JikanRecommendation,
+  JikanCharacter,
+} from "@/types/anime";
 
 const MAX_REVIEWS = 10;
+const HIDDEN_GENRES = new Set(["Hentai", "Erotica"]);
+
+type FullAnime = JikanAnime & {
+  type?: string | null;
+  duration?: string | null;
+  rating?: string | null;
+  aired?: { string?: string | null };
+  broadcast?: { string?: string | null };
+};
 
 interface AnimePageProps {
   params: Promise<{ id: string }>;
@@ -28,6 +40,17 @@ interface AnimePageProps {
 
 function settledValue<T>(result: PromiseSettledResult<T>) {
   return result.status === "fulfilled" ? result.value : null;
+}
+
+function capitalise(text: string) {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+function voiceActor(char: JikanCharacter) {
+  return (
+    char.voice_actors?.find((va) => va.language === "Japanese") ??
+    char.voice_actors?.[0]
+  );
 }
 
 export default async function AnimePage({ params }: AnimePageProps) {
@@ -53,364 +76,223 @@ export default async function AnimePage({ params }: AnimePageProps) {
     throw error;
   });
   if (!animeRes?.data) notFound();
-  const anime = animeRes.data;
+  const anime: FullAnime = animeRes.data;
 
   const [recsRes, reviewsRes, videosRes, relationsRes, charactersRes] = (
     await secondary
   ).map(settledValue);
-  const recommendations = recsRes?.data?.slice(0, 6) || [];
+  const recommendations: JikanRecommendation[] =
+    recsRes?.data?.slice(0, 6) || [];
   const reviews = reviewsRes?.data?.slice(0, MAX_REVIEWS) || [];
   const videos = videosRes?.data?.promo || [];
-  const relations = relationsRes?.data || [];
-  const characters = charactersRes?.data || [];
+  const relations: {
+    relation: string;
+    entry: { mal_id: number; name: string }[];
+  }[] = relationsRes?.data || [];
+  const characters: JikanCharacter[] = charactersRes?.data || [];
   const displayTitle = anime.title_english || anime.title;
+  const trailerId: string | undefined = videos[0]?.trailer?.youtube_id;
+
+  const genres = (anime.genres ?? [])
+    .map((g) => g.name)
+    .filter((name) => !HIDDEN_GENRES.has(name));
+  const studios = (anime.studios ?? []).map((s) => s.name);
 
   return (
-    <main className="min-h-screen bg-background">
-      <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-8 max-w-5xl">
-        <BackButton />
+    <main className="page">
+      <BackButton />
 
-        <div className="flex flex-col md:flex-row gap-6 sm:gap-8">
-          <div className="relative w-full max-w-64 sm:w-75 sm:h-112.5 aspect-[3/4] sm:aspect-auto shrink-0 mx-auto md:mx-0">
-            <Image
-              src={anime.images.webp.large_image_url}
-              alt={`${displayTitle} poster`}
-              fill
-              sizes="(max-width: 640px) 256px, 300px"
-              className="rounded-lg object-cover shadow-lg"
-              priority
+      <div className="mt-4 md:mt-6 md:grid md:grid-cols-[200px_minmax(0,1fr)] md:gap-x-10 lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-x-16">
+        <Poster
+          src={anime.images?.webp?.large_image_url}
+          title={displayTitle}
+          size="fluid"
+          priority
+          sizes="(max-width: 767px) 160px, 260px"
+          className="w-40 md:w-full"
+        />
+
+        <div className="mt-6 min-w-0 md:mt-0">
+          <h1 className="type-display-sm break-words md:type-display">
+            {displayTitle}
+          </h1>
+          {anime.title_japanese && anime.title_japanese !== displayTitle && (
+            <p lang="ja" className="mt-3 text-xl text-muted-foreground">
+              {anime.title_japanese}
+            </p>
+          )}
+
+          <div className="mt-6 flex flex-wrap items-start gap-3">
+            <AddButton animeId={malId} />
+            <CollectionButton animeId={malId} />
+          </div>
+
+          <LeaderList className="mt-8 max-w-xl border-t border-foreground pt-2">
+            {anime.title_english && anime.title !== anime.title_english && (
+              <LeaderRow label="Also called" value={anime.title} />
+            )}
+            <LeaderRow
+              label="Score"
+              value={anime.score ? anime.score.toFixed(2) : "Unknown"}
             />
-          </div>
+            {anime.type && <LeaderRow label="Type" value={anime.type} />}
+            <LeaderRow label="Episodes" value={anime.episodes || "Unknown"} />
+            {anime.status && <LeaderRow label="Status" value={anime.status} />}
+            {anime.aired?.string && (
+              <LeaderRow label="Aired" value={anime.aired.string} />
+            )}
+            {anime.season && anime.year && (
+              <LeaderRow
+                label="Season"
+                value={`${capitalise(anime.season)} ${anime.year}`}
+              />
+            )}
+            {anime.broadcast?.string && (
+              <LeaderRow label="Broadcast" value={anime.broadcast.string} />
+            )}
+            {anime.duration && (
+              <LeaderRow label="Duration" value={anime.duration} />
+            )}
+            {studios.length > 0 && (
+              <LeaderRow
+                label={studios.length === 1 ? "Studio" : "Studios"}
+                value={studios.join(", ")}
+              />
+            )}
+            {genres.length > 0 && (
+              <LeaderRow
+                label={genres.length === 1 ? "Genre" : "Genres"}
+                value={genres.join(", ")}
+              />
+            )}
+            {anime.rating && <LeaderRow label="Rating" value={anime.rating} />}
+          </LeaderList>
 
-          <div className="flex-1 space-y-4">
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-bold">
-                {anime.title_english || anime.title}
-              </h1>
-              {anime.title_japanese && (
-                <p className="text-muted-foreground text-sm sm:text-base">
-                  {anime.title_japanese}
-                </p>
-              )}
-            </div>
-
-            <div className="flex gap-2 flex-wrap">
-              <AddButton animeId={malId} />
-              <CollectionButton animeId={malId} />
-            </div>
-
-            <div className="flex flex-wrap gap-1.5 sm:gap-2">
-              {anime.genres?.map((genre: { mal_id: number; name: string }) => (
-                <Badge
-                  key={genre.mal_id}
-                  variant="secondary"
-                  className="text-xs"
-                >
-                  {genre.name}
-                </Badge>
-              ))}
-            </div>
-
-            <div className="flex flex-wrap gap-3 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
-              {anime.score && (
-                <span className="flex items-center gap-1">
-                  <Star className="h-4 w-4 text-yellow-500" />
-                  <span className="sr-only">Score:</span>
-                  {anime.score.toFixed(1)}
-                </span>
-              )}
-              {anime.episodes && (
-                <span className="flex items-center gap-1">
-                  <Tv className="h-4 w-4" />
-                  {anime.episodes} episodes
-                </span>
-              )}
-              {anime.status && (
-                <span className="flex items-center gap-1">
-                  <Clock className="h-4 w-4" />
-                  {anime.status}
-                </span>
-              )}
-              {anime.season && anime.year && (
-                <span className="flex items-center gap-1">
-                  <Calendar className="h-4 w-4" />
-                  {anime.season} {anime.year}
-                </span>
-              )}
-            </div>
-
-            {anime.studios?.length > 0 && (
-              <p className="text-xs sm:text-sm">
-                <span className="text-muted-foreground">Studio: </span>
-                {anime.studios.map((s: { name: string }) => s.name).join(", ")}
+          <Section title="Synopsis" className="mt-12 mb-0">
+            {anime.synopsis ? (
+              <p className="max-w-[65ch] whitespace-pre-line">
+                {anime.synopsis}
+              </p>
+            ) : (
+              <p className="italic text-muted-foreground">
+                No synopsis available.
               </p>
             )}
-
-            <Separator />
-
-            <div>
-              <h2 className="font-semibold text-sm sm:text-base mb-2">
-                Synopsis
-              </h2>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {anime.synopsis || "No synopsis available."}
-              </p>
-            </div>
-
-            {/* Trailer */}
-            {videos.length > 0 && videos[0].trailer?.youtube_id && (
-              <div>
-                <h2 className="font-semibold text-sm sm:text-base mb-2">
-                  Trailer
-                </h2>
-                <div className="aspect-video rounded-lg overflow-hidden">
-                  <iframe
-                    src={`https://www.youtube.com/embed/${videos[0].trailer.youtube_id}`}
-                    title={`${displayTitle} trailer`}
-                    allowFullScreen
-                    className="w-full h-full"
-                  />
-                </div>
-              </div>
-            )}
-          </div>
+          </Section>
         </div>
+      </div>
 
-        {/* Recommendations */}
-        {recommendations.length > 0 && (
-          <div className="mt-8 sm:mt-12">
-            <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">
-              Recommendations
-            </h2>
-            {/* Mobile/Tablet: horizontal scroll */}
-            <div className="flex lg:hidden gap-3 overflow-x-auto pb-2 scrollbar-none snap-x">
-              {recommendations.map((rec: JikanRecommendation) => (
-                <Link
-                  key={rec.entry.mal_id}
-                  href={`/anime/${rec.entry.mal_id}`}
-                  className="w-36 shrink-0 snap-start"
-                >
-                  <div className="rounded-lg overflow-hidden bg-card border transition-all h-full hover:ring-2 hover:ring-primary">
-                    <div className="relative w-full aspect-3/4">
-                      <Image
-                        src={rec.entry.images.webp.large_image_url}
-                        alt=""
-                        fill
-                        sizes="144px"
-                        className="object-cover"
-                      />
-                    </div>
-                    <div className="p-2 border-t">
-                      <p className="text-xs font-medium line-clamp-2 h-8">
-                        {rec.entry.title}
-                      </p>
-                      <p className="text-xs text-muted-foreground mt-0.5">
-                        <ThumbsUp className="h-3 w-3 inline mr-0.5" />
-                        {rec.votes}
-                        <span className="sr-only"> votes</span>
-                      </p>
-                    </div>
-                  </div>
-                </Link>
-              ))}
+      <div className="mt-14 md:mt-16">
+        {trailerId && (
+          <Section title="Trailer">
+            <div className="aspect-video max-w-3xl overflow-hidden bg-plate">
+              <iframe
+                src={`https://www.youtube.com/embed/${trailerId}`}
+                title={`${displayTitle} trailer`}
+                allowFullScreen
+                className="size-full"
+              />
             </div>
-            {/* Desktop: grid */}
-            <div className="hidden lg:grid grid-cols-6 gap-4">
-              {recommendations.map((rec: JikanRecommendation) => (
-                <Link
-                  key={rec.entry.mal_id}
-                  href={`/anime/${rec.entry.mal_id}`}
-                  className="block h-full"
-                >
-                  <div className="rounded-lg overflow-hidden bg-card border transition-all h-full hover:ring-2 hover:ring-primary">
-                    <div className="relative w-full aspect-3/4">
-                      <Image
-                        src={rec.entry.images.webp.large_image_url}
-                        alt=""
-                        fill
-                        sizes="16vw"
-                        className="object-cover"
-                      />
-                    </div>
-                    <div className="p-2 border-t">
-                      <p className="text-xs font-medium line-clamp-2 h-8">
-                        {rec.entry.title}
-                      </p>
-                      <p className="text-xs text-muted-foreground mt-0.5">
-                        <ThumbsUp className="h-3 w-3 inline mr-0.5" />
-                        {rec.votes}
-                        <span className="sr-only"> votes</span>
-                      </p>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
+          </Section>
         )}
 
-        {/* Characters */}
         {characters.length > 0 && (
-          <div className="mt-8 sm:mt-12">
-            <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">
-              Characters & Voice Actors
-            </h2>
-            {/* Mobile/Tablet: horizontal scroll - 2 rows */}
-            <div className="flex lg:hidden flex-col gap-3">
-              <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none snap-x">
-                {characters
-                  .slice(0, Math.ceil(characters.length / 2))
-                  .map((char: JikanCharacter) => (
-                    <div
-                      key={char.character.mal_id}
-                      className="w-36 shrink-0 snap-start"
-                    >
-                      <div className="rounded-lg overflow-hidden bg-card border transition-all h-full">
-                        <div className="relative w-full aspect-4/5">
-                          <Image
-                            src={
-                              char.character.images.webp.image_url ||
-                              char.character.images.jpg.image_url
-                            }
-                            alt=""
-                            fill
-                            sizes="144px"
-                            className="object-cover"
-                          />
-                        </div>
-                        <div className="p-2 border-t">
-                          <p className="text-xs font-medium line-clamp-1 h-4">
-                            {char.character.name}
-                          </p>
-                          <p className="text-[10px] text-muted-foreground h-3">
-                            {char.role}
-                          </p>
-                          <p className="text-[10px] text-muted-foreground mt-0.5 line-clamp-1 h-3">
-                            {char.voice_actors?.length > 0
-                              ? `VA: ${char.voice_actors[0].person.name}`
-                              : ""}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-              </div>
-              <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none snap-x">
-                {characters
-                  .slice(Math.ceil(characters.length / 2))
-                  .map((char: JikanCharacter) => (
-                    <div
-                      key={char.character.mal_id}
-                      className="w-36 shrink-0 snap-start"
-                    >
-                      <div className="rounded-lg overflow-hidden bg-card border transition-all h-full">
-                        <div className="relative w-full aspect-4/5">
-                          <Image
-                            src={
-                              char.character.images.webp.image_url ||
-                              char.character.images.jpg.image_url
-                            }
-                            alt=""
-                            fill
-                            sizes="144px"
-                            className="object-cover"
-                          />
-                        </div>
-                        <div className="p-2 border-t">
-                          <p className="text-xs font-medium line-clamp-1 h-4">
-                            {char.character.name}
-                          </p>
-                          <p className="text-[10px] text-muted-foreground h-3">
-                            {char.role}
-                          </p>
-                          <p className="text-[10px] text-muted-foreground mt-0.5 line-clamp-1 h-3">
-                            {char.voice_actors?.length > 0
-                              ? `VA: ${char.voice_actors[0].person.name}`
-                              : ""}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-              </div>
-            </div>
-            {/* Desktop: grid */}
-            <div className="hidden lg:grid grid-cols-6 gap-3">
-              {characters.map((char: JikanCharacter) => (
-                <div
-                  key={char.character.mal_id}
-                  className="rounded-lg overflow-hidden bg-card border transition-all h-full"
-                >
-                  <div className="relative w-full aspect-4/5">
-                    <Image
+          <Section title="Characters">
+            <ul className="grid lg:grid-cols-2 lg:gap-x-14">
+              {characters.map((char) => {
+                const va = voiceActor(char);
+                return (
+                  <li
+                    key={char.character.mal_id}
+                    className="flex items-center gap-4 border-b border-rule py-2.5"
+                  >
+                    <Poster
                       src={
-                        char.character.images.webp.image_url ||
-                        char.character.images.jpg.image_url
+                        char.character.images?.webp?.image_url ||
+                        char.character.images?.jpg?.image_url
                       }
-                      alt=""
-                      fill
-                      sizes="16vw"
-                      className="object-cover"
+                      title={char.character.name}
                     />
-                  </div>
-                  <div className="p-2 border-t">
-                    <p className="text-xs font-medium line-clamp-1 h-4">
-                      {char.character.name}
-                    </p>
-                    <p className="text-[10px] text-muted-foreground h-3">
-                      {char.role}
-                    </p>
-                    <p className="text-[10px] text-muted-foreground mt-0.5 line-clamp-1 h-3">
-                      {char.voice_actors?.length > 0
-                        ? `VA: ${char.voice_actors[0].person.name}`
-                        : ""}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="leading-[1.25]">{char.character.name}</p>
+                      <p className="mt-0.5 text-[15px] text-muted-foreground">
+                        {char.role}
+                      </p>
+                    </div>
+                    {va && (
+                      <div className="min-w-0 flex-1 text-right">
+                        <p className="leading-[1.25]">{va.person.name}</p>
+                        <p className="mt-0.5 text-[15px] text-muted-foreground">
+                          {va.language}
+                        </p>
+                      </div>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </Section>
         )}
 
-        {/* Relations */}
         {relations.length > 0 && (
-          <div className="mt-8 sm:mt-12">
-            <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">
-              Related Anime
-            </h2>
-            <div className="space-y-3 sm:space-y-4">
-              {relations.map(
-                (rel: {
-                  relation: string;
-                  entry: { mal_id: number; name: string }[];
-                }) => (
-                  <div key={rel.relation}>
-                    <h3 className="text-xs sm:text-sm font-medium text-muted-foreground mb-2">
-                      {rel.relation}
-                    </h3>
-                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
+          <Section title="Related">
+            <dl>
+              {relations.map((rel) => (
+                <div
+                  key={rel.relation}
+                  className="grid gap-x-8 border-b border-rule py-1.5 md:grid-cols-[12rem_minmax(0,1fr)]"
+                >
+                  <dt className="pt-2 text-muted-foreground md:pt-[9px]">
+                    {rel.relation}
+                  </dt>
+                  <dd>
+                    <ul>
                       {rel.entry.map((entry) => (
-                        <Link
-                          key={entry.mal_id}
-                          href={`/anime/${entry.mal_id}`}
-                        >
-                          <Badge
-                            variant="outline"
-                            className="hover:bg-secondary transition-colors text-xs"
+                        <li key={entry.mal_id}>
+                          <Link
+                            href={`/anime/${entry.mal_id}`}
+                            className="inline-flex min-h-10 items-center"
                           >
                             {entry.name}
-                          </Badge>
-                        </Link>
+                          </Link>
+                        </li>
                       ))}
-                    </div>
-                  </div>
-                ),
-              )}
-            </div>
-          </div>
+                    </ul>
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </Section>
         )}
 
-        {/* Reviews */}
+        {recommendations.length > 0 && (
+          <Section title="Recommendations">
+            <ul className="grid grid-cols-3 gap-x-4 gap-y-6 md:grid-cols-6 md:gap-x-6">
+              {recommendations.map((rec) => (
+                <li key={rec.entry.mal_id}>
+                  <Link
+                    href={`/anime/${rec.entry.mal_id}`}
+                    className="group block hover:no-underline"
+                  >
+                    <Poster
+                      src={rec.entry.images?.webp?.large_image_url}
+                      title={rec.entry.title}
+                      size="fluid"
+                      sizes="(max-width: 767px) 33vw, 200px"
+                    />
+                    <span className="mt-2 line-clamp-2 text-[15px] leading-[1.25] decoration-1 underline-offset-3 group-hover:underline md:text-[17px]">
+                      {rec.entry.title}
+                    </span>
+                    <span className="mt-0.5 block text-[15px] text-muted-foreground">
+                      {rec.votes} {rec.votes === 1 ? "vote" : "votes"}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </Section>
+        )}
+
         <ReviewsSection reviews={reviews} />
       </div>
     </main>

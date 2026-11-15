@@ -1,56 +1,43 @@
-const PULSE = "rounded bg-muted animate-pulse";
+import { Skeleton } from "@/components/skeleton";
+
+const FACT_WIDTHS = ["w-12", "w-10", "w-8", "w-28", "w-44", "w-24", "w-36", "w-16"];
+const TEXT_WIDTHS = ["w-full", "w-full", "w-11/12", "w-full", "w-3/5"];
 
 export default function AnimeLoading() {
   return (
-    <main className="min-h-screen bg-background" aria-busy="true">
-      <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-8 max-w-5xl">
-        <p role="status" className="sr-only">
-          Loading anime
-        </p>
-        <div className={`h-5 w-32 mb-6 ${PULSE}`} />
+    <main className="page" aria-busy="true">
+      <p role="status" className="sr-only">
+        Loading show
+      </p>
+      <Skeleton className="my-2.5 h-5 w-36" />
 
-        <div className="flex flex-col md:flex-row gap-6 sm:gap-8">
-          <div className="w-full max-w-64 sm:w-75 sm:h-112.5 aspect-[3/4] sm:aspect-auto shrink-0 mx-auto md:mx-0 rounded-lg bg-muted animate-pulse" />
+      <div className="mt-4 md:mt-6 md:grid md:grid-cols-[200px_minmax(0,1fr)] md:gap-x-10 lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-x-16">
+        <Skeleton className="aspect-3/4 w-40 md:w-full" />
 
-          <div className="flex-1 space-y-4">
-            <div>
-              <div className={`h-8 sm:h-9 w-2/3 ${PULSE}`} />
-              <div className={`h-5 sm:h-6 w-1/3 mt-1 ${PULSE}`} />
-            </div>
+        <div className="mt-6 min-w-0 md:mt-0">
+          <Skeleton className="h-[38px] w-4/5 md:h-[52px] md:w-3/5" />
+          <Skeleton className="mt-4 h-6 w-2/5" />
 
-            <div className="flex gap-2 flex-wrap">
-              <div className="h-8 w-32 rounded-lg bg-muted animate-pulse" />
-              <div className="h-8 w-36 rounded-lg bg-muted animate-pulse" />
-            </div>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Skeleton className="h-10 w-36" />
+            <Skeleton className="h-10 w-48" />
+          </div>
 
-            <div className="flex flex-wrap gap-1.5 sm:gap-2">
-              {["w-16", "w-20", "w-14"].map((width) => (
-                <div
-                  key={width}
-                  className={`h-5 ${width} rounded-4xl bg-muted animate-pulse`}
-                />
-              ))}
-            </div>
-
-            <div className="flex flex-wrap gap-3 sm:gap-4">
-              {["w-12", "w-24", "w-28", "w-24"].map((width, i) => (
-                <div key={i} className={`h-4 sm:h-5 ${width} ${PULSE}`} />
-              ))}
-            </div>
-
-            <div className={`h-4 sm:h-5 w-40 ${PULSE}`} />
-
-            <div className="h-px w-full bg-border" />
-
-            <div>
-              <div className={`h-5 sm:h-6 w-20 mb-2 ${PULSE}`} />
-              <div className="space-y-2">
-                {["w-full", "w-full", "w-full", "w-full", "w-2/3"].map(
-                  (width, i) => (
-                    <div key={i} className={`h-4 ${width} ${PULSE}`} />
-                  ),
-                )}
+          <div className="mt-8 max-w-xl border-t border-foreground pt-2">
+            {FACT_WIDTHS.map((width, i) => (
+              <div key={i} className="flex items-center justify-between py-[9px]">
+                <Skeleton className="h-5 w-20" />
+                <Skeleton className={`h-5 ${width}`} />
               </div>
+            ))}
+          </div>
+
+          <div className="mt-12 border-t border-foreground pt-3">
+            <Skeleton className="mb-5 h-7 w-28" />
+            <div className="max-w-[65ch] space-y-2.5">
+              {TEXT_WIDTHS.map((width, i) => (
+                <Skeleton key={i} className={`h-4 ${width}`} />
+              ))}
             </div>
           </div>
         </div>

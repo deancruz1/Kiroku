@@ -6,10 +6,10 @@ import { ArrowLeft } from "lucide-react";
 
 const PAGE_LABELS: Record<string, string> = {
   "/search": "Search",
-  "/top": "Top Shows",
+  "/top": "Top shows",
   "/season": "Season",
-  "/list": "Watch List",
-  "/recommendations": "For You",
+  "/list": "Watch list",
+  "/recommendations": "For you",
   "/stats": "Stats",
   "/lists": "Collections",
   "/": "Home",
@@ -53,6 +53,7 @@ export function BackButton() {
 
   return (
     <button
+      type="button"
       onClick={() => {
         if (cameFromInsideApp()) {
           router.back();
@@ -60,9 +61,9 @@ export function BackButton() {
           router.push("/");
         }
       }}
-      className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors cursor-pointer"
+      className="-ml-0.5 inline-flex min-h-10 cursor-pointer items-center gap-1.5 text-base text-muted-foreground transition-colors hover:text-foreground"
     >
-      <ArrowLeft className="h-4 w-4 mr-1" aria-hidden="true" />
+      <ArrowLeft className="size-4 stroke-[1.75]" aria-hidden="true" />
       Back{previousLabel ? ` to ${previousLabel}` : ""}
     </button>
   );

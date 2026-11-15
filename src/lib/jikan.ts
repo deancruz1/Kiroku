@@ -59,7 +59,7 @@ export function isJikanNotFound(error: unknown) {
 
 async function fetchSearch(query: string, page: number) {
   const { data } = await jikanApi.get<JikanSearchResponse>("/anime", {
-    params: { q: query, page, limit: 20 },
+    params: { q: query, page, limit: 20, sfw: true },
   });
   return checked(data);
 }
@@ -104,7 +104,7 @@ const cachedTopAnime = cached(
   HOUR,
   async (page: number, filter: string) => {
     const { data } = await jikanApi.get("/top/anime", {
-      params: { page, limit: 20, filter },
+      params: { page, limit: 20, filter, sfw: true },
     });
     checkedList(data);
     return data;

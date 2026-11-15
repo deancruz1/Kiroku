@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { Plus, Check } from "lucide-react";
+import { Plus, Check, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -10,18 +10,25 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { InlineMessage } from "@/components/inline-message";
+import {
+  StatusGlyph,
+  StatusMark,
+  STATUS_LABEL,
+  STATUS_ORDER,
+  type WatchStatus,
+} from "@/components/status-mark";
 import {
   useAddEntry,
   useEntries,
   useUpdateEntry,
 } from "@/hooks/use-entries";
 
-const STATUS_LABELS: Record<string, string> = {
-  watching: "Watching",
-  completed: "Completed",
-  plan_to_watch: "Plan to Watch",
-  dropped: "Dropped",
-};
+function asStatus(value: string | undefined): WatchStatus | null {
+  return value && Object.hasOwn(STATUS_LABEL, value)
+    ? (value as WatchStatus)
+    : null;
+}
 
 export function AddButton({ animeId }: { animeId: number }) {
   const { data: session, status: sessionStatus } = useSession();
@@ -31,16 +38,16 @@ export function AddButton({ animeId }: { animeId: number }) {
 
   if (sessionStatus === "loading") {
     return (
-      <Button disabled>
-        <Plus className="h-4 w-4 mr-2" />
-        Add to List
+      <Button size="lg" disabled>
+        <Plus aria-hidden="true" />
+        Add to list
       </Button>
     );
   }
 
   if (!session) {
     return (
-      <Button variant="outline" asChild>
+      <Button size="lg" variant="outline" asChild>
         <Link href="/auth/signin">Sign in to track</Link>
       </Button>
     );
@@ -48,6 +55,10 @@ export function AddButton({ animeId }: { animeId: number }) {
 
   const existing = entries?.find((e) => e.animeId === animeId);
   const error = addEntry.error ?? updateEntry.error;
+  // While the add request is in flight the chosen status is shown straight away.
+  const shownStatus = asStatus(
+    existing?.status ?? (addEntry.isPending ? addEntry.variables?.status : undefined),
+  );
 
   function handleSelect(status: string) {
     addEntry.reset();
@@ -62,39 +73,53 @@ export function AddButton({ animeId }: { animeId: number }) {
   }
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-1.5">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          {existing ? (
-            <Button variant="outline" disabled={updateEntry.isPending}>
-              <Check className="h-4 w-4 mr-2" />
-              {`In ${STATUS_LABELS[existing.status] ?? "your list"}`}
+          {shownStatus ? (
+            <Button
+              size="lg"
+              variant="outline"
+              disabled={addEntry.isPending || updateEntry.isPending}
+              className="hover:border-foreground hover:bg-transparent aria-expanded:border-foreground aria-expanded:bg-transparent"
+            >
+              <span className="sr-only">In your list: </span>
+              <StatusMark status={shownStatus} size="md" />
+              <ChevronDown aria-hidden="true" className="ml-1 text-control" />
+            </Button>
+          ) : existing ? (
+            <Button size="lg" variant="outline" disabled={updateEntry.isPending}>
+              <Check aria-hidden="true" />
+              In your list
             </Button>
           ) : (
-            <Button disabled={entriesPending || addEntry.isPending}>
-              <Plus className="h-4 w-4 mr-2" />
-              {addEntry.isPending ? "Adding..." : "Add to List"}
+            <Button size="lg" disabled={entriesPending || addEntry.isPending}>
+              <Plus aria-hidden="true" />
+              Add to list
             </Button>
           )}
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          {Object.entries(STATUS_LABELS).map(([value, label]) => (
+        <DropdownMenuContent align="start" className="min-w-48">
+          {STATUS_ORDER.map((value) => (
             <DropdownMenuItem
               key={value}
               onClick={() => handleSelect(value)}
               disabled={existing?.status === value}
+              className="min-h-10"
             >
-              {existing?.status === value && <Check className="h-4 w-4" />}
-              {label}
+              <StatusGlyph status={value} size="md" />
+              {STATUS_LABEL[value]}
+              {existing?.status === value && (
+                <>
+                  <Check aria-hidden="true" className="ml-auto" />
+                  <span className="sr-only">(current)</span>
+                </>
+              )}
             </DropdownMenuItem>
           ))}
         </DropdownMenuContent>
       </DropdownMenu>
-      {error && (
-        <p role="alert" className="text-xs text-destructive">
-          {error.message}
-        </p>
-      )}
+      {error && <InlineMessage>{error.message}</InlineMessage>}
     </div>
   );
 }

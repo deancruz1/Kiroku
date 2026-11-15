@@ -1,15 +1,7 @@
 import Link from "next/link";
-import Image from "next/image";
-import { Badge } from "@/components/ui/badge";
-import { Star } from "lucide-react";
+import { Poster } from "@/components/poster";
+import { StatusMark, STATUS_LABEL, type WatchStatus } from "@/components/status-mark";
 import type { JikanAnime } from "@/types/anime";
-
-const STATUS_LABELS: Record<string, string> = {
-  watching: "Watching",
-  completed: "Done",
-  plan_to_watch: "PTW",
-  dropped: "Dropped",
-};
 
 interface AnimeCardProps {
   anime: JikanAnime;
@@ -18,67 +10,54 @@ interface AnimeCardProps {
   reason?: string;
 }
 
+function isWatchStatus(value: string | undefined): value is WatchStatus {
+  return !!value && Object.hasOwn(STATUS_LABEL, value);
+}
+
 export function AnimeCard({
   anime,
   isTracked,
   trackedStatus,
   reason,
 }: AnimeCardProps) {
+  const title = anime.title_english || anime.title;
+  const genres = anime.genres?.slice(0, 2).map((genre) => genre.name) ?? [];
+
   return (
-    <Link href={`/anime/${anime.mal_id}`} className="block h-full">
-      <div
-        className={`rounded-lg overflow-hidden bg-card border transition-all h-full ${
-          isTracked ? "ring-2 ring-primary" : "hover:ring-2 hover:ring-primary"
-        }`}
-      >
-        <div className="relative w-full aspect-3/4">
-          <Image
-            src={anime.images.webp.large_image_url}
-            alt={anime.title}
-            fill
-            className="object-cover"
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
-          />
-          {isTracked && trackedStatus && (
-            <div className="absolute top-1 left-1">
-              <Badge className="text-[10px] px-1 py-0 h-4">
-                {STATUS_LABELS[trackedStatus]}
-              </Badge>
-            </div>
+    <Link
+      href={`/anime/${anime.mal_id}`}
+      className="group block h-full hover:no-underline"
+    >
+      <Poster
+        src={anime.images?.webp?.large_image_url}
+        title={title}
+        size="fluid"
+        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+      />
+      <h3 className="mt-2.5 line-clamp-2 text-[17px] leading-[1.25] decoration-1 underline-offset-3 group-hover:underline">
+        {title}
+      </h3>
+      {(anime.score || genres.length > 0) && (
+        <p className="mt-1 flex min-w-0 gap-2 text-[15px] text-muted-foreground">
+          {anime.score ? (
+            <span className="shrink-0 text-foreground">
+              <span className="sr-only">Score </span>
+              {anime.score.toFixed(2)}
+            </span>
+          ) : null}
+          {genres.length > 0 && (
+            <span className="truncate">{genres.join(", ")}</span>
           )}
-        </div>
-        <div className="p-3 border-t">
-          <h3 className="font-medium text-sm truncate">
-            {anime.title_english || anime.title}
-          </h3>
-          <div className="flex items-center justify-between mt-1.5">
-            {anime.score ? (
-              <span className="flex items-center gap-0.5 text-yellow-500 text-sm font-medium">
-                <Star className="h-3.5 w-3.5 fill-current" />
-                {anime.score.toFixed(1)}
-              </span>
-            ) : (
-              <span />
-            )}
-            <div className="flex items-center gap-1">
-              {anime.genres?.slice(0, 2).map((genre) => (
-                <Badge
-                  key={genre.mal_id}
-                  variant="secondary"
-                  className="text-[10px] px-1 py-0 h-4"
-                >
-                  {genre.name}
-                </Badge>
-              ))}
-            </div>
-          </div>
-          {reason && (
-            <p className="text-[10px] text-muted-foreground mt-4 line-clamp-1">
-              {reason}
-            </p>
-          )}
-        </div>
-      </div>
+        </p>
+      )}
+      {isTracked && isWatchStatus(trackedStatus) && (
+        <StatusMark status={trackedStatus} className="mt-1 text-[15px]" />
+      )}
+      {reason && (
+        <p className="mt-1.5 line-clamp-2 text-[15px] italic text-muted-foreground">
+          {reason}
+        </p>
+      )}
     </Link>
   );
 }
