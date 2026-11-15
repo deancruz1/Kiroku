@@ -14,6 +14,7 @@ interface SeasonAnimeCardProps {
   anime: JikanAnime;
   isTracked: boolean;
   trackedStatus?: string;
+  broadcastTime: string | null;
   countdown: string | null;
 }
 
@@ -21,10 +22,9 @@ export function SeasonAnimeCard({
   anime,
   isTracked,
   trackedStatus,
+  broadcastTime,
   countdown,
 }: SeasonAnimeCardProps) {
-  const broadcastTime = anime.broadcast?.time || null;
-
   return (
     <Link href={`/anime/${anime.mal_id}`} className="block h-full">
       <div
@@ -52,11 +52,13 @@ export function SeasonAnimeCard({
           <div className="absolute bottom-1 right-1 flex items-center gap-1">
             {broadcastTime && (
               <Badge variant="secondary" className="text-[10px] px-1 py-0 h-4">
+                <span className="sr-only">Airs at </span>
                 {broadcastTime}
               </Badge>
             )}
             {countdown && (
               <Badge variant="secondary" className="text-[10px] px-1 py-0 h-4">
+                <span className="sr-only">Next episode in </span>
                 {countdown}
               </Badge>
             )}

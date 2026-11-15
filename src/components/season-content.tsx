@@ -2,13 +2,15 @@
 
 import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { useEntries } from "@/hooks/use-entries";
 import { SeasonCalendar } from "@/components/season-calendar";
 import { SeasonGrid } from "@/components/season-grid";
 import { Pagination } from "@/components/pagination";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Search, X } from "lucide-react";
-import type { JikanAnime } from "@/types/anime";
+import type { SeasonAnime } from "@/lib/season";
 
 const SEASONS = ["winter", "spring", "summer", "fall"];
 const SEASON_LABELS: Record<string, string> = {
@@ -18,65 +20,44 @@ const SEASON_LABELS: Record<string, string> = {
   fall: "Fall",
 };
 
-function getCurrentSeason() {
-  const month = new Date().getMonth();
-  return SEASONS[Math.floor(month / 3)];
-}
-
-function getCurrentYear() {
-  return new Date().getFullYear();
-}
-
-function isCurrentOrFuture(year: number, s: string): boolean {
-  const now = new Date();
-  const currentYear = now.getFullYear();
-  const currentMonth = now.getMonth();
-  const seasonOrder = ["winter", "spring", "summer", "fall"];
-  const currentSeasonIndex = Math.floor(currentMonth / 3);
-  const targetSeasonIndex = seasonOrder.indexOf(s);
-
-  if (year > currentYear) return true;
-  if (year === currentYear && targetSeasonIndex >= currentSeasonIndex)
-    return true;
-  return false;
-}
-
-interface PaginationData {
-  last_visible_page: number;
-  has_next_page: boolean;
-}
-
 interface SeasonContentProps {
-  allAnime: JikanAnime[];
+  allAnime: SeasonAnime[];
   years: number[];
-  activeYear: number | null;
-  activeSeason: string | null;
+  year: number;
+  season: string;
+  isCurrentSeason: boolean;
+  mode: "calendar" | "grid";
   currentPage: number;
-  pagination: PaginationData | null;
+  lastPage: number;
+  complete: boolean;
 }
 
 export function SeasonContent({
   allAnime,
   years,
-  activeYear,
-  activeSeason,
+  year,
+  season,
+  isCurrentSeason,
+  mode,
   currentPage,
-  pagination,
+  lastPage,
+  complete,
 }: SeasonContentProps) {
   const router = useRouter();
+  const { status: sessionStatus } = useSession();
+  const { data: entries } = useEntries();
   const [search, setSearch] = useState("");
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [showTrackedOnly, setShowTrackedOnly] = useState(false);
 
-  const defaultYear = activeYear ?? getCurrentYear();
-  const defaultSeason = activeSeason ?? getCurrentSeason();
+  const signedIn = sessionStatus === "authenticated";
+  const trackedOnly = signedIn && showTrackedOnly;
 
   function handleChange(year: string, season: string) {
     router.push(`/season?year=${year}&season=${season}`);
   }
 
-  const showCalendar =
-    !activeYear || isCurrentOrFuture(defaultYear, defaultSeason);
+  const showCalendar = mode === "calendar";
 
   const uniqueAnime = useMemo(
     () =>
@@ -97,11 +78,16 @@ export function SeasonContent({
     [uniqueAnime],
   );
 
+  const trackedIds = useMemo(
+    () => new Set((entries ?? []).map((e) => e.animeId)),
+    [entries],
+  );
+
   const filteredAnime = useMemo(() => {
     let result = uniqueAnime;
 
     if (search.trim()) {
-      const q = search.toLowerCase();
+      const q = search.trim().toLowerCase();
       result = result.filter(
         (a) =>
           a.title.toLowerCase().includes(q) ||
@@ -118,8 +104,12 @@ export function SeasonContent({
       );
     }
 
+    if (trackedOnly) {
+      result = result.filter((a) => trackedIds.has(a.mal_id));
+    }
+
     return result;
-  }, [uniqueAnime, search, selectedGenres]);
+  }, [uniqueAnime, search, selectedGenres, trackedOnly, trackedIds]);
 
   function toggleGenre(genre: string) {
     setSelectedGenres((prev) =>
@@ -133,7 +123,8 @@ export function SeasonContent({
     setShowTrackedOnly(false);
   }
 
-  const hasFilters = search || selectedGenres.length > 0 || showTrackedOnly;
+  const hasFilters =
+    search.trim() !== "" || selectedGenres.length > 0 || trackedOnly;
 
   return (
     <main className="min-h-screen bg-background">
@@ -143,14 +134,24 @@ export function SeasonContent({
         </h1>
         <p className="text-muted-foreground text-sm sm:text-base mb-4 sm:mb-6 text-center sm:text-left">
           {showCalendar
-            ? "Current season anime schedule. Tracked shows are highlighted."
-            : `${SEASON_LABELS[defaultSeason]} ${defaultYear}`}
+            ? isCurrentSeason
+              ? "Current season anime schedule. Tracked shows are highlighted."
+              : `${SEASON_LABELS[season]} ${year} anime schedule. Tracked shows are highlighted.`
+            : `${SEASON_LABELS[season]} ${year}`}
         </p>
+
+        {!complete && (
+          <p className="text-xs text-destructive mb-4 text-center sm:text-left">
+            Some shows could not be loaded. Showing the {uniqueAnime.length}{" "}
+            that did.
+          </p>
+        )}
 
         <div className="flex items-center gap-2 sm:gap-3 mb-4 flex-wrap">
           <select
-            value={defaultYear}
-            onChange={(e) => handleChange(e.target.value, defaultSeason)}
+            aria-label="Year"
+            value={year}
+            onChange={(e) => handleChange(e.target.value, season)}
             className="px-2 sm:px-3 py-2 rounded-md bg-secondary text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary"
           >
             {years.map((y) => (
@@ -161,10 +162,9 @@ export function SeasonContent({
           </select>
 
           <select
-            value={defaultSeason}
-            onChange={(e) =>
-              handleChange(defaultYear.toString(), e.target.value)
-            }
+            aria-label="Season"
+            value={season}
+            onChange={(e) => handleChange(year.toString(), e.target.value)}
             className="px-2 sm:px-3 py-2 rounded-md bg-secondary text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-primary"
           >
             {SEASONS.map((s) => (
@@ -177,6 +177,7 @@ export function SeasonContent({
           <div className="relative flex-1 min-w-[150px] max-w-xs">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
+              aria-label="Search anime"
               placeholder="Search anime..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -187,39 +188,56 @@ export function SeasonContent({
 
         <div className="space-y-3 mb-6">
           <div className="flex items-start justify-between gap-3 sm:gap-4">
-            <div className="flex flex-wrap gap-1 sm:gap-1.5 flex-1">
-              {allGenres.map((genre) => (
-                <Badge
-                  key={genre}
-                  variant={
-                    selectedGenres.includes(genre) ? "default" : "outline"
-                  }
-                  className="cursor-pointer text-[10px] sm:text-xs"
-                  onClick={() => toggleGenre(genre)}
-                >
-                  {genre}
-                </Badge>
-              ))}
+            <div
+              role="group"
+              aria-label="Genres"
+              className="flex flex-wrap gap-1 sm:gap-1.5 flex-1"
+            >
+              {allGenres.map((genre) => {
+                const selected = selectedGenres.includes(genre);
+                return (
+                  <Badge
+                    key={genre}
+                    asChild
+                    variant={selected ? "default" : "outline"}
+                    className="cursor-pointer text-[10px] sm:text-xs"
+                  >
+                    <button
+                      type="button"
+                      aria-pressed={selected}
+                      onClick={() => toggleGenre(genre)}
+                    >
+                      {genre}
+                    </button>
+                  </Badge>
+                );
+              })}
             </div>
 
-            <button
-              onClick={() => setShowTrackedOnly(!showTrackedOnly)}
-              className={`shrink-0 px-2 sm:px-3 py-1.5 rounded-md text-[10px] sm:text-xs font-medium transition-colors ${
-                showTrackedOnly
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-secondary hover:bg-secondary/80"
-              }`}
-            >
-              In Your List
-            </button>
+            {signedIn && (
+              <button
+                type="button"
+                aria-pressed={showTrackedOnly}
+                onClick={() => setShowTrackedOnly(!showTrackedOnly)}
+                className={`shrink-0 px-2 sm:px-3 py-1.5 rounded-md text-[10px] sm:text-xs font-medium transition-colors ${
+                  showTrackedOnly
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-secondary hover:bg-secondary/80"
+                }`}
+              >
+                In Your List
+              </button>
+            )}
           </div>
 
           {hasFilters && (
             <div className="flex items-center gap-2">
-              <span className="text-xs text-muted-foreground">
+              <span className="text-xs text-muted-foreground" aria-live="polite">
                 {filteredAnime.length} of {uniqueAnime.length} shows
+                {showCalendar ? "" : " on this page"}
               </span>
               <button
+                type="button"
                 onClick={clearFilters}
                 className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1"
               >
@@ -230,28 +248,29 @@ export function SeasonContent({
           )}
         </div>
 
-        {showCalendar ? (
-          <SeasonCalendar
-            allAnime={filteredAnime}
-            showTrackedOnly={showTrackedOnly}
-          />
+        {uniqueAnime.length === 0 ? (
+          <p className="text-sm text-muted-foreground text-center py-12">
+            No shows found for {SEASON_LABELS[season]} {year}.
+          </p>
+        ) : filteredAnime.length === 0 ? (
+          <p className="text-sm text-muted-foreground text-center py-12">
+            No shows match your filters.
+          </p>
+        ) : showCalendar ? (
+          <SeasonCalendar allAnime={filteredAnime} />
         ) : (
-          <>
-            <SeasonGrid
-              allAnime={filteredAnime}
-              showTrackedOnly={showTrackedOnly}
+          <SeasonGrid allAnime={filteredAnime} />
+        )}
+
+        {!showCalendar && !hasFilters && lastPage > 1 && (
+          <div className="mt-6 sm:mt-8">
+            <Pagination
+              currentPage={currentPage}
+              lastPage={lastPage}
+              baseUrl={`/season?year=${year}&season=${season}`}
+              paramName="page"
             />
-            {pagination && !hasFilters && (
-              <div className="mt-6 sm:mt-8">
-                <Pagination
-                  currentPage={currentPage}
-                  lastPage={pagination.last_visible_page}
-                  baseUrl={`/season?year=${defaultYear}&season=${defaultSeason}`}
-                  paramName="page"
-                />
-              </div>
-            )}
-          </>
+          </div>
         )}
       </div>
     </main>

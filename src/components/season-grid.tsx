@@ -6,10 +6,9 @@ import type { JikanAnime } from "@/types/anime";
 
 interface SeasonGridProps {
   allAnime: JikanAnime[];
-  showTrackedOnly?: boolean;
 }
 
-export function SeasonGrid({ allAnime, showTrackedOnly }: SeasonGridProps) {
+export function SeasonGrid({ allAnime }: SeasonGridProps) {
   const { data: entries } = useEntries();
 
   const trackedMap = new Map<number, { status: string }>();
@@ -19,13 +18,9 @@ export function SeasonGrid({ allAnime, showTrackedOnly }: SeasonGridProps) {
     }
   }
 
-  const filteredAnime = showTrackedOnly
-    ? allAnime.filter((a) => trackedMap.has(a.mal_id))
-    : allAnime;
-
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-      {filteredAnime.map((anime) => {
+      {allAnime.map((anime) => {
         const tracked = trackedMap.get(anime.mal_id);
         return (
           <AnimeCard
