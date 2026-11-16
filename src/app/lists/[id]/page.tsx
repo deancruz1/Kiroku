@@ -234,6 +234,7 @@ export default function ListDetailPage() {
               <li key={rowId} className={ROW}>
                 <Link
                   href={href}
+                  prefetch={false}
                   tabIndex={-1}
                   aria-hidden="true"
                   className="self-start"

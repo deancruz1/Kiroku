@@ -24,7 +24,9 @@ export function ShowTitle({
   return (
     <div className={cn("min-w-0", className)}>
       {href ? (
-        <Link href={href} className={cn("block", style.title)}>
+        // The show page's prefetch runs generateMetadata, which costs an
+        // upstream request per visible show.
+        <Link href={href} prefetch={false} className={cn("block", style.title)}>
           {title}
         </Link>
       ) : (

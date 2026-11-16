@@ -268,6 +268,7 @@ export default async function AnimePage({ params }: AnimePageProps) {
                         <li key={entry.mal_id}>
                           <Link
                             href={`/anime/${entry.mal_id}`}
+                            prefetch={false}
                             className="inline-flex min-h-10 items-center"
                           >
                             {entry.name}
@@ -289,6 +290,7 @@ export default async function AnimePage({ params }: AnimePageProps) {
                 <li key={rec.entry.mal_id}>
                   <Link
                     href={`/anime/${rec.entry.mal_id}`}
+                    prefetch={false}
                     className="group block hover:no-underline"
                   >
                     <Poster

@@ -158,7 +158,7 @@ export function ListEntryRow({
   }
 
   const poster = (
-    <Link href={href} tabIndex={-1} aria-hidden="true" className="self-start">
+    <Link href={href} prefetch={false} tabIndex={-1} aria-hidden="true" className="self-start">
       <Poster src={anime?.imageUrl} title={title} size="sm" />
     </Link>
   );
