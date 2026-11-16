@@ -109,6 +109,34 @@ describe("searchAnime", () => {
     expect((await searchAnime("kuroinu")).data).toEqual([]);
   });
 
+  it("returns an empty last page past the end of the results", async () => {
+    get.mockResolvedValueOnce(reply({ data: [], paging: { previous: "https://api.myanimelist.net/v2/prev" } }));
+    const result = await searchAnime("one", 300);
+    expect(result.data).toEqual([]);
+    expect(result.pagination.has_next_page).toBe(false);
+    expect(result.unavailable).toEqual(["total", "lastPage"]);
+  });
+
+  it("does not ask for a page past the offset v2 accepts", async () => {
+    const result = await searchAnime("one", 5001);
+    expect(get).not.toHaveBeenCalled();
+    expect(result.data).toEqual([]);
+    expect(result.pagination).toEqual({
+      last_visible_page: 5001,
+      has_next_page: false,
+      items: { count: 0, total: null, per_page: 20 },
+    });
+    expect(result.unavailable).toEqual(["total", "lastPage"]);
+  });
+
+  it("offers no next page past the offset v2 accepts", async () => {
+    get.mockResolvedValueOnce(block(rows(1, 20), true));
+    const result = await searchAnime("one", 5000);
+    expect(get.mock.calls[0][1].params.offset).toBe(99_980);
+    expect(result.pagination.has_next_page).toBe(false);
+    expect(result.pagination.last_visible_page).toBe(5000);
+  });
+
   it("does not send a query shorter than 3 characters", async () => {
     const result = await searchAnime("ab");
     expect(get).not.toHaveBeenCalled();
@@ -328,6 +356,15 @@ describe("getTopByGenre", () => {
     get.mockResolvedValue(reply({ ...rankingAll, paging: {} }));
     await Promise.all([getTopByGenre(1), getTopByGenre(8), getTopByGenre(10)]);
     expect(get).toHaveBeenCalledTimes(1);
+  });
+
+  it("reads the cached ranking for each later genre instead of caching each genre", async () => {
+    get.mockResolvedValue(reply({ ...rankingAll, paging: {} }));
+    await getTopByGenre(1);
+    await getTopByGenre(8);
+    await getTopByGenre(10);
+    expect(get).toHaveBeenCalledTimes(1);
+    expect([...store.keys()]).toEqual(['mal,ranking-all-["all",0]']);
   });
 
   it("drops adult rows and does not cache an empty list", async () => {

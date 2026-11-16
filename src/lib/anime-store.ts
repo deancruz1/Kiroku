@@ -1,6 +1,7 @@
 import { isAxiosError } from "axios";
 import { getAnimeById, getAnimeByIds, isJikanNotFound } from "@/lib/jikan";
 import { prisma } from "@/lib/prisma";
+import { showBatchBudget } from "@/lib/show-source";
 import {
   isStale,
   mapJikanAnime,
@@ -78,7 +79,7 @@ export async function ensureShows(ids: number[], budget = BATCH_BUDGET) {
   if (recentlyFailed()) return shows;
 
   const candidates = ids.filter((id) => !recentlyNotFound(id));
-  const toFetch = planFetches(candidates, shows, new Date(), budget);
+  const toFetch = planFetches(candidates, shows, new Date(), showBatchBudget(budget));
   if (toFetch.length === 0) return shows;
 
   let found: JikanAnimeData[];

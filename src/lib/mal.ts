@@ -22,6 +22,7 @@ import { normalizeSearchQuery, uniqueByMalId, type TopFilter } from "@/lib/param
 import { cacheUpstream } from "@/lib/upstream-cache";
 import {
   MAL_BATCH_BUDGET,
+  MAL_MAX_LIST_END,
   MAL_MAX_LIST_LIMIT,
   MAL_MAX_QUERY_LENGTH,
   MAL_MIN_QUERY_LENGTH,
@@ -120,7 +121,7 @@ async function fetchSearch(q: string, page: number): Promise<MalSearchResponse> 
   });
   const { nodes, paging } = readList(data);
   const rows = nodes.filter(isListed).map(mapMalAnime);
-  const hasNext = Boolean(paging.next);
+  const hasNext = Boolean(paging.next) && (page + 1) * PAGE_SIZE <= MAL_MAX_LIST_END;
   return fromMal(
     {
       data: rows,
@@ -136,23 +137,26 @@ async function fetchSearch(q: string, page: number): Promise<MalSearchResponse> 
 
 const cachedSearch = cached("search", 10 * MINUTE, fetchSearch);
 
+function emptySearch(page: number, unavailable: MalGap[]): MalSearchResponse {
+  return fromMal(
+    {
+      data: [],
+      pagination: {
+        last_visible_page: page,
+        has_next_page: false,
+        items: { count: 0, total: null, per_page: PAGE_SIZE },
+      },
+    },
+    unavailable,
+  );
+}
+
 // Rows rated R+ or Rx are dropped after the page is cut, so a page can hold
 // fewer than 20 shows.
 export async function searchAnime(query: string, page = 1): Promise<MalSearchResponse> {
   const q = malSearchQuery(query);
-  if (q === null) {
-    return fromMal(
-      {
-        data: [],
-        pagination: {
-          last_visible_page: 1,
-          has_next_page: false,
-          items: { count: 0, total: null, per_page: PAGE_SIZE },
-        },
-      },
-      ["query"],
-    );
-  }
+  if (q === null) return emptySearch(1, ["query"]);
+  if (page * PAGE_SIZE > MAL_MAX_LIST_END) return emptySearch(page, ["total", "lastPage"]);
   if (page <= SEARCH_CACHE_MAX_PAGE && q.length <= SEARCH_CACHE_MAX_LENGTH) {
     return cachedSearch(q, page);
   }
@@ -299,32 +303,25 @@ export async function getTopAnime(
 
 // v2 ignores a genre filter, so the top 1,000 by score are filtered here. The
 // id may be a genre, theme or demographic, as Tenrai's genres parameter allows.
-// Thin genres (Horror, Josei) can return fewer than 25.
-const cachedTopByGenre = cached(
-  "top-by-genre",
-  6 * HOUR,
-  async (genreId: number): Promise<Candidate[]> => {
-    const { rows } = await rankingWindow("all", getScoreRankingBlock);
-    return rows
-      .filter((anime) =>
-        [...anime.genres, ...anime.themes, ...anime.demographics].some(
-          (genre) => genre.mal_id === genreId,
-        ),
-      )
-      .slice(0, GENRE_LIST_SIZE)
-      .map((anime) => ({
-        mal_id: anime.mal_id,
-        title: anime.title_english || anime.title,
-        image: anime.images.webp.large_image_url,
-        score: anime.score,
-        genres: anime.genres.map((g) => g.name),
-      }));
-  },
-  (candidates) => candidates.length === 0,
-);
-
-export async function getTopByGenre(genreId: number) {
-  return cachedTopByGenre(genreId);
+// Thin genres (Horror, Josei) can return fewer than 25. Not cached itself: an
+// unstable_cache inside another one skips its own read, so the ranking blocks
+// would be fetched again for every genre.
+export async function getTopByGenre(genreId: number): Promise<Candidate[]> {
+  const { rows } = await rankingWindow("all", getScoreRankingBlock);
+  return rows
+    .filter((anime) =>
+      [...anime.genres, ...anime.themes, ...anime.demographics].some(
+        (genre) => genre.mal_id === genreId,
+      ),
+    )
+    .slice(0, GENRE_LIST_SIZE)
+    .map((anime) => ({
+      mal_id: anime.mal_id,
+      title: anime.title_english || anime.title,
+      image: anime.images.webp.large_image_url,
+      score: anime.score,
+      genres: anime.genres.map((g) => g.name),
+    }));
 }
 
 // The characters endpoint is not in the v2 reference. It has no voice actors.

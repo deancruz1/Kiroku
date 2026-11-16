@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getTopAnime } from "@/lib/jikan";
+import { isUnavailable } from "@/lib/mal-shape";
 import { parsePage, parseTopFilter, uniqueByMalId } from "@/lib/params";
 import { AnimeRow, AnimeRowHeader, type AnimeRowShow } from "@/components/anime-row";
 import { EmptyState } from "@/components/empty-state";
@@ -41,7 +42,11 @@ export default async function TopPage({
       <RankingTabs active={activeFilter} />
 
       {anime.length === 0 ? (
-        <EmptyState className="mt-6">No shows on this page.</EmptyState>
+        <EmptyState className="mt-6">
+          {isUnavailable(response, "page")
+            ? "Ranks past the first 1,000 are not available right now."
+            : "No shows on this page."}
+        </EmptyState>
       ) : (
         <div className="mt-6 md:mt-8">
           <AnimeRowHeader ranked />
@@ -61,6 +66,7 @@ export default async function TopPage({
         <Pagination
           currentPage={currentPage}
           lastPage={pagination.last_visible_page}
+          lastPageKnown={!isUnavailable(response, "lastPage")}
           baseUrl={`/top?filter=${activeFilter}`}
           paramName="page"
         />

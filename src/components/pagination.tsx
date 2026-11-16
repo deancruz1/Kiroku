@@ -9,6 +9,9 @@ interface PaginationProps {
   lastPage: number;
   baseUrl: string;
   paramName: string;
+  // False when the source cannot say how many pages there are; lastPage is
+  // then only the furthest page known to exist.
+  lastPageKnown?: boolean;
 }
 
 const LINK_CLASS =
@@ -19,6 +22,7 @@ export function Pagination({
   lastPage,
   baseUrl,
   paramName,
+  lastPageKnown = true,
 }: PaginationProps) {
   const router = useRouter();
   const inputId = useId();
@@ -42,7 +46,12 @@ export function Pagination({
 
     const page = parseInt(trimmed, 10);
 
-    if (isNaN(page) || page < 1 || page > lastPage || !Number.isInteger(page)) {
+    if (isNaN(page) || page < 1 || !Number.isInteger(page)) {
+      setError(lastPageKnown ? `Enter 1–${lastPage}` : "Enter a page number");
+      return;
+    }
+
+    if (lastPageKnown && page > lastPage) {
       setError(`Enter 1–${lastPage}`);
       return;
     }
@@ -87,7 +96,9 @@ export function Pagination({
 
       <form onSubmit={handleJump} className="flex items-center gap-2">
         <label htmlFor={inputId} className="sr-only">
-          Go to page (currently page {currentPage} of {lastPage})
+          {lastPageKnown
+            ? `Go to page (currently page ${currentPage} of ${lastPage})`
+            : `Go to page (currently page ${currentPage})`}
         </label>
         <input
           id={inputId}
@@ -100,12 +111,14 @@ export function Pagination({
           aria-describedby={error ? errorId : undefined}
           className="h-10 w-14 border-0 border-b border-control bg-transparent px-0.5 text-base text-center aria-invalid:border-destructive"
         />
-        <span
-          aria-hidden="true"
-          className="text-base text-muted-foreground"
-        >
-          / {lastPage}
-        </span>
+        {lastPageKnown && (
+          <span
+            aria-hidden="true"
+            className="text-base text-muted-foreground"
+          >
+            / {lastPage}
+          </span>
+        )}
       </form>
 
       {error && (
@@ -127,7 +140,7 @@ export function Pagination({
           Next
         </Link>
       )}
-      {currentPage < lastPage - 1 && (
+      {lastPageKnown && currentPage < lastPage - 1 && (
         <Link
           href={buildUrl(lastPage)}
           aria-label="Last page"

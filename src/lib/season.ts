@@ -1,6 +1,7 @@
 import { jikanApi } from "@/lib/axios";
 import { getWeeklySlot } from "@/lib/broadcast";
 import { first } from "@/lib/params";
+import { fromSource, UpstreamShapeError } from "@/lib/show-source";
 import { UPSTREAM_NAME } from "@/lib/upstream";
 import { cacheUpstream } from "@/lib/upstream-cache";
 import type { JikanAnime } from "@/types/anime";
@@ -18,6 +19,10 @@ export const CALENDAR_CACHE_SECONDS = 10800;
 export const ARCHIVE_CACHE_SECONDS = 86400;
 
 const CALENDAR_TYPES = ["TV", "ONA"];
+
+// Loaded only when v2 is used. mal-season imports this module, so a static
+// import would be circular.
+const loadMalSeason = () => import("@/lib/mal-season");
 
 interface DateProp {
   day: number | null;
@@ -155,7 +160,7 @@ export function belongsOnCalendar(anime: SeasonAnime): boolean {
 }
 
 function unexpectedPage() {
-  return new Error(`Unexpected season page from ${UPSTREAM_NAME}`);
+  return new UpstreamShapeError(`Unexpected season page from ${UPSTREAM_NAME}`);
 }
 
 // Request spacing comes from the rate scheduler inside jikanApi.
@@ -214,7 +219,19 @@ const getCachedCalendarSeason = cacheUpstream(
   },
 );
 
+// A Tenrai load that fails part-way is shown in part, not filled from v2.
 export async function getCalendarSeason(
+  year: number,
+  season: SeasonName,
+  isCurrent: boolean,
+): Promise<{ anime: SeasonAnime[]; complete: boolean }> {
+  return fromSource(
+    () => getTenraiCalendarSeason(year, season, isCurrent),
+    async () => (await loadMalSeason()).getCalendarSeason(year, season, isCurrent),
+  );
+}
+
+async function getTenraiCalendarSeason(
   year: number,
   season: SeasonName,
   isCurrent: boolean,
@@ -235,7 +252,7 @@ export async function getCalendarSeason(
 
 // Pages past the end and seasons with no shows come back empty; they are
 // shown but not cached.
-export const getArchiveSeasonPage = cacheUpstream(
+const getCachedArchiveSeasonPage = cacheUpstream(
   async (year: number, season: SeasonName, page: number): Promise<SeasonPage> => {
     const { data } = await jikanApi.get<RawPage>(`/seasons/${year}/${season}`, {
       params: { page, limit: PAGE_SIZE, sfw: true },
@@ -254,13 +271,31 @@ export const getArchiveSeasonPage = cacheUpstream(
   },
 );
 
-export const getSeasonYears = cacheUpstream(
+export async function getArchiveSeasonPage(
+  year: number,
+  season: SeasonName,
+  page: number,
+): Promise<SeasonPage> {
+  return fromSource(
+    () => getCachedArchiveSeasonPage(year, season, page),
+    async () => (await loadMalSeason()).getArchiveSeasonPage(year, season, page),
+  );
+}
+
+const getCachedSeasonYears = cacheUpstream(
   async (): Promise<number[]> => {
     const { data } = await jikanApi.get<{ data?: { year: number }[] }>("/seasons");
     const years = [...new Set((data.data ?? []).map((s) => s.year))];
-    if (years.length === 0) throw new Error("Empty season list");
+    if (years.length === 0) throw new UpstreamShapeError("Empty season list");
     return years.sort((a, b) => b - a);
   },
   ["season-years"],
   { revalidate: ARCHIVE_CACHE_SECONDS, tags: ["season-years"] },
 );
+
+export async function getSeasonYears(): Promise<number[]> {
+  return fromSource(
+    () => getCachedSeasonYears(),
+    async () => (await loadMalSeason()).getSeasonYears(),
+  );
+}

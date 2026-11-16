@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { searchAnime } from "@/lib/jikan";
+import { isUnavailable } from "@/lib/mal-shape";
 import { getSearchQuery, parsePage, uniqueByMalId } from "@/lib/params";
 import { AnimeRow, AnimeRowHeader, type AnimeRowShow } from "@/components/anime-row";
 import { EmptyState } from "@/components/empty-state";
@@ -27,6 +28,10 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const results = query ? await searchAnime(query, currentPage) : null;
   const anime: AnimeRowShow[] = results ? uniqueByMalId(results.data) : [];
   const total = results?.pagination?.items?.total;
+  const lastPageKnown = !isUnavailable(results, "lastPage");
+  // v2 drops adult rows after cutting the page, so a page can be empty while
+  // later pages still have shows.
+  const hasNextPage = Boolean(results?.pagination?.has_next_page);
 
   return (
     <main className="page">
@@ -41,7 +46,15 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
       {results && anime.length === 0 && (
         <EmptyState className="mt-8">
-          No shows found for &ldquo;{query}&rdquo;.
+          {isUnavailable(results, "query") ? (
+            "Search needs at least 3 characters right now."
+          ) : hasNextPage ? (
+            <>No shows on this page for &ldquo;{query}&rdquo;. Try the next page.</>
+          ) : !lastPageKnown && currentPage > 1 ? (
+            <>There are no more shows for &ldquo;{query}&rdquo; past this point.</>
+          ) : (
+            <>No shows found for &ldquo;{query}&rdquo;.</>
+          )}
         </EmptyState>
       )}
 
@@ -61,17 +74,20 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
               ))}
             </ul>
           </div>
-
-          {results.pagination.last_visible_page > 1 && (
-            <Pagination
-              currentPage={currentPage}
-              lastPage={results.pagination.last_visible_page}
-              baseUrl={`/search?q=${encodeURIComponent(query)}`}
-              paramName="page"
-            />
-          )}
         </>
       )}
+
+      {results &&
+        (anime.length > 0 || hasNextPage) &&
+        results.pagination.last_visible_page > 1 && (
+          <Pagination
+            currentPage={currentPage}
+            lastPage={results.pagination.last_visible_page}
+            lastPageKnown={lastPageKnown}
+            baseUrl={`/search?q=${encodeURIComponent(query)}`}
+            paramName="page"
+          />
+        )}
     </main>
   );
 }

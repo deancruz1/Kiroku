@@ -35,6 +35,9 @@ export const MAL_MAX_LIST_LIMIT = 500;
 // Search answers 400 for a q shorter than 3 or longer than 64 characters.
 export const MAL_MIN_QUERY_LENGTH = 3;
 export const MAL_MAX_QUERY_LENGTH = 64;
+// Lists answer 400 when offset + limit is over this, even for a search with
+// fewer results. Past it there is nothing v2 will return.
+export const MAL_MAX_LIST_END = 100_000;
 
 // A 403 after earlier successes may be a block, so requests stop for this long.
 export const MAL_BLOCK_COOLDOWN_MS = 5 * 60 * 1000;

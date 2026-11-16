@@ -2,6 +2,7 @@ import { isAxiosError } from "axios";
 import { jikanApi } from "@/lib/axios";
 import { normalizeSearchQuery } from "@/lib/params";
 import { cacheUpstream } from "@/lib/upstream-cache";
+import { fromSource, UpstreamShapeError } from "@/lib/show-source";
 import { MAX_PAGE_SIZE, UPSTREAM_NAME } from "@/lib/upstream";
 import type { JikanAnimeData } from "@/lib/anime-shape";
 import type { Candidate } from "@/lib/recommend";
@@ -10,6 +11,9 @@ import type { JikanCharacter, JikanSearchResponse } from "@/types/anime";
 const MINUTE = 60;
 const HOUR = 60 * MINUTE;
 const DAY = 24 * HOUR;
+
+// Loaded only when v2 is used, so the Tenrai path does not load it.
+const loadMal = () => import("@/lib/mal");
 
 // Searches outside these bounds are fetched without caching, so typed-in
 // queries cannot fill the data cache with one-off entries.
@@ -26,14 +30,14 @@ function checked<T>(data: T): T {
     data.data === null ||
     data.data === undefined
   ) {
-    throw new Error(`Unexpected response from ${UPSTREAM_NAME}`);
+    throw new UpstreamShapeError(`Unexpected response from ${UPSTREAM_NAME}`);
   }
   return data;
 }
 
 function checkedList<T>(data: { data?: T[] }) {
   if (!Array.isArray(data?.data)) {
-    throw new Error(`Unexpected response from ${UPSTREAM_NAME}`);
+    throw new UpstreamShapeError(`Unexpected response from ${UPSTREAM_NAME}`);
   }
   return data as { data: T[] };
 }
@@ -66,12 +70,19 @@ async function fetchSearch(query: string, page: number) {
 
 const cachedSearch = cached("search", 10 * MINUTE, fetchSearch);
 
-export async function searchAnime(query: string, page = 1) {
+async function searchTenrai(query: string, page: number) {
   const q = normalizeSearchQuery(query);
   if (page <= SEARCH_CACHE_MAX_PAGE && q.length <= SEARCH_CACHE_MAX_LENGTH) {
     return cachedSearch(q, page);
   }
   return fetchSearch(q, page);
+}
+
+export async function searchAnime(query: string, page = 1) {
+  return fromSource(
+    () => searchTenrai(query, page),
+    async () => (await loadMal()).searchAnime(query, page),
+  );
 }
 
 const cachedAnimeById = cached("anime-full", 6 * HOUR, async (id: number) => {
@@ -80,13 +91,25 @@ const cachedAnimeById = cached("anime-full", 6 * HOUR, async (id: number) => {
 });
 
 export async function getAnimeById(id: number) {
-  return cachedAnimeById(id);
+  return fromSource(
+    () => cachedAnimeById(id),
+    async () => (await loadMal()).getAnimeById(id),
+  );
 }
 
 // One request for many shows. Not cached: every caller asks for a different
 // set. Tenrai returns the matches sorted by id and leaves out unknown ids, so
-// callers must match results by mal_id, never by position.
+// callers must match results by mal_id, never by position. v2 takes one
+// request per show and at most MAL_BATCH_BUDGET ids; a larger set does not
+// fall back, so no id is left unchecked and taken for a missing show.
 export async function getAnimeByIds(ids: number[]): Promise<JikanAnimeData[]> {
+  return fromSource(
+    () => fetchAnimeByIds(ids),
+    async () => (await loadMal()).getAnimeByIds(ids),
+  );
+}
+
+async function fetchAnimeByIds(ids: number[]): Promise<JikanAnimeData[]> {
   const unique = [...new Set(ids)];
   if (unique.length === 0) return [];
   if (unique.length > MAX_PAGE_SIZE) {
@@ -116,7 +139,10 @@ export async function getTopAnime(
   page = 1,
   filter: "airing" | "upcoming" | "bypopularity" | "favorite" = "bypopularity",
 ) {
-  return cachedTopAnime(page, filter);
+  return fromSource(
+    () => cachedTopAnime(page, filter),
+    async () => (await loadMal()).getTopAnime(page, filter),
+  );
 }
 
 // Shared by every user, and small because only what the feed shows is kept.
@@ -145,7 +171,10 @@ const cachedTopByGenre = cached(
 );
 
 export async function getTopByGenre(genreId: number) {
-  return cachedTopByGenre(genreId);
+  return fromSource(
+    () => cachedTopByGenre(genreId),
+    async () => (await loadMal()).getTopByGenre(genreId),
+  );
 }
 
 const cachedRecommendations = cached(
@@ -158,7 +187,10 @@ const cachedRecommendations = cached(
 );
 
 export async function getAnimeRecommendations(id: number) {
-  return cachedRecommendations(id);
+  return fromSource(
+    () => cachedRecommendations(id),
+    async () => (await loadMal()).getAnimeRecommendations(id),
+  );
 }
 
 const cachedVideos = cached("anime-videos", DAY, async (id: number) => {
@@ -167,7 +199,10 @@ const cachedVideos = cached("anime-videos", DAY, async (id: number) => {
 });
 
 export async function getAnimeVideos(id: number) {
-  return cachedVideos(id);
+  return fromSource(
+    () => cachedVideos(id),
+    async () => (await loadMal()).getAnimeVideos(id),
+  );
 }
 
 interface RelationGroup {
@@ -196,7 +231,10 @@ const cachedRelations = cached("anime-relations", DAY, async (id: number) => {
 });
 
 export async function getAnimeRelations(id: number) {
-  return cachedRelations(id);
+  return fromSource(
+    () => cachedRelations(id),
+    async () => (await loadMal()).getAnimeRelations(id),
+  );
 }
 
 // Long-running shows list over a thousand characters, which can pass the data
@@ -213,7 +251,10 @@ const cachedCharacterPreview = cached(
 );
 
 export async function getAnimeCharacterPreview(id: number, count = 12) {
-  return cachedCharacterPreview(id, count);
+  return fromSource(
+    () => cachedCharacterPreview(id, count),
+    async () => (await loadMal()).getAnimeCharacterPreview(id, count),
+  );
 }
 
 // The reviews endpoint takes page, preliminary and spoilers, not limit.
@@ -229,5 +270,8 @@ const cachedReviews = cached(
 );
 
 export async function getAnimeReviews(id: number, page = 1) {
-  return cachedReviews(id, page);
+  return fromSource(
+    () => cachedReviews(id, page),
+    async () => (await loadMal()).getAnimeReviews(id, page),
+  );
 }

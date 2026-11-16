@@ -74,6 +74,17 @@ export function fromMal<T extends object>(value: T, unavailable: MalGap[] = []):
   return { ...value, source: "mal", unavailable };
 }
 
+// For pages, which get either source's reply from the same function.
+export function isUnavailable(value: unknown, gap: MalGap) {
+  return (
+    !!value &&
+    typeof value === "object" &&
+    "unavailable" in value &&
+    Array.isArray(value.unavailable) &&
+    value.unavailable.includes(gap)
+  );
+}
+
 export class MalShapeError extends Error {
   constructor() {
     super(`Unexpected response from ${MAL_NAME}`);

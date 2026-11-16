@@ -2,6 +2,7 @@ import "server-only";
 import axios from "axios";
 import { applyJikanPolicy } from "@/lib/jikan-client";
 import { ATTEMPT_TIMEOUT_MS } from "@/lib/jikan-policy";
+import { applySourceBreaker } from "@/lib/show-source";
 import { UPSTREAM_BASE_URL } from "@/lib/upstream";
 
 export const jikanApi = axios.create({
@@ -13,3 +14,5 @@ export const jikanApi = axios.create({
 // instance (or browser tab), so it cuts self-inflicted 429s but cannot
 // coordinate separate serverless instances.
 applyJikanPolicy(jikanApi);
+// Only acts when MyAnimeList is configured as the fallback.
+applySourceBreaker(jikanApi);

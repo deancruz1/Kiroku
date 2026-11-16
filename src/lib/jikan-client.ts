@@ -14,6 +14,8 @@ import { createRateScheduler, type RateScheduler } from "@/lib/rate-scheduler";
 interface JikanMeta {
   startedAt: number;
   attempts: number;
+  // The status of the last failed attempt, undefined when it got no response.
+  lastStatus?: number;
 }
 
 type JikanConfig = InternalAxiosRequestConfig & { jikanMeta?: JikanMeta };
@@ -77,6 +79,7 @@ export function applyJikanPolicy(
     });
     if (delay === null) throw error;
 
+    config.jikanMeta.lastStatus = status;
     if (status === 429) scheduler.pause(delay);
     await sleep(delay);
     return instance.request(config);
