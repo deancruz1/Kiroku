@@ -24,7 +24,7 @@ Versions are the ones in `package.json`.
 - PostgreSQL through Prisma 7.8, using the `pg` driver adapter
 - NextAuth (Auth.js) 5.0.0-beta.31 with the Prisma adapter, a Discord provider and a credentials provider; sessions are JWTs and passwords are hashed with bcryptjs
 - TanStack Query 5 for client data fetching and optimistic updates
-- Axios 1.16 for requests to the show data API
+- Axios 1.16 for requests to the show data APIs
 - Tailwind CSS 4, shadcn/ui components on Radix, and Lucide icons
 - Fonts: Newsreader and Shippori Mincho, loaded with `next/font/google`
 - Vitest 4.1 for tests
@@ -33,20 +33,22 @@ Versions are the ones in `package.json`.
 
 ## Architecture
 
-**Where show data comes from.** Show data is MyAnimeList data served by Tenrai (`https://api.tenrai.org/v1`), an unofficial API that follows the Jikan v4 response schema. I switched to it after the Jikan API shut down. `src/lib/upstream.ts` is the one place that names the API, its base URL and its limits; the `jikan*` modules and types keep their names because they describe the response schema. All requests to it are made on the server.
+**Where show data comes from.** Show data is MyAnimeList data served by Tenrai (`https://api.tenrai.org/v1`), an unofficial API that follows the Jikan v4 response schema. I switched to it after the Jikan API shut down. When `MAL_CLIENT_ID` is set, the official MyAnimeList API v2 (`https://api.myanimelist.net/v2`) is a fallback. `src/lib/show-source.ts` asks Tenrai first and answers a request from v2 when Tenrai fails; if v2 fails too, the page gets the Tenrai error as before. `src/lib/mal.ts` and `src/lib/mal-season.ts` map v2 replies to the Jikan shape the pages already use. A breaker (`src/lib/source-breaker.ts`) switches the whole server instance to v2 after a hard failure (no reply, a 403, or a reply that is not Tenrai's JSON) or after 5xx, 429 or 408 replies on 3 different paths within a minute. After 5 minutes it lets one request probe Tenrai with a single 3-second attempt, and goes back to Tenrai if it answers. `src/lib/upstream.ts` is the one place that names both APIs, their base URLs and their limits; the `jikan*` modules and types keep their names because they describe the response schema. All requests to them are made on the server.
 
-**How requests are limited.** Every request goes through one Axios instance (`src/lib/axios.ts`) with the policy in `src/lib/jikan-client.ts` and `src/lib/jikan-policy.ts`:
+**How requests are limited.** Every Tenrai request goes through one Axios instance (`src/lib/axios.ts`) with the policy in `src/lib/jikan-client.ts` and `src/lib/jikan-policy.ts`:
 
 - each attempt times out after 4 seconds, and a request gets 10 seconds in total across its attempts;
 - up to 3 attempts, retrying only on 429, 502, 503, 504 and timeouts or dropped connections, with exponential backoff and jitter (500 ms doubling to at most 4 s);
 - a `Retry-After` header on a 429 or 503 is honoured, and a 429 also holds back later requests for the same wait;
 - a rate scheduler (`src/lib/rate-scheduler.ts`) spaces requests to at most 3 per 1.1 seconds and 100 per minute, below Tenrai's documented 4 per second and 120 per minute.
 
-Search, top, genre and season requests ask for safe-for-work results only.
+v2 requests go through their own Axios instance (`src/lib/mal-axios.ts`, `src/lib/mal-client.ts`) with the same timeouts and retries and a separate scheduler at 1 per 1.1 seconds and 30 per minute, because v2 publishes no limit. A 403 after earlier successes stops v2 requests for 5 minutes, and a rejected Client ID stops them for 10 minutes.
 
-**What is cached.** Replies are cached on the server with Next's `unstable_cache` (`src/lib/upstream-cache.ts`, `src/lib/jikan.ts`, `src/lib/season.ts`). Errors are never stored, and empty replies are returned but not stored, so a bad moment upstream does not stick. Cache times range from 10 minutes for searches (only the first 5 pages of queries up to 50 characters) to a day for things that rarely change, such as characters and past seasons. The current season's calendar is cached for 3 hours. Loading it fetches every page of the season, and if that runs too long the page shows what loaded so far and says it is incomplete.
+Search, top, genre and season results are safe for work only: Tenrai is asked with `sfw`, and v2 rows rated R+ or Rx are dropped. Links to show pages do not prefetch (`prefetch={false}`), because each prefetch runs the show page's metadata and costs an upstream request.
 
-**What is stored.** Postgres holds users, Auth.js accounts, watch list entries, collections, and an `Anime` table of show details (title, image, episodes, genres, score, status, episode length, season) keyed by MyAnimeList id. The watch list, collections, stats and recommendations read show details from that table instead of calling the API once per entry. Missing or stale rows are refreshed lazily in a single batch request of up to 25 ids (`src/lib/anime-store.ts`). Airing shows go stale after a day and finished shows after 30 days. If the API fails, stored rows are used as they are and refreshes pause for a minute.
+**What is cached.** Replies are cached on the server with Next's `unstable_cache` (`src/lib/upstream-cache.ts`, `src/lib/jikan.ts`, `src/lib/season.ts`, `src/lib/mal.ts`, `src/lib/mal-season.ts`). Errors are never stored, and empty replies are returned but not stored, so a bad moment upstream does not stick. Tenrai and v2 replies are cached under separate keys, so one source's reply is never served as the other's. Cache times range from 10 minutes for searches (only the first 5 pages of queries up to 50 characters) to a day for things that rarely change, such as characters and past seasons. The current season's calendar is cached for 3 hours. Loading it fetches every page of the season, and if that runs too long the page shows what loaded so far and says it is incomplete.
+
+**What is stored.** Postgres holds users, Auth.js accounts, watch list entries, collections, and an `Anime` table of show details (title, image, episodes, genres, score, status, episode length, season) keyed by MyAnimeList id. The watch list, collections, stats and recommendations read show details from that table instead of calling the API once per entry. Missing or stale rows are refreshed lazily in a single batch request of up to 25 ids (`src/lib/anime-store.ts`). v2 has no batch lookup, so while it is in use a refresh fetches at most 6 shows, one request each. Airing shows go stale after a day and finished shows after 30 days. If the API fails, stored rows are used as they are and refreshes pause for a minute.
 
 **Writes.** Watch list and collection writes are validated on the server (`src/lib/entry-validation.ts`): known statuses only, whole episode counts no higher than the show's total, ratings from 1 to 10 and collection names up to 60 characters. Account input is validated in `src/lib/account-validation.ts`: usernames are 3 to 20 letters, numbers or underscores, and passwords are at least 8 characters and at most 72 bytes, which is bcrypt's limit.
 
@@ -62,6 +64,10 @@ You need Node.js 20.9 or later (the minimum for Next.js 16) and a PostgreSQL dat
    - `DATABASE_URL`: the Postgres connection string
    - `AUTH_SECRET`: a long random string. Auth.js reads it itself, so it does not appear in the source.
    - `AUTH_DISCORD_ID` and `AUTH_DISCORD_SECRET`: from your Discord application. Add `http://localhost:3000/api/auth/callback/discord` as a redirect URL there.
+   - `MAL_CLIENT_ID` (optional): a MyAnimeList API Client ID. It turns on the v2 fallback and is only read on the server. Without it the app uses Tenrai alone.
+   - `SHOW_DATA_SOURCE` (optional): `auto` (the default) uses Tenrai with v2 as the fallback, `tenrai` uses Tenrai only, and `mal` uses v2 only. It has no effect unless `MAL_CLIENT_ID` is set.
+
+   The app runs without either of the optional variables.
 
    `prisma.config.ts` loads `.env`, not `.env.local`, so for the Prisma CLI either put `DATABASE_URL` in `.env` as well or set it in your shell.
 3. Apply the migrations in `prisma/migrations/`:
@@ -86,7 +92,7 @@ You need Node.js 20.9 or later (the minimum for Next.js 16) and a PostgreSQL dat
 
 ## Tests
 
-`npm test` runs 256 tests in 20 files with Vitest. They cover the request policy, rate scheduler and cache wrapper, the API wrappers, season loading, broadcast times and countdowns, stored-show refreshing, stats, recommendations, and input validation. They use mocks and recorded API replies in `src/lib/fixtures/tenrai/`, so they need no database or network.
+`npm test` runs 483 tests in 28 files with Vitest. They cover the request policy, rate scheduler and cache wrapper, the API wrappers for Tenrai and v2, the mapping of v2 replies to the Jikan shape, the source switch and its breaker, season loading, broadcast times and countdowns, stored-show refreshing, stats, recommendations, and input validation. They use mocks and recorded API replies in `src/lib/fixtures/tenrai/` and `src/lib/fixtures/mal/`, so they need no database or network.
 
 ## Project structure
 
@@ -111,22 +117,23 @@ src/
     providers/            TanStack Query and session providers
   components/             shared components, with shadcn/ui primitives in ui/
   hooks/                  use-entries, use-lists
-  lib/                    API client, caching, stored shows, validation, stats, recommendations, tests
+  lib/                    API clients, source switch, caching, stored shows, validation, stats, recommendations, tests
   types/                  response types
 ```
 
 ## Known limitations
 
-- Tenrai is an unofficial third-party API. It can change or go away, and the app depends on it for everything except the user's own records.
+- Tenrai is an unofficial third-party API and can change or go away. With `MAL_CLIENT_ID` set, MyAnimeList's official API v2 takes over when it fails; without it, the app depends on Tenrai for everything except the user's own records.
+- v2 has no reviews, voice actors, batch lookup or result totals. While it is in use, show pages have no reviews section and characters have no voice actors, search needs at least 3 characters and shows no result count or last page, top lists stop at the first 1,000 ranks, For you picks from the top 1,000 shows by score, and a stored-show refresh fetches at most 6 shows.
 - Images are not optimised by Next (`images.unoptimized` in `next.config.ts`); posters load straight from MyAnimeList's CDN.
-- The rate scheduler, the in-flight request sharing and the outage pause all live in one server instance's memory. Separate serverless instances do not coordinate, so several busy instances behind one IP could still go over Tenrai's limits.
+- The rate schedulers, the in-flight request sharing, the outage pause and the source breaker all live in one server instance's memory. Separate serverless instances do not coordinate, so several busy instances behind one IP could still go over Tenrai's limits, and each instance switches to v2 and back on its own.
 - The first visit to a season that is not cached loads every page of it in turn, which can take a while; a slow API gives a partial calendar.
 - The schema has a `Review` model and notes and date fields on watch list entries that the interface does not use yet.
 - The Umami script in `src/app/layout.tsx` carries my site's id, so a fork should remove or replace it.
 
 ## Credits
 
-- Show data comes from [MyAnimeList](https://myanimelist.net) through Tenrai (`https://api.tenrai.org/v1`).
+- Show data comes from [MyAnimeList](https://myanimelist.net) through Tenrai (`https://api.tenrai.org/v1`), and directly from MyAnimeList's official API v2 (`https://api.myanimelist.net/v2`) as a fallback.
 - Fonts: [Newsreader](https://fonts.google.com/specimen/Newsreader) and [Shippori Mincho](https://fonts.google.com/specimen/Shippori+Mincho) from Google Fonts.
 
 ## Contact
